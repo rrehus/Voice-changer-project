@@ -1,5 +1,6 @@
 #include p18f87k22.inc
-extern ADC_Read, DAC_write
+    
+    extern ADC_read, DAC_write
 
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
@@ -10,8 +11,8 @@ MAIN_PROG CODE                      ; let linker place main program
 
 START
 
- measure_loop
-	call	ADC_Read   ;analog to digital conversion
+measure_loop
+	call	ADC_read   ;analog to digital conversion
 	movff   ADRESL, W  
 	call    DAC_write  ;convert the first 8 bits of the digital data to analog
 	movff   ADRESH, W

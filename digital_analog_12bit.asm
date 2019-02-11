@@ -1,7 +1,7 @@
 	#include p18f87k22.inc
 	
-	global	DAC_Setup
-	extern SPI_MasterInit, Wait_Transmit,SPI_MasterTransmit
+	global	DAC_Setup, DAC_write
+	extern SPI_MasterInit, SPI_MasterTransmit
 	
 int_hi	code	0x0008	; high vector, no low vector
 	btfss	INTCON,TMR0IF	; check that this is timer0 interrupt
@@ -32,7 +32,6 @@ DAC_write
     bcf TRISD, 0 ; set CS to 0
     call delay
     call SPI_MasterTransmit
-    call Wait_Transmit
     bsf TRISD, 0 ;set CS to 1
     call delay
     bcf  TRISD, 1 ; set LDAC to 0
