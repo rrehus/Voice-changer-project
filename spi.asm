@@ -11,12 +11,13 @@ SPI_MasterInit ; Set Clock edge to negative
 	bcf TRISD, SDO2
 	bcf TRISD, SCK2
 	return
-SPI_MasterTransmit ; Start transmission of data (held in W)
+SPI_MasterTransmit	    ; Start transmission of data (held in W)
 	movwf SSP2BUF
-Wait_Transmit ; Wait for transmission to complete
+	bcf PORTD, 0	    ; set CS to low
+Wait_Transmit		    ; Wait for transmission to complete
 	btfss PIR2, SSP2IF
 	bra Wait_Transmit
-	bcf PIR2, SSP2IF ; clear interrupt flag
+	bcf PIR2, SSP2IF    ; clear interrupt flag
 	return
 
     END

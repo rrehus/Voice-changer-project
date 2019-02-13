@@ -16,10 +16,10 @@ START
 
 measure_loop
 	call	ADC_read   ;analog to digital conversion
-	movff   ADRESL, W  
-	call    DAC_write  ;convert the first 8 bits of the digital data to analog
-	movff   ADRESH, W
+	movf	ADRESH, W
 	addlw   b'00110000' ;convert the second 8bits (with configuration bits) to analog
+	call    DAC_write  ;convert the first 8 bits of the digital data to analog
+	movf	ADRESL, W
 	call    DAC_write
 	call	DAC_end_write
 	goto	measure_loop	; loop forever

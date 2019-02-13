@@ -1,4 +1,4 @@
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  1
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -32,17 +32,17 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00016 
 000008                00017 measure_loop
 000008 EC?? F???      00018         call    ADC_read   ;analog to digital conversion
-00000C CFC3 F000      00019         movff   ADRESL, W  
-000010 EC?? F???      00020         call    DAC_write  ;convert the first 8 bits of the digital data to analog
-000014 CFC4 F000      00021         movff   ADRESH, W
-000018 0F30           00022         addlw   b'00110000' ;convert the second 8bits (with configuration bits) to analog
-00001A EC?? F???      00023         call    DAC_write
-00001E EC?? F???      00024         call    DAC_end_write
-000022 EF?? F???      00025         goto    measure_loop    ; loop forever
+00000C 50C4           00019         movf    ADRESH, W
+00000E 0F30           00020         addlw   b'00110000' ;convert the second 8bits (with configuration bits) to analog
+000010 EC?? F???      00021         call    DAC_write  ;convert the first 8 bits of the digital data to analog
+000014 50C3           00022         movf    ADRESL, W
+000016 EC?? F???      00023         call    DAC_write
+00001A EC?? F???      00024         call    DAC_end_write
+00001E EF?? F???      00025         goto    measure_loop    ; loop forever
                       00026                        
                       00027 
                       00028     END
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  2
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  2
 
 
 SYMBOL TABLE
@@ -101,7 +101,7 @@ ADMSK3                            00000003
 ADMSK4                            00000004
 ADMSK5                            00000005
 ADON                              00000000
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  3
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  3
 
 
 SYMBOL TABLE
@@ -160,7 +160,7 @@ ANSEL14                           00000006
 ANSEL15                           00000007
 ANSEL16                           00000000
 ANSEL17                           00000001
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  4
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  4
 
 
 SYMBOL TABLE
@@ -219,7 +219,7 @@ C1INC                             00000006
 C1OUT                             00000002
 C1TSEL0                           00000000
 C1TSEL1                           00000001
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  5
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  5
 
 
 SYMBOL TABLE
@@ -278,7 +278,7 @@ CCP1IE                            00000001
 CCP1IF                            00000001
 CCP1IP                            00000001
 CCP1M0                            00000000
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  6
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  6
 
 
 SYMBOL TABLE
@@ -337,7 +337,7 @@ CCP5IF                            00000002
 CCP5IP                            00000002
 CCP5M0                            00000000
 CCP5M1                            00000001
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  7
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  7
 
 
 SYMBOL TABLE
@@ -396,7 +396,7 @@ CCP9IE                            00000006
 CCP9IF                            00000006
 CCP9IP                            00000006
 CCP9M0                            00000000
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  8
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  8
 
 
 SYMBOL TABLE
@@ -455,7 +455,7 @@ CHS4                              00000006
 CHSN0                             00000000
 CHSN1                             00000001
 CHSN2                             00000002
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE  9
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE  9
 
 
 SYMBOL TABLE
@@ -514,7 +514,7 @@ CTMUI                             00000003
 CTMUICON                          00000F55
 CTMUIE                            00000003
 CTMUIF                            00000003
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 10
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 10
 
 
 SYMBOL TABLE
@@ -573,7 +573,7 @@ D_A                               00000005
 D_NOT_A                           00000005
 EBDIS                             00000007
 ECCP1AS                           00000FBF
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 11
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 11
 
 
 SYMBOL TABLE
@@ -632,7 +632,7 @@ FSR0L                             00000FE9
 FSR1                              00000001
 FSR1H                             00000FE2
 FSR1L                             00000FE1
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 12
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 12
 
 
 SYMBOL TABLE
@@ -691,7 +691,7 @@ INT2IF                            00000001
 INT2IP                            00000007
 INT2P                             00000007
 INT3                              00000003
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 13
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 13
 
 
 SYMBOL TABLE
@@ -750,7 +750,7 @@ LATB2                             00000002
 LATB3                             00000003
 LATB4                             00000004
 LATB5                             00000005
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 14
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 14
 
 
 SYMBOL TABLE
@@ -809,7 +809,7 @@ LATH5                             00000005
 LATH6                             00000006
 LATH7                             00000007
 LATJ                              00000F91
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 15
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 15
 
 
 SYMBOL TABLE
@@ -868,7 +868,7 @@ NOT_WRITE                         00000002
 OBF                               00000006
 ODCON1                            00000F29
 ODCON2                            00000F28
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 16
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 16
 
 
 SYMBOL TABLE
@@ -927,7 +927,7 @@ P3DC3                             00000003
 P3DC4                             00000004
 P3DC5                             00000005
 P3DC6                             00000006
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 17
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 17
 
 
 SYMBOL TABLE
@@ -986,7 +986,7 @@ PORTG                             00000F86
 PORTH                             00000F87
 PORTJ                             00000F88
 POSTDEC0                          00000FED
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 18
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 18
 
 
 SYMBOL TABLE
@@ -1045,7 +1045,7 @@ R                                 00000002
 RA0                               00000000
 RA1                               00000001
 RA2                               00000002
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 19
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 19
 
 
 SYMBOL TABLE
@@ -1104,7 +1104,7 @@ RD16                              00000001
 RD2                               00000002
 RD3                               00000003
 RD4                               00000004
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 20
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 20
 
 
 SYMBOL TABLE
@@ -1163,7 +1163,7 @@ RODIV1                            00000001
 RODIV2                            00000002
 RODIV3                            00000003
 ROON                              00000007
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 21
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 21
 
 
 SYMBOL TABLE
@@ -1222,7 +1222,7 @@ SENDB1                            00000003
 SENDB2                            00000003
 SMP                               00000007
 SOSCEN                            00000003
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 22
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 22
 
 
 SYMBOL TABLE
@@ -1281,7 +1281,7 @@ SSPIE                             00000003
 SSPIF                             00000003
 SSPIP                             00000003
 SSPM0                             00000000
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 23
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 23
 
 
 SYMBOL TABLE
@@ -1340,7 +1340,7 @@ T1CON                             00000FCD
 T1G                               00000005
 T1GCON                            00000FAA
 T1GGO                             00000003
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 24
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 24
 
 
 SYMBOL TABLE
@@ -1399,7 +1399,7 @@ T6CKPS0                           00000000
 T6CKPS1                           00000001
 T6CON                             00000F39
 T6OUTPS0                          00000003
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 25
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 25
 
 
 SYMBOL TABLE
@@ -1458,7 +1458,7 @@ TMR12ON                           00000002
 TMR1CS0                           00000006
 TMR1CS1                           00000007
 TMR1GE                            00000007
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 26
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 26
 
 
 SYMBOL TABLE
@@ -1517,7 +1517,7 @@ TMR5ON                            00000000
 TMR6                              00000F3B
 TMR6IE                            00000002
 TMR6IF                            00000002
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 27
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 27
 
 
 SYMBOL TABLE
@@ -1576,7 +1576,7 @@ TRISC0                            00000000
 TRISC1                            00000001
 TRISC2                            00000002
 TRISC3                            00000003
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 28
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 28
 
 
 SYMBOL TABLE
@@ -1635,7 +1635,7 @@ TRISJ3                            00000003
 TRISJ4                            00000004
 TRISJ5                            00000005
 TRISJ6                            00000006
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 29
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 29
 
 
 SYMBOL TABLE
@@ -1694,7 +1694,7 @@ VCFG0                             00000004
 VCFG1                             00000005
 VDIRMAG                           00000007
 VNCFG                             00000003
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 30
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 30
 
 
 SYMBOL TABLE
@@ -1753,7 +1753,7 @@ _CONFIG6L                         0030000A
 _CONFIG7H                         0030000D
 _CONFIG7L                         0030000C
 _CP0_OFF_5L                       000000FF
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 31
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 31
 
 
 SYMBOL TABLE
@@ -1812,7 +1812,7 @@ _FOSC_EC2IO_1H                    000000FA
 _FOSC_EC2_1H                      000000FB
 _FOSC_EC3IO_1H                    000000F4
 _FOSC_EC3_1H                      000000F5
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 32
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 32
 
 
 SYMBOL TABLE
@@ -1871,7 +1871,7 @@ _WDTPS_1_2H                       00000083
 _WDTPS_2048_2H                    000000AF
 _WDTPS_256_2H                     000000A3
 _WDTPS_262144_2H                  000000CB
-MPASM 5.81                          MAIN.ASM   2-11-2019  16:02:27         PAGE 33
+MPASM 5.81                          MAIN.ASM   2-13-2019  14:24:31         PAGE 33
 
 
 SYMBOL TABLE
