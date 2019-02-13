@@ -19,7 +19,7 @@ endif
 endif
 
 # Environment
-MKDIR=gnumkdir -p
+MKDIR=mkdir -p
 RM=rm -f 
 MV=mv 
 CP=cp 
@@ -98,7 +98,7 @@ ${OBJECTDIR}/ANALOG_DIGITAL.o: ANALOG_DIGITAL.asm  nbproject/Makefile-${CND_CONF
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ANALOG_DIGITAL.o.d 
 	@${RM} ${OBJECTDIR}/ANALOG_DIGITAL.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/ANALOG_DIGITAL.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/ANALOG_DIGITAL.lst\" -e\"${OBJECTDIR}/ANALOG_DIGITAL.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/ANALOG_DIGITAL.o\" \"ANALOG_DIGITAL.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/ANALOG_DIGITAL.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/ANALOG_DIGITAL.lst\\\" -e\\\"${OBJECTDIR}/ANALOG_DIGITAL.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/ANALOG_DIGITAL.o\\\" \\\"ANALOG_DIGITAL.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/ANALOG_DIGITAL.o"
 	@${FIXDEPS} "${OBJECTDIR}/ANALOG_DIGITAL.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -106,7 +106,7 @@ ${OBJECTDIR}/config.o: config.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/config.o.d 
 	@${RM} ${OBJECTDIR}/config.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/config.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/config.lst\" -e\"${OBJECTDIR}/config.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/config.o\" \"config.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/config.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/config.lst\\\" -e\\\"${OBJECTDIR}/config.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/config.o\\\" \\\"config.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/config.o"
 	@${FIXDEPS} "${OBJECTDIR}/config.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -114,7 +114,7 @@ ${OBJECTDIR}/digital_analog_12bit.o: digital_analog_12bit.asm  nbproject/Makefil
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/digital_analog_12bit.o.d 
 	@${RM} ${OBJECTDIR}/digital_analog_12bit.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/digital_analog_12bit.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/digital_analog_12bit.lst\" -e\"${OBJECTDIR}/digital_analog_12bit.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/digital_analog_12bit.o\" \"digital_analog_12bit.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/digital_analog_12bit.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/digital_analog_12bit.lst\\\" -e\\\"${OBJECTDIR}/digital_analog_12bit.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/digital_analog_12bit.o\\\" \\\"digital_analog_12bit.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/digital_analog_12bit.o"
 	@${FIXDEPS} "${OBJECTDIR}/digital_analog_12bit.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -122,7 +122,7 @@ ${OBJECTDIR}/main.o: main.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/main.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/main.lst\" -e\"${OBJECTDIR}/main.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/main.o\" \"main.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/main.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/main.lst\\\" -e\\\"${OBJECTDIR}/main.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/main.o\\\" \\\"main.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/main.o"
 	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -130,7 +130,7 @@ ${OBJECTDIR}/spi.o: spi.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/spi.o.d 
 	@${RM} ${OBJECTDIR}/spi.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/spi.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/spi.lst\" -e\"${OBJECTDIR}/spi.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/spi.o\" \"spi.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/spi.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/spi.lst\\\" -e\\\"${OBJECTDIR}/spi.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/spi.o\\\" \\\"spi.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/spi.o"
 	@${FIXDEPS} "${OBJECTDIR}/spi.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -139,7 +139,7 @@ ${OBJECTDIR}/ANALOG_DIGITAL.o: ANALOG_DIGITAL.asm  nbproject/Makefile-${CND_CONF
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ANALOG_DIGITAL.o.d 
 	@${RM} ${OBJECTDIR}/ANALOG_DIGITAL.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/ANALOG_DIGITAL.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/ANALOG_DIGITAL.lst\" -e\"${OBJECTDIR}/ANALOG_DIGITAL.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/ANALOG_DIGITAL.o\" \"ANALOG_DIGITAL.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/ANALOG_DIGITAL.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/ANALOG_DIGITAL.lst\\\" -e\\\"${OBJECTDIR}/ANALOG_DIGITAL.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/ANALOG_DIGITAL.o\\\" \\\"ANALOG_DIGITAL.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/ANALOG_DIGITAL.o"
 	@${FIXDEPS} "${OBJECTDIR}/ANALOG_DIGITAL.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -147,7 +147,7 @@ ${OBJECTDIR}/config.o: config.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/config.o.d 
 	@${RM} ${OBJECTDIR}/config.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/config.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/config.lst\" -e\"${OBJECTDIR}/config.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/config.o\" \"config.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/config.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/config.lst\\\" -e\\\"${OBJECTDIR}/config.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/config.o\\\" \\\"config.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/config.o"
 	@${FIXDEPS} "${OBJECTDIR}/config.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -155,7 +155,7 @@ ${OBJECTDIR}/digital_analog_12bit.o: digital_analog_12bit.asm  nbproject/Makefil
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/digital_analog_12bit.o.d 
 	@${RM} ${OBJECTDIR}/digital_analog_12bit.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/digital_analog_12bit.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/digital_analog_12bit.lst\" -e\"${OBJECTDIR}/digital_analog_12bit.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/digital_analog_12bit.o\" \"digital_analog_12bit.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/digital_analog_12bit.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/digital_analog_12bit.lst\\\" -e\\\"${OBJECTDIR}/digital_analog_12bit.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/digital_analog_12bit.o\\\" \\\"digital_analog_12bit.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/digital_analog_12bit.o"
 	@${FIXDEPS} "${OBJECTDIR}/digital_analog_12bit.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -163,7 +163,7 @@ ${OBJECTDIR}/main.o: main.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/main.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/main.lst\" -e\"${OBJECTDIR}/main.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/main.o\" \"main.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/main.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/main.lst\\\" -e\\\"${OBJECTDIR}/main.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/main.o\\\" \\\"main.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/main.o"
 	@${FIXDEPS} "${OBJECTDIR}/main.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -171,7 +171,7 @@ ${OBJECTDIR}/spi.o: spi.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/spi.o.d 
 	@${RM} ${OBJECTDIR}/spi.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/spi.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/spi.lst\" -e\"${OBJECTDIR}/spi.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/spi.o\" \"spi.asm\" 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/spi.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION) -u  -l\\\"${OBJECTDIR}/spi.lst\\\" -e\\\"${OBJECTDIR}/spi.err\\\" $(ASM_OPTIONS)    -o\\\"${OBJECTDIR}/spi.o\\\" \\\"spi.asm\\\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/spi.o"
 	@${FIXDEPS} "${OBJECTDIR}/spi.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
@@ -205,7 +205,7 @@ endif
 # Enable dependency checking
 .dep.inc: .depcheck-impl
 
-DEPFILES=$(shell mplabwildcard ${POSSIBLE_DEPFILES})
+DEPFILES=$(shell "${PATH_TO_IDE_BIN}"mplabwildcard ${POSSIBLE_DEPFILES})
 ifneq (${DEPFILES},)
 include ${DEPFILES}
 endif
