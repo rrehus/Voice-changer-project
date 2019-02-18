@@ -1,6 +1,7 @@
 #include p18f87k22.inc
 
     global  k16, k8, mul18, mul16, prod8x16, prod16x16
+    global multiplication16x16, multiplication8x16
 Multiplication code
 
 acs0    udata_acs   ; named variables in access ram
