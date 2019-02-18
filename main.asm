@@ -12,6 +12,7 @@ MAIN_PROG CODE                      ; let linker place main program
 START
 	call	ADC_Setup
 	call	DAC_Setup
+	goto    frequency_mix
 	
 
 measure_loop
@@ -22,7 +23,18 @@ measure_loop
 	movf	ADRESL, W
 	call    DAC_write
 	call	DAC_end_write
-	goto	measure_loop	; loop forever
-                       
-
-    END
+	goto	measure_loop	; loop forever       
+frequency_mix
+	call ADC_read ;convert analog to digital
+        movff ADRESH,k_16+1 ;move the higher bits of the digital data to k_16+1
+        movff ADRESL, k_16 ;move the lower bits of the digital data to k_16
+        call ADC_read_other ;convert the other analog signal to digital
+        movff ADRESH, mul_16+1 ;move the higher bits of the other digital data to mul_16+1
+        movff ADRESL, mul_16 ;move the lower bits of the other digital data to mul_16
+	call frequency_multiplication
+	call DAC_write ;digital to analog conversion
+        movf output_tmp, W 
+        call DAC_write
+        call DAC_end_write
+	goto frequency_mix
+END
