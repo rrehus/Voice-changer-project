@@ -1,4 +1,4 @@
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  1
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -16,7 +16,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00009 
                       02986         LIST
                       00002         
-  0000                00003         global  DAC_Setup, DAC_write
+  0000                00003         global  DAC_Setup, DAC_write, DAC_end_write
   0000                00004         extern SPI_MasterInit, SPI_MasterTransmit
                       00005         
                       00006 int_hi  code    0x0008  ; high vector, no low vector
@@ -29,34 +29,47 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00013 DAC     code
 000000                00014 DAC_Setup
 000000 EC?? F???      00015         call    SPI_MasterInit
-000004 6A95           00016         clrf    TRISD   ; Set PORTD as all outputs
-000006 6A8C           00017         clrf    LATD            ; Clear PORTD outputs
-000008 8295           00018         bsf     TRISD, 1  ; set LDAC to 1
-00000A 8095           00019         bsf     TRISD, 0  ; set CS to 1
-00000C 0E87           00020         movlw   b'10000111'     ; Set timer0 to 16-bit, Fosc/4/256
-00000E 6ED5           00021         movwf   T0CON   ; = 62.5KHz clock rate, approx 1sec rollover
-000010 8AF2           00022         bsf     INTCON,TMR0IE   ; Enable timer0 interrupt
-000012 8EF2           00023         bsf     INTCON,GIE      ; Enable all interrupts
-000014 0012           00024         return
-                      00025 
-000016                00026 delay
-000016 0000           00027         nop
-000018 0000           00028         nop
-00001A 0012           00029         return
-                      00030 
-00001C                00031 DAC_write 
-00001C 9095           00032     bcf TRISD, 0 ; set CS to 0
-00001E EC?? F???      00033     call delay
-000022 EC?? F???      00034     call SPI_MasterTransmit
-000026 8095           00035     bsf TRISD, 0 ;set CS to 1
-000028 EC?? F???      00036     call delay
-00002C 9295           00037     bcf  TRISD, 1 ; set LDAC to 0
-00002E EC?? F???      00038     call delay
-000032 8295           00039     bsf  TRISD, 1 ; set LDAC to 1
-000034 0012           00040     return
-                      00041 
-                      00042     END
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  2
+000004 6A95           00016         clrf    TRISD           ; Set PORTD as all outputs
+000006 0EFF           00017         movlw   (1<<CVREN)|(1<<CVROE)|(1<<CVRSS)|(0x1F)     ; Power on CVref circuitry | Enable output o
+                            f CVref (RF5) | Output Vref | CVref=(Vref-)+(1Fh/32)*((Vref+)-(Vref-))
+000008 6EB5           00018         movwf   CVRCON          ; "     
+00000A 852F           00019         bsf     CM2CON, CREF
+00000C 6A8C           00020         clrf    LATD            ; Clear PORTD outputs
+00000E 8283           00021         bsf     PORTD, 1        ; set LDAC to high
+000010 8083           00022         bsf     PORTD, 0        ; set CS to high
+000012 0E87           00023         movlw   b'10000111'     ; Set timer0 to 16-bit, Fosc/4/256
+000014 6ED5           00024         movwf   T0CON           ; = 62.5KHz clock rate, approx 1sec rollover
+000016 8AF2           00025         bsf     INTCON,TMR0IE   ; Enable timer0 interrupt
+000018 8EF2           00026         bsf     INTCON,GIE      ; Enable all interrupts
+00001A 0012           00027         return
+                      00028 
+00001C                00029 delay
+00001C 0000           00030         nop
+00001E 0000           00031         nop
+000020 0012           00032         return
+                      00033 
+000022                00034 DAC_write 
+000022 9083           00035     bcf PORTD, 0    ; set CS to low
+000024 8283           00036     bsf PORTD, 1    ; set LDAC to high
+000026 EC?? F???      00037     call delay
+00002A EC?? F???      00038     call SPI_MasterTransmit
+00002E 0012           00039     return
+000030                00040 DAC_end_write
+000030 8083           00041     bsf PORTD, 0 ;set CS to 1
+000032 EC?? F???      00042     call delay
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+000036 9283           00043     bcf  PORTD, 1 ; set LDAC to 0
+000038 EC?? F???      00044     call delay
+00003C 8283           00045     bsf  PORTD, 1 ; set LDAC to 1
+00003E 0012           00046     return
+                      00047 
+                      00048     END
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  3
 
 
 SYMBOL TABLE
@@ -115,7 +128,7 @@ ADMSK5                            00000005
 ADON                              00000000
 ADRES                             00000FC3
 ADRESH                            00000FC4
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  3
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  4
 
 
 SYMBOL TABLE
@@ -174,7 +187,7 @@ ANSEL16                           00000000
 ANSEL17                           00000001
 ANSEL18                           00000002
 ANSEL19                           00000003
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  4
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  5
 
 
 SYMBOL TABLE
@@ -233,7 +246,7 @@ C1TSEL0                           00000000
 C1TSEL1                           00000001
 C1TSEL2                           00000002
 C2INA                             00000004
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  5
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  6
 
 
 SYMBOL TABLE
@@ -292,7 +305,7 @@ CCP1IP                            00000001
 CCP1M0                            00000000
 CCP1M1                            00000001
 CCP1M2                            00000002
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  6
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  7
 
 
 SYMBOL TABLE
@@ -351,7 +364,7 @@ CCP5M0                            00000000
 CCP5M1                            00000001
 CCP5M2                            00000002
 CCP5M3                            00000003
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  7
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  8
 
 
 SYMBOL TABLE
@@ -410,7 +423,7 @@ CCP9IP                            00000006
 CCP9M0                            00000000
 CCP9M1                            00000001
 CCP9M2                            00000002
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  8
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE  9
 
 
 SYMBOL TABLE
@@ -469,7 +482,7 @@ CHSN1                             00000001
 CHSN2                             00000002
 CK1                               00000006
 CK2                               00000001
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE  9
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 10
 
 
 SYMBOL TABLE
@@ -528,7 +541,7 @@ CTMUIE                            00000003
 CTMUIF                            00000003
 CTMUIP                            00000003
 CTMUMD                            00000006
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 10
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 11
 
 
 SYMBOL TABLE
@@ -549,7 +562,8 @@ CVROE                             00000006
 CVRSS                             00000005
 D                                 00000005
 DAC_Setup                         00000000
-DAC_write                         0000001C
+DAC_end_write                     00000030
+DAC_write                         00000022
 DATA_ADDRESS                      00000005
 DC                                00000001
 DC10B0                            00000004
@@ -586,13 +600,13 @@ EBDIS                             00000007
 ECCP1AS                           00000FBF
 ECCP1AS0                          00000004
 ECCP1AS1                          00000005
-ECCP1AS2                          00000006
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 11
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 12
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+ECCP1AS2                          00000006
 ECCP1ASE                          00000007
 ECCP1CON                          00000FBB
 ECCP1DEL                          00000FBE
@@ -645,13 +659,13 @@ FSR1H                             00000FE2
 FSR1L                             00000FE1
 FSR2                              00000002
 FSR2H                             00000FDA
-FSR2L                             00000FD9
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 12
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 13
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+FSR2L                             00000FD9
 GCEN                              00000007
 GIE                               00000007
 GIEH                              00000007
@@ -704,13 +718,13 @@ INT2P                             00000007
 INT3                              00000003
 INT3E                             00000005
 INT3F                             00000002
-INT3IE                            00000005
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 13
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 14
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+INT3IE                            00000005
 INT3IF                            00000002
 INT3IP                            00000001
 INT3P                             00000001
@@ -763,13 +777,13 @@ LATB4                             00000004
 LATB5                             00000005
 LATB6                             00000006
 LATB7                             00000007
-LATC                              00000F8B
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 14
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 15
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+LATC                              00000F8B
 LATC0                             00000000
 LATC1                             00000001
 LATC2                             00000002
@@ -822,13 +836,13 @@ LATH7                             00000007
 LATJ                              00000F91
 LATJ0                             00000000
 LATJ1                             00000001
-LATJ2                             00000002
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 15
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 16
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+LATJ2                             00000002
 LATJ3                             00000003
 LATJ4                             00000004
 LATJ5                             00000005
@@ -881,13 +895,13 @@ ODCON1                            00000F29
 ODCON2                            00000F28
 ODCON3                            00000F27
 OE                                00000001
-OERR                              00000001
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 16
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 17
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+OERR                              00000001
 OERR1                             00000001
 OERR2                             00000001
 OSC1                              00000007
@@ -940,13 +954,13 @@ P3DC5                             00000005
 P3DC6                             00000006
 P3M0                              00000006
 P3M1                              00000007
-P3RSEN                            00000007
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 17
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 18
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+P3RSEN                            00000007
 PA3                               00000000
 PADCFG1                           00000F53
 PB1                               00000007
@@ -999,13 +1013,13 @@ PORTJ                             00000F88
 POSTDEC0                          00000FED
 POSTDEC1                          00000FE5
 POSTDEC2                          00000FDD
-POSTINC0                          00000FEE
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 18
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 19
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+POSTINC0                          00000FEE
 POSTINC1                          00000FE6
 POSTINC2                          00000FDE
 PR10                              00000F34
@@ -1058,13 +1072,13 @@ RA1                               00000001
 RA2                               00000002
 RA3                               00000003
 RA4                               00000004
-RA5                               00000005
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 19
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 20
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RA5                               00000005
 RA6                               00000006
 RA7                               00000007
 RB0                               00000000
@@ -1117,13 +1131,13 @@ RD3                               00000003
 RD4                               00000004
 RD5                               00000005
 RD6                               00000006
-RD7                               00000007
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 20
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 21
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RD7                               00000007
 RDPU                              00000007
 RE0                               00000000
 RE1                               00000001
@@ -1176,13 +1190,13 @@ RODIV3                            00000003
 ROON                              00000007
 ROSEL                             00000004
 ROSSLP                            00000005
-RSEN                              00000001
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 21
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 22
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RSEN                              00000001
 RTCC                              00000004
 RTCCAL                            00000F5E
 RTCCFG                            00000F5F
@@ -1235,13 +1249,13 @@ SMP                               00000007
 SOSCEN                            00000003
 SOSCGO                            00000003
 SOSCI                             00000001
-SOSCO                             00000000
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 22
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 23
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SOSCO                             00000000
 SOSCRUN                           00000006
 SP0                               00000000
 SP1                               00000001
@@ -1294,13 +1308,13 @@ SSPIE                             00000003
 SSPIF                             00000003
 SSPIP                             00000003
 SSPM0                             00000000
-SSPM1                             00000001
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 23
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 24
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SSPM1                             00000001
 SSPM2                             00000002
 SSPM3                             00000003
 SSPOV                             00000006
@@ -1353,13 +1367,13 @@ T1G                               00000005
 T1GCON                            00000FAA
 T1GGO                             00000003
 T1GGO_NOT_T1DONE                  00000003
-T1GPOL                            00000006
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 24
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 25
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+T1GPOL                            00000006
 T1GSPM                            00000004
 T1GSS0                            00000000
 T1GSS1                            00000001
@@ -1412,13 +1426,13 @@ T6CKPS1                           00000001
 T6CON                             00000F39
 T6OUTPS0                          00000003
 T6OUTPS1                          00000004
-T6OUTPS2                          00000005
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 25
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 26
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+T6OUTPS2                          00000005
 T6OUTPS3                          00000006
 T7CKI                             00000004
 T7CKPS0                           00000004
@@ -1471,13 +1485,13 @@ TMR1CS0                           00000006
 TMR1CS1                           00000007
 TMR1GE                            00000007
 TMR1GIE                           00000002
-TMR1GIF                           00000002
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 26
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 27
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TMR1GIF                           00000002
 TMR1GIP                           00000002
 TMR1H                             00000FCF
 TMR1IE                            00000000
@@ -1530,13 +1544,13 @@ TMR6                              00000F3B
 TMR6IE                            00000002
 TMR6IF                            00000002
 TMR6IP                            00000002
-TMR6MD                            00000004
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 27
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 28
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TMR6MD                            00000004
 TMR6ON                            00000002
 TMR7                              00000F3E
 TMR7CS0                           00000006
@@ -1589,13 +1603,13 @@ TRISC1                            00000001
 TRISC2                            00000002
 TRISC3                            00000003
 TRISC4                            00000004
-TRISC5                            00000005
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 28
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 29
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TRISC5                            00000005
 TRISC6                            00000006
 TRISC7                            00000007
 TRISD                             00000F95
@@ -1648,13 +1662,13 @@ TRISJ4                            00000004
 TRISJ5                            00000005
 TRISJ6                            00000006
 TRISJ7                            00000007
-TRMT                              00000001
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 29
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 30
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TRMT                              00000001
 TRMT1                             00000001
 TRMT2                             00000001
 TUN0                              00000000
@@ -1707,13 +1721,13 @@ VCFG1                             00000005
 VDIRMAG                           00000007
 VNCFG                             00000003
 VREF_MINUS                        00000002
-VREF_PLUS                         00000003
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 30
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 31
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+VREF_PLUS                         00000003
 W                                 00000000
 WAIT0                             00000004
 WAIT1                             00000005
@@ -1766,13 +1780,13 @@ _CONFIG7H                         0030000D
 _CONFIG7L                         0030000C
 _CP0_OFF_5L                       000000FF
 _CP0_ON_5L                        000000FE
-_CP1_OFF_5L                       000000FF
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 31
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 32
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_CP1_OFF_5L                       000000FF
 _CP1_ON_5L                        000000FD
 _CP2_OFF_5L                       000000FF
 _CP2_ON_5L                        000000FB
@@ -1825,13 +1839,13 @@ _FOSC_EC2_1H                      000000FB
 _FOSC_EC3IO_1H                    000000F4
 _FOSC_EC3_1H                      000000F5
 _FOSC_HS1_1H                      000000F3
-_FOSC_HS2_1H                      000000F2
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 32
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 33
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_FOSC_HS2_1H                      000000F2
 _FOSC_INTIO1_1H                   000000F9
 _FOSC_INTIO2_1H                   000000F8
 _FOSC_LP_1H                       000000F0
@@ -1884,13 +1898,13 @@ _WDTPS_2048_2H                    000000AF
 _WDTPS_256_2H                     000000A3
 _WDTPS_262144_2H                  000000CB
 _WDTPS_2_2H                       00000087
-_WDTPS_32768_2H                   000000BF
-MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-11-2019  15:25:51         PAGE 33
+MPASM 5.81          DIGITAL_ANALOG_12BIT.ASM   2-15-2019  9:25:35         PAGE 34
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_WDTPS_32768_2H                   000000BF
 _WDTPS_32_2H                      00000097
 _WDTPS_4096_2H                    000000B3
 _WDTPS_4_2H                       0000008B
@@ -1925,7 +1939,7 @@ _WRTD_ON_6H                       0000007F
 _XINST_OFF_1L                     000000BF
 _XINST_ON_1L                      000000FF
 __18F87K22                        00000001
-delay                             00000016
+delay                             0000001C
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed

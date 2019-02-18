@@ -14,9 +14,6 @@ DAC	code
 DAC_Setup
 	call    SPI_MasterInit
 	clrf	TRISD		; Set PORTD as all outputs
-	bcf	TRISF, 5	; Set Pin RF2 to output
-	movlw	(1<<CVREN)|(1<<CVROE)|(1<<CVRSS)|(0x1F)	    ; Power on CVref circuitry | Enable output of CVref (RF5) | Output Vref | CVref=(Vref-)+(1Fh/32)*((Vref+)-(Vref-))
-	movwf	CVRCON		; "	
 	clrf	LATD		; Clear PORTD outputs
 	bsf	PORTD, 1	; set LDAC to high
 	bsf	PORTD, 0	; set CS to high

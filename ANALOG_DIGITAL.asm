@@ -11,7 +11,7 @@ ADC_Setup
     movwf   ADCON0		    ; and turn ADC on
     movlw   0x30		    ; Select 4.096V positive reference, we will have to change the reference voltage
     movwf   ADCON1		    ; 0V for -ve reference and -ve input
-    movlw   0xF6		    ; Right justified output
+    movlw   0xED		    ; Right justified output
     movwf   ADCON2		    ; Fosc/64 A/D clock and 20x acquisition time
     return
  
