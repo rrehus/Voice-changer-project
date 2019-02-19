@@ -1,13 +1,11 @@
 #include p18f87k22.inc
 
-    global  k16, k8, mul18, mul16, prod8x16, prod16x16
-    global multiplication16x16, multiplication8x16
-Multiplication code
+    global  k16, k8, mul16, prod8x16, prod16x16
+    global  multiplication16x16, multiplication8x16
 
 acs0    udata_acs   ; named variables in access ram
 k16	res 2	    ; reserve 2 bytes for k16
 k8	res 1	    ; reserve 1 byte for k8
-mul8	res 1	    ; reserve 1 byte for mul8
 mul16	res 2	    ; reserve 2 bytes for mul16
 prod8x16    res	3   ; reserve 3 bytes for prod8x16
 prod16x16   res	4   ; reserve 4 bytes for prod16x16
@@ -16,6 +14,8 @@ acs_ovr	access_ovr
 mul1_tmp res 2   ; reserve 2 byte for variable mul1_tmp
 mul2_tmp res 3   ; reserve 3 byte for variable mul2_tmp
 
+Multiplication code
+ 
 multiplication8x16
     mulwf   k16+1
     movff   PRODH, mul1_tmp
