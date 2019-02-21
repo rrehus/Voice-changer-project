@@ -4,6 +4,8 @@
     extern  ADC_Setup, ADC_read_A0, ADC_read_A5
     extern  k16, k8, mul16, prod8x16, prod16x16
     extern  frequency_multiplication, output_tmp
+    extern  a, c, m, s
+    extern  random_numbers
 
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
@@ -40,5 +42,16 @@ frequency_mix
         call	DAC_write
         call	DAC_end_write
 	goto	frequency_mix
-    
+noise_loop
+	call ADC_read_A0   ;convert analog to digital
+	call random_numbers ;call random number generator
+	movf ADRESH, W ;move upper byte of digital data into W register
+	addwf s, 0 ;add the random number to ADRESH
+	call DAC_write ;output the digital data combined with noise 
+	movf ADRESL, W ;move lower byte of digital data into W register
+	addwf s+1, 0 ;combine the digital data with noise
+	call DAC_write ;output the digital data combined with the noise
+	call DAC_end_write
+	goto noise_loop ; start again
+	
 	END
