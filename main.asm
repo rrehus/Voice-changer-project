@@ -4,8 +4,8 @@
     extern  ADC_Setup, ADC_read_A0, ADC_read_A5
     extern  k16, k8, mul16, prod8x16, prod16x16
     extern  frequency_multiplication, output_tmp
-    extern  a, c, m, s
-    extern  random_numbers
+    extern  a, c, s
+    extern  random_numbers, random_init
     extern  UART_Setup, UART_Transmit_Byte
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
@@ -18,7 +18,9 @@ START
 	call	ADC_Setup
 	call	DAC_Setup
 	call    UART_Setup
+	call    random_init
 	goto    frequency_mix
+	
 	
 
 measure_loop

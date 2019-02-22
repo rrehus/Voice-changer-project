@@ -1,43 +1,61 @@
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  1
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00001     #include p18f87k22.inc
+                      00001 #include p18f87k22.inc
                       00001         LIST
                       00002 
                       00003 ;==========================================================================
-                      00004 ; Build date : Jul 23 2018
+                      00004 ; Build date : Sep 19 2018
                       00005 ;  MPASM PIC18F87K22 processor include
                       00006 ; 
                       00007 ;  (c) Copyright 1999-2018 Microchip Technology, All rights reserved
                       00008 ;==========================================================================
                       00009 
                       02986         LIST
-                      00002     
-  0000                00003         global  SPI_MasterInit, SPI_MasterTransmit
-                      00004 SPI code
-000000                00005 SPI_MasterInit ; Set Clock edge to negative
-000000 9C68           00006         bcf SSP2STAT, CKE
-                      00007         ; MSSP enable; CKP=1; SPI master, clock=Fosc/64 (1MHz)
-000002 0E32           00008         movlw (1<<SSPEN)|(1<<CKP)|(0x02)
-000004 6E67           00009         movwf SSP2CON1
-                      00010         ; SDO2 output; SCK2 output
-000006 9895           00011         bcf TRISD, SDO2
-000008 9C95           00012         bcf TRISD, SCK2
-00000A 0012           00013         return
-00000C                00014 SPI_MasterTransmit          ; Start transmission of data (held in W)
-00000C 6E6A           00015         movwf SSP2BUF
-00000E 9083           00016         bcf PORTD, 0        ; set CS to low
-000010                00017 Wait_Transmit               ; Wait for transmission to complete
-000010 AAA1           00018         btfss PIR2, SSP2IF
-000012 D???           00019         bra Wait_Transmit
-000014 9AA1           00020         bcf PIR2, SSP2IF    ; clear interrupt flag
-000016 0012           00021         return
-                      00022 
-                      00023     END
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  2
+  0000                00002      extern multiplication16x16, multiplication8x16, k16, mul16, prod16x16
+  0000                00003      global a, c,s, random_numbers, random_init
+                      00004 acs udata_acs
+000000                00005 a res 2 ;reserve two bytes of data for multiplier
+000002                00006 c res 2 ;reserve two bytes of data for increment
+                      00007 acs_ovr access_ovr
+000000                00008 s res 2 ;reserve two bytes of data for seed
+                      00009 
+                      00010 pseudo_number_generator CODE 
+                      00011 
+000000                00012 random_init
+000000 0E05           00013     movlw 0x5 ;set the initial value of the seed
+000002 6E??           00014     movwf s+1
+000004 0EA1           00015     movlw b'10100001' ;set the initial value of the multiplier
+000006 6E??           00016     movwf a+1
+000008 0E02           00017     movlw b'00000010'
+00000A 6E??           00018     movwf a
+00000C 0EE7           00019     movlw b'11100111' ;set the initial value of the increment
+00000E 6E??           00020     movwf c+1
+000010 0E01           00021     movlw b'00000001'
+000012 6E??           00022     movwf c
+000014 0012           00023     return
+                      00024  
+000016                00025 random_numbers
+000016 C??? F???      00026     movff a+1,k16+1 ;move the multiplier into k16
+00001A C??? F???      00027     movff a, k16
+00001E C??? F???      00028     movff s+1, mul16+1 ;move the seed into mul16
+000022 C??? F???      00029     movff s, mul16
+000026 EC?? F???      00030     call multiplication16x16 ;multiply k16 and mul16
+00002A 90D8           00031     bcf STATUS, 0 ;clear the carry bit 
+00002C 50??           00032     movf c+1, W
+00002E 2200           00033     addwfc prod16x16+3,1 ;add the increment to the product of the multiplication
+000030 C??? F???      00034     movff prod16x16+3, s+1
+000034 50??           00035     movf c, W
+000036 2000           00036     addwfc prod16x16+2,0
+000038 160F           00037     andwf b'00001111'
+00003A 6E??           00038     movwf s
+00003C 0012           00039     return
+                      00040 
+                      00041     END
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  2
 
 
 SYMBOL TABLE
@@ -96,7 +114,7 @@ ADMSK5                            00000005
 ADON                              00000000
 ADRES                             00000FC3
 ADRESH                            00000FC4
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  3
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  3
 
 
 SYMBOL TABLE
@@ -155,7 +173,7 @@ ANSEL16                           00000000
 ANSEL17                           00000001
 ANSEL18                           00000002
 ANSEL19                           00000003
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  4
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  4
 
 
 SYMBOL TABLE
@@ -214,7 +232,7 @@ C1TSEL0                           00000000
 C1TSEL1                           00000001
 C1TSEL2                           00000002
 C2INA                             00000004
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  5
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  5
 
 
 SYMBOL TABLE
@@ -273,7 +291,7 @@ CCP1IP                            00000001
 CCP1M0                            00000000
 CCP1M1                            00000001
 CCP1M2                            00000002
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  6
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  6
 
 
 SYMBOL TABLE
@@ -332,7 +350,7 @@ CCP5M0                            00000000
 CCP5M1                            00000001
 CCP5M2                            00000002
 CCP5M3                            00000003
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  7
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  7
 
 
 SYMBOL TABLE
@@ -391,7 +409,7 @@ CCP9IP                            00000006
 CCP9M0                            00000000
 CCP9M1                            00000001
 CCP9M2                            00000002
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  8
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  8
 
 
 SYMBOL TABLE
@@ -450,7 +468,7 @@ CHSN1                             00000001
 CHSN2                             00000002
 CK1                               00000006
 CK2                               00000001
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE  9
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE  9
 
 
 SYMBOL TABLE
@@ -509,7 +527,7 @@ CTMUIE                            00000003
 CTMUIF                            00000003
 CTMUIP                            00000003
 CTMUMD                            00000006
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 10
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 10
 
 
 SYMBOL TABLE
@@ -568,7 +586,7 @@ ECCP1AS1                          00000005
 ECCP1AS2                          00000006
 ECCP1ASE                          00000007
 ECCP1CON                          00000FBB
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 11
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 11
 
 
 SYMBOL TABLE
@@ -627,7 +645,7 @@ FSR2H                             00000FDA
 FSR2L                             00000FD9
 GCEN                              00000007
 GIE                               00000007
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 12
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 12
 
 
 SYMBOL TABLE
@@ -686,7 +704,7 @@ INT3F                             00000002
 INT3IE                            00000005
 INT3IF                            00000002
 INT3IP                            00000001
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 13
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 13
 
 
 SYMBOL TABLE
@@ -745,7 +763,7 @@ LATB7                             00000007
 LATC                              00000F8B
 LATC0                             00000000
 LATC1                             00000001
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 14
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 14
 
 
 SYMBOL TABLE
@@ -804,7 +822,7 @@ LATJ1                             00000001
 LATJ2                             00000002
 LATJ3                             00000003
 LATJ4                             00000004
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 15
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 15
 
 
 SYMBOL TABLE
@@ -863,7 +881,7 @@ OE                                00000001
 OERR                              00000001
 OERR1                             00000001
 OERR2                             00000001
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 16
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 16
 
 
 SYMBOL TABLE
@@ -922,7 +940,7 @@ P3M1                              00000007
 P3RSEN                            00000007
 PA3                               00000000
 PADCFG1                           00000F53
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 17
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 17
 
 
 SYMBOL TABLE
@@ -981,7 +999,7 @@ POSTDEC2                          00000FDD
 POSTINC0                          00000FEE
 POSTINC1                          00000FE6
 POSTINC2                          00000FDE
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 18
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 18
 
 
 SYMBOL TABLE
@@ -1040,7 +1058,7 @@ RA4                               00000004
 RA5                               00000005
 RA6                               00000006
 RA7                               00000007
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 19
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 19
 
 
 SYMBOL TABLE
@@ -1099,7 +1117,7 @@ RD6                               00000006
 RD7                               00000007
 RDPU                              00000007
 RE0                               00000000
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 20
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 20
 
 
 SYMBOL TABLE
@@ -1158,7 +1176,7 @@ ROSSLP                            00000005
 RSEN                              00000001
 RTCC                              00000004
 RTCCAL                            00000F5E
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 21
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 21
 
 
 SYMBOL TABLE
@@ -1217,7 +1235,7 @@ SOSCI                             00000001
 SOSCO                             00000000
 SOSCRUN                           00000006
 SP0                               00000000
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 22
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 22
 
 
 SYMBOL TABLE
@@ -1237,8 +1255,6 @@ SPEN1                             00000007
 SPEN2                             00000007
 SPI1OD                            00000007
 SPI2OD                            00000000
-SPI_MasterInit                    00000000
-SPI_MasterTransmit                0000000C
 SREN                              00000005
 SREN1                             00000005
 SREN2                             00000005
@@ -1276,14 +1292,14 @@ SSPM0                             00000000
 SSPM1                             00000001
 SSPM2                             00000002
 SSPM3                             00000003
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 23
+SSPOV                             00000006
+SSPSTAT                           00000FC7
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 23
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-SSPOV                             00000006
-SSPSTAT                           00000FC7
 STATUS                            00000FD8
 STKFUL                            00000007
 STKOVF                            00000007
@@ -1335,14 +1351,14 @@ T1GGO_NOT_T1DONE                  00000003
 T1GPOL                            00000006
 T1GSPM                            00000004
 T1GSS0                            00000000
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 24
+T1GSS1                            00000001
+T1GTM                             00000005
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 24
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-T1GSS1                            00000001
-T1GTM                             00000005
 T1GVAL                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
@@ -1394,14 +1410,14 @@ T6OUTPS1                          00000004
 T6OUTPS2                          00000005
 T6OUTPS3                          00000006
 T7CKI                             00000004
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 25
+T7CKPS0                           00000004
+T7CKPS1                           00000005
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 25
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-T7CKPS0                           00000004
-T7CKPS1                           00000005
 T7CON                             00000F3D
 T7G                               00000001
 T7GCON                            00000F3C
@@ -1453,14 +1469,14 @@ TMR1GIE                           00000002
 TMR1GIF                           00000002
 TMR1GIP                           00000002
 TMR1H                             00000FCF
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 26
+TMR1IE                            00000000
+TMR1IF                            00000000
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 26
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-TMR1IE                            00000000
-TMR1IF                            00000000
 TMR1IP                            00000000
 TMR1L                             00000FCE
 TMR1MD                            00000001
@@ -1512,14 +1528,14 @@ TMR6IP                            00000002
 TMR6MD                            00000004
 TMR6ON                            00000002
 TMR7                              00000F3E
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 27
+TMR7CS0                           00000006
+TMR7CS1                           00000007
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 27
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-TMR7CS0                           00000006
-TMR7CS1                           00000007
 TMR7GE                            00000007
 TMR7GIE                           00000007
 TMR7GIF                           00000007
@@ -1571,14 +1587,14 @@ TRISC4                            00000004
 TRISC5                            00000005
 TRISC6                            00000006
 TRISC7                            00000007
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 28
+TRISD                             00000F95
+TRISD0                            00000000
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 28
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-TRISD                             00000F95
-TRISD0                            00000000
 TRISD1                            00000001
 TRISD2                            00000002
 TRISD3                            00000003
@@ -1630,14 +1646,14 @@ TRISJ7                            00000007
 TRMT                              00000001
 TRMT1                             00000001
 TRMT2                             00000001
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 29
+TUN0                              00000000
+TUN1                              00000001
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 29
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-TUN0                              00000000
-TUN1                              00000001
 TUN2                              00000002
 TUN3                              00000003
 TUN4                              00000004
@@ -1689,14 +1705,14 @@ VREF_MINUS                        00000002
 VREF_PLUS                         00000003
 W                                 00000000
 WAIT0                             00000004
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 30
+WAIT1                             00000005
+WCOL                              00000007
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 30
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-WAIT1                             00000005
-WCOL                              00000007
 WDTCON                            00000FD1
 WM0                               00000000
 WM1                               00000001
@@ -1707,7 +1723,6 @@ WRERR                             00000003
 WRH                               00000003
 WRL                               00000002
 WUE                               00000001
-Wait_Transmit                     00000010
 Z                                 00000002
 _ABW_MM_3L                        000000FF
 _ABW_XM12_3L                      000000EF
@@ -1748,15 +1763,15 @@ _CP0_OFF_5L                       000000FF
 _CP0_ON_5L                        000000FE
 _CP1_OFF_5L                       000000FF
 _CP1_ON_5L                        000000FD
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 31
+_CP2_OFF_5L                       000000FF
+_CP2_ON_5L                        000000FB
+_CP3_OFF_5L                       000000FF
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 31
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-_CP2_OFF_5L                       000000FF
-_CP2_ON_5L                        000000FB
-_CP3_OFF_5L                       000000FF
 _CP3_ON_5L                        000000F7
 _CP4_OFF_5L                       000000FF
 _CP4_ON_5L                        000000EF
@@ -1807,15 +1822,15 @@ _FOSC_EC3_1H                      000000F5
 _FOSC_HS1_1H                      000000F3
 _FOSC_HS2_1H                      000000F2
 _FOSC_INTIO1_1H                   000000F9
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 32
+_FOSC_INTIO2_1H                   000000F8
+_FOSC_LP_1H                       000000F0
+_FOSC_RCIO_1H                     000000F7
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 32
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-_FOSC_INTIO2_1H                   000000F8
-_FOSC_LP_1H                       000000F0
-_FOSC_RCIO_1H                     000000F7
 _FOSC_RC_1H                       000000F6
 _FOSC_XT_1H                       000000F1
 _IDLOC0                           00200000
@@ -1866,15 +1881,15 @@ _WDTPS_262144_2H                  000000CB
 _WDTPS_2_2H                       00000087
 _WDTPS_32768_2H                   000000BF
 _WDTPS_32_2H                      00000097
-MPASM 5.81                           SPI.ASM   2-18-2019  14:54:49         PAGE 33
+_WDTPS_4096_2H                    000000B3
+_WDTPS_4_2H                       0000008B
+_WDTPS_512_2H                     000000A7
+MPASM 5.82       PSEUDO_NUMBER_GENERATOR.ASM   2-22-2019  11:28:30         PAGE 33
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-_WDTPS_4096_2H                    000000B3
-_WDTPS_4_2H                       0000008B
-_WDTPS_512_2H                     000000A7
 _WDTPS_524288_2H                  000000CF
 _WDTPS_64_2H                      0000009B
 _WDTPS_65536_2H                   000000C3
@@ -1905,8 +1920,16 @@ _WRTD_ON_6H                       0000007F
 _XINST_OFF_1L                     000000BF
 _XINST_ON_1L                      000000FF
 __18F87K22                        00000001
-__DEBUG                           
-__MPLAB_DEBUGGER_ICD3             1
+a                                 00000000
+c                                 00000002
+k16                               00000000
+mul16                             00000000
+multiplication16x16               00000000
+multiplication8x16                00000000
+prod16x16                         00000000
+random_init                       00000000
+random_numbers                    00000016
+s                                 00000000
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed

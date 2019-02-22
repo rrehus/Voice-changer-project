@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm
+SOURCEFILES_QUOTED_IF_SPACED=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm pseudo_number_generator.asm UART.asm
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ANALOG_DIGITAL.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/digital_analog_12bit.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/spi.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/pseudo_number_generator.o ${OBJECTDIR}/UART.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ANALOG_DIGITAL.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/digital_analog_12bit.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/spi.o.d ${OBJECTDIR}/frequency_mixer.o.d ${OBJECTDIR}/multiplication.o.d ${OBJECTDIR}/pseudo_number_generator.o.d ${OBJECTDIR}/UART.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o
+OBJECTFILES=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/pseudo_number_generator.o ${OBJECTDIR}/UART.o
 
 # Source Files
-SOURCEFILES=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm
+SOURCEFILES=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm pseudo_number_generator.asm UART.asm
 
 
 CFLAGS=
@@ -134,6 +134,38 @@ ${OBJECTDIR}/spi.o: spi.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${DEP_GEN} -d "${OBJECTDIR}/spi.o"
 	@${FIXDEPS} "${OBJECTDIR}/spi.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
+${OBJECTDIR}/frequency_mixer.o: frequency_mixer.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/frequency_mixer.o.d 
+	@${RM} ${OBJECTDIR}/frequency_mixer.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/frequency_mixer.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/frequency_mixer.lst\" -e\"${OBJECTDIR}/frequency_mixer.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/frequency_mixer.o\" \"frequency_mixer.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/frequency_mixer.o"
+	@${FIXDEPS} "${OBJECTDIR}/frequency_mixer.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/multiplication.o: multiplication.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/multiplication.o.d 
+	@${RM} ${OBJECTDIR}/multiplication.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/multiplication.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/multiplication.lst\" -e\"${OBJECTDIR}/multiplication.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/multiplication.o\" \"multiplication.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/multiplication.o"
+	@${FIXDEPS} "${OBJECTDIR}/multiplication.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/pseudo_number_generator.o: pseudo_number_generator.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/pseudo_number_generator.o.d 
+	@${RM} ${OBJECTDIR}/pseudo_number_generator.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/pseudo_number_generator.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/pseudo_number_generator.lst\" -e\"${OBJECTDIR}/pseudo_number_generator.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/pseudo_number_generator.o\" \"pseudo_number_generator.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/pseudo_number_generator.o"
+	@${FIXDEPS} "${OBJECTDIR}/pseudo_number_generator.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/UART.o: UART.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/UART.o.d 
+	@${RM} ${OBJECTDIR}/UART.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/UART.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/UART.lst\" -e\"${OBJECTDIR}/UART.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/UART.o\" \"UART.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/UART.o"
+	@${FIXDEPS} "${OBJECTDIR}/UART.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
 else
 ${OBJECTDIR}/ANALOG_DIGITAL.o: ANALOG_DIGITAL.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -174,6 +206,38 @@ ${OBJECTDIR}/spi.o: spi.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/spi.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/spi.lst\" -e\"${OBJECTDIR}/spi.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/spi.o\" \"spi.asm\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/spi.o"
 	@${FIXDEPS} "${OBJECTDIR}/spi.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/frequency_mixer.o: frequency_mixer.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/frequency_mixer.o.d 
+	@${RM} ${OBJECTDIR}/frequency_mixer.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/frequency_mixer.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/frequency_mixer.lst\" -e\"${OBJECTDIR}/frequency_mixer.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/frequency_mixer.o\" \"frequency_mixer.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/frequency_mixer.o"
+	@${FIXDEPS} "${OBJECTDIR}/frequency_mixer.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/multiplication.o: multiplication.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/multiplication.o.d 
+	@${RM} ${OBJECTDIR}/multiplication.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/multiplication.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/multiplication.lst\" -e\"${OBJECTDIR}/multiplication.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/multiplication.o\" \"multiplication.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/multiplication.o"
+	@${FIXDEPS} "${OBJECTDIR}/multiplication.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/pseudo_number_generator.o: pseudo_number_generator.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/pseudo_number_generator.o.d 
+	@${RM} ${OBJECTDIR}/pseudo_number_generator.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/pseudo_number_generator.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/pseudo_number_generator.lst\" -e\"${OBJECTDIR}/pseudo_number_generator.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/pseudo_number_generator.o\" \"pseudo_number_generator.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/pseudo_number_generator.o"
+	@${FIXDEPS} "${OBJECTDIR}/pseudo_number_generator.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/UART.o: UART.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/UART.o.d 
+	@${RM} ${OBJECTDIR}/UART.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/UART.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/UART.lst\" -e\"${OBJECTDIR}/UART.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/UART.o\" \"UART.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/UART.o"
+	@${FIXDEPS} "${OBJECTDIR}/UART.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 

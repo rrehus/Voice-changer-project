@@ -1,4 +1,4 @@
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  1
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -8,35 +8,37 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00001         LIST
                       00002 
                       00003 ;==========================================================================
-                      00004 ; Build date : Jul 23 2018
+                      00004 ; Build date : Sep 19 2018
                       00005 ;  MPASM PIC18F87K22 processor include
                       00006 ; 
                       00007 ;  (c) Copyright 1999-2018 Microchip Technology, All rights reserved
                       00008 ;==========================================================================
                       00009 
                       02986         LIST
-  0000                00002     global      frequency_multiplication, output_tmp
-  0000                00003     extern      multiplication16x16, prod16x16
+                      00002 
+  0000                00003     global  UART_Setup, UART_Transmit_Byte
                       00004 
-                      00005 acs1    udata_acs
-000000                00006 output_tmp res 1   ; reserve 1 byte for variable output_tmp
-                      00007 
-                      00008 Frequency_shift_ CODE
-                      00009  
-000000                00010 frequency_multiplication
-000000 EC?? F???      00011     call multiplication16x16 ;multiply the two signals together
-000004 3800           00012     swapf prod16x16+2, 0  ;swap the nibbles of the lower product
-000006 0B0F           00013     andlw b'00001111' ;only the last 4 digits are significant
-000008 6E??           00014     movwf output_tmp
-00000A 3800           00015     swapf prod16x16+1, 0 ;swap the bits of the higher product
-00000C 0BF0           00016     andlw b'11110000' ;only the first 4 digits are significant
-00000E 2600           00017     addwf output_tmp, 1 
-000010 3800           00018     swapf prod16x16+1, 0 ;swap the bits of the product
-000012 0B0F           00019     andlw b'00001111' ;only the last 4 digits are significant
-000014 0F30           00020     addlw b'00110000' ;add the configuration bits
-                      00021     
-                      00022     END
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  2
+                      00005 UART    code
+                      00006     
+000000                00007 UART_Setup
+000000 8EAB           00008     bsf     RCSTA1, SPEN    ; enable
+000002 98AC           00009     bcf     TXSTA1, SYNC    ; synchronous
+000004 94AC           00010     bcf     TXSTA1, BRGH    ; slow speed
+000006 8AAC           00011     bsf     TXSTA1, TXEN    ; enable transmit
+000008 9665           00012     bcf     BAUDCON1, BRG16 ; 8-bit generator only
+00000A 0E67           00013     movlw   .103            ; gives 9600 Baud rate (actually 9615)
+00000C 6EAF           00014     movwf   SPBRG1
+00000E 8C94           00015     bsf     TRISC, TX1      ; TX1 pin as output
+000010 0012           00016     return
+                      00017     
+000012                00018 UART_Transmit_Byte          ; Transmits byte stored in W
+000012 A89E           00019     btfss   PIR1,TX1IF      ; TX1IF is set when TXREG1 is empty
+000014 D???           00020     bra     UART_Transmit_Byte
+000016 6EAD           00021     movwf   TXREG1
+000018 0012           00022     return
+                      00023 
+                      00024     end
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  2
 
 
 SYMBOL TABLE
@@ -95,7 +97,7 @@ ADMSK5                            00000005
 ADON                              00000000
 ADRES                             00000FC3
 ADRESH                            00000FC4
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  3
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  3
 
 
 SYMBOL TABLE
@@ -154,7 +156,7 @@ ANSEL16                           00000000
 ANSEL17                           00000001
 ANSEL18                           00000002
 ANSEL19                           00000003
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  4
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  4
 
 
 SYMBOL TABLE
@@ -213,7 +215,7 @@ C1TSEL0                           00000000
 C1TSEL1                           00000001
 C1TSEL2                           00000002
 C2INA                             00000004
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  5
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  5
 
 
 SYMBOL TABLE
@@ -272,7 +274,7 @@ CCP1IP                            00000001
 CCP1M0                            00000000
 CCP1M1                            00000001
 CCP1M2                            00000002
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  6
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  6
 
 
 SYMBOL TABLE
@@ -331,7 +333,7 @@ CCP5M0                            00000000
 CCP5M1                            00000001
 CCP5M2                            00000002
 CCP5M3                            00000003
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  7
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  7
 
 
 SYMBOL TABLE
@@ -390,7 +392,7 @@ CCP9IP                            00000006
 CCP9M0                            00000000
 CCP9M1                            00000001
 CCP9M2                            00000002
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  8
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  8
 
 
 SYMBOL TABLE
@@ -449,7 +451,7 @@ CHSN1                             00000001
 CHSN2                             00000002
 CK1                               00000006
 CK2                               00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE  9
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE  9
 
 
 SYMBOL TABLE
@@ -508,7 +510,7 @@ CTMUIE                            00000003
 CTMUIF                            00000003
 CTMUIP                            00000003
 CTMUMD                            00000006
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 10
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 10
 
 
 SYMBOL TABLE
@@ -567,7 +569,7 @@ ECCP1AS1                          00000005
 ECCP1AS2                          00000006
 ECCP1ASE                          00000007
 ECCP1CON                          00000FBB
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 11
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 11
 
 
 SYMBOL TABLE
@@ -626,7 +628,7 @@ FSR2H                             00000FDA
 FSR2L                             00000FD9
 GCEN                              00000007
 GIE                               00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 12
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 12
 
 
 SYMBOL TABLE
@@ -685,7 +687,7 @@ INT3F                             00000002
 INT3IE                            00000005
 INT3IF                            00000002
 INT3IP                            00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 13
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 13
 
 
 SYMBOL TABLE
@@ -744,7 +746,7 @@ LATB7                             00000007
 LATC                              00000F8B
 LATC0                             00000000
 LATC1                             00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 14
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 14
 
 
 SYMBOL TABLE
@@ -803,7 +805,7 @@ LATJ1                             00000001
 LATJ2                             00000002
 LATJ3                             00000003
 LATJ4                             00000004
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 15
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 15
 
 
 SYMBOL TABLE
@@ -862,7 +864,7 @@ OE                                00000001
 OERR                              00000001
 OERR1                             00000001
 OERR2                             00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 16
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 16
 
 
 SYMBOL TABLE
@@ -921,7 +923,7 @@ P3M1                              00000007
 P3RSEN                            00000007
 PA3                               00000000
 PADCFG1                           00000F53
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 17
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 17
 
 
 SYMBOL TABLE
@@ -980,7 +982,7 @@ POSTDEC2                          00000FDD
 POSTINC0                          00000FEE
 POSTINC1                          00000FE6
 POSTINC2                          00000FDE
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 18
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 18
 
 
 SYMBOL TABLE
@@ -1039,7 +1041,7 @@ RA4                               00000004
 RA5                               00000005
 RA6                               00000006
 RA7                               00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 19
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 19
 
 
 SYMBOL TABLE
@@ -1098,7 +1100,7 @@ RD6                               00000006
 RD7                               00000007
 RDPU                              00000007
 RE0                               00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 20
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 20
 
 
 SYMBOL TABLE
@@ -1157,7 +1159,7 @@ ROSSLP                            00000005
 RSEN                              00000001
 RTCC                              00000004
 RTCCAL                            00000F5E
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 21
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 21
 
 
 SYMBOL TABLE
@@ -1216,7 +1218,7 @@ SOSCI                             00000001
 SOSCO                             00000000
 SOSCRUN                           00000006
 SP0                               00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 22
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 22
 
 
 SYMBOL TABLE
@@ -1275,7 +1277,7 @@ SSPM2                             00000002
 SSPM3                             00000003
 SSPOV                             00000006
 SSPSTAT                           00000FC7
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 23
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 23
 
 
 SYMBOL TABLE
@@ -1334,7 +1336,7 @@ T1GSPM                            00000004
 T1GSS0                            00000000
 T1GSS1                            00000001
 T1GTM                             00000005
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 24
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 24
 
 
 SYMBOL TABLE
@@ -1393,7 +1395,7 @@ T6OUTPS3                          00000006
 T7CKI                             00000004
 T7CKPS0                           00000004
 T7CKPS1                           00000005
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 25
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 25
 
 
 SYMBOL TABLE
@@ -1452,7 +1454,7 @@ TMR1GIP                           00000002
 TMR1H                             00000FCF
 TMR1IE                            00000000
 TMR1IF                            00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 26
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 26
 
 
 SYMBOL TABLE
@@ -1511,7 +1513,7 @@ TMR6ON                            00000002
 TMR7                              00000F3E
 TMR7CS0                           00000006
 TMR7CS1                           00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 27
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 27
 
 
 SYMBOL TABLE
@@ -1570,7 +1572,7 @@ TRISC6                            00000006
 TRISC7                            00000007
 TRISD                             00000F95
 TRISD0                            00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 28
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 28
 
 
 SYMBOL TABLE
@@ -1629,7 +1631,7 @@ TRMT1                             00000001
 TRMT2                             00000001
 TUN0                              00000000
 TUN1                              00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 29
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 29
 
 
 SYMBOL TABLE
@@ -1673,6 +1675,8 @@ U2OD                              00000007
 UA                                00000001
 UART1MD                           00000003
 UART2MD                           00000004
+UART_Setup                        00000000
+UART_Transmit_Byte                00000012
 UB                                00000007
 ULPEN                             00000002
 ULPLVL                            00000005
@@ -1686,14 +1690,14 @@ VREF_MINUS                        00000002
 VREF_PLUS                         00000003
 W                                 00000000
 WAIT0                             00000004
-WAIT1                             00000005
-WCOL                              00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 30
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 30
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+WAIT1                             00000005
+WCOL                              00000007
 WDTCON                            00000FD1
 WM0                               00000000
 WM1                               00000001
@@ -1745,14 +1749,14 @@ _CP0_ON_5L                        000000FE
 _CP1_OFF_5L                       000000FF
 _CP1_ON_5L                        000000FD
 _CP2_OFF_5L                       000000FF
-_CP2_ON_5L                        000000FB
-_CP3_OFF_5L                       000000FF
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 31
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 31
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_CP2_ON_5L                        000000FB
+_CP3_OFF_5L                       000000FF
 _CP3_ON_5L                        000000F7
 _CP4_OFF_5L                       000000FF
 _CP4_ON_5L                        000000EF
@@ -1804,14 +1808,14 @@ _FOSC_HS1_1H                      000000F3
 _FOSC_HS2_1H                      000000F2
 _FOSC_INTIO1_1H                   000000F9
 _FOSC_INTIO2_1H                   000000F8
-_FOSC_LP_1H                       000000F0
-_FOSC_RCIO_1H                     000000F7
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 32
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 32
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_FOSC_LP_1H                       000000F0
+_FOSC_RCIO_1H                     000000F7
 _FOSC_RC_1H                       000000F6
 _FOSC_XT_1H                       000000F1
 _IDLOC0                           00200000
@@ -1863,14 +1867,14 @@ _WDTPS_2_2H                       00000087
 _WDTPS_32768_2H                   000000BF
 _WDTPS_32_2H                      00000097
 _WDTPS_4096_2H                    000000B3
-_WDTPS_4_2H                       0000008B
-_WDTPS_512_2H                     000000A7
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-18-2019  15:50:13         PAGE 33
+MPASM 5.82                          UART.ASM   2-22-2019  11:28:32         PAGE 33
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_WDTPS_4_2H                       0000008B
+_WDTPS_512_2H                     000000A7
 _WDTPS_524288_2H                  000000CF
 _WDTPS_64_2H                      0000009B
 _WDTPS_65536_2H                   000000C3
@@ -1901,12 +1905,6 @@ _WRTD_ON_6H                       0000007F
 _XINST_OFF_1L                     000000BF
 _XINST_ON_1L                      000000FF
 __18F87K22                        00000001
-__DEBUG                           
-__MPLAB_DEBUGGER_ICD3             1
-frequency_multiplication          00000000
-multiplication16x16               00000000
-output_tmp                        00000000
-prod16x16                         00000000
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed
