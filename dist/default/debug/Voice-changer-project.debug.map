@@ -1,5 +1,5 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Tue Feb 19 15:53:29 2019
+Linker Map File - Created Fri Feb 22 11:06:59 2019
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -7,12 +7,14 @@ Linker Map File - Created Tue Feb 19 15:53:29 2019
                  RES_VECT       code   0x000000    program   0x000004
                    .cinit    romdata   0x000004    program   0x000002
                    int_hi       code   0x000008    program   0x00000a
-                MAIN_PROG       code   0x000012    program   0x000060
-           Multiplication       code   0x000072    program   0x000058
-                      DAC       code   0x0000ca    program   0x00003a
-                      ADC       code   0x000104    program   0x00002e
-                      SPI       code   0x000132    program   0x000018
-         Frequency_shift_       code   0x00014a    program   0x000016
+                      LCD       code   0x000012    program   0x00012e
+                MAIN_PROG       code   0x000140    program   0x00008c
+           Multiplication       code   0x0001cc    program   0x00007c
+            VolumeControl       code   0x000248    program   0x00006a
+                      ADC       code   0x0002b2    program   0x00003e
+                      DAC       code   0x0002f0    program   0x00003a
+                      SPI       code   0x00032a    program   0x000018
+         Frequency_shift_       code   0x000342    program   0x000018
 .config_300000_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300000    program   0x000001
 .config_300001_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300001    program   0x000001
 .config_300002_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300002    program   0x000001
@@ -26,9 +28,10 @@ Linker Map File - Created Tue Feb 19 15:53:29 2019
 .config_30000B_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x30000b    program   0x000001
 .config_30000C_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x30000c    program   0x000001
 .config_30000D_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x30000d    program   0x000001
-                     acs0      udata   0x000000       data   0x00000c
-                  acs_ovr      udata   0x00000c       data   0x000005
-                     acs1      udata   0x000011       data   0x000001
+                     acs0      udata   0x000000       data   0x000016
+                  acs_ovr      udata   0x000016       data   0x000005
+                  acs_vol      udata   0x00001b       data   0x000004
+                     acs1      udata   0x00001f       data   0x000001
 
 
 
@@ -36,73 +39,151 @@ Linker Map File - Created Tue Feb 19 15:53:29 2019
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000005      
-                            0x000008    0x00015f      
+                            0x000008    0x000359      
                             0x300000    0x300006      
                             0x300008    0x30000d      
-            363 out of 132120 program addresses used, program memory utilization is 0%
+            869 out of 132120 program addresses used, program memory utilization is 0%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                ADC_Setup   0x000104    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-              ADC_read_A0   0x00011a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-              ADC_read_A5   0x000126    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-                DAC_Setup   0x0000ca    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-            DAC_end_write   0x0000f4    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-                DAC_write   0x0000e6    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-           SPI_MasterInit   0x000132    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
-       SPI_MasterTransmit   0x00013e    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
-                    START   0x000012    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
-            Wait_Transmit   0x000142    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
-                 adc_loop   0x000120    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-                adc_loop1   0x00012c    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-                    delay   0x0000e0    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-            frequency_mix   0x000042    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
- frequency_multiplication   0x00014a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
-             measure_loop   0x000028    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
-      multiplication16x16   0x000094    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-       multiplication8x16   0x000072    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                ADC_Setup   0x0002b2    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+              ADC_read_A0   0x0002cc    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+              ADC_read_A1   0x0002e4    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+              ADC_read_A5   0x0002d8    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                DAC_Setup   0x0002f0    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+            DAC_end_write   0x00031a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+                DAC_write   0x00030c    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+               LCD_Enable   0x0000d2    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+              LCD_Hex_Nib   0x000072    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+         LCD_Loop_message   0x000088    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+          LCD_Send_Byte_D   0x0000b0    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+          LCD_Send_Byte_I   0x000094    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                LCD_Setup   0x000012    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+            LCD_Write_Hex   0x000068    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+        LCD_Write_Message   0x000086    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                LCD_clear   0x000122    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                LCD_delay   0x000118    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+             LCD_delay_ms   0x0000f6    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+           LCD_delay_x4us   0x000104    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                 LCD_loop   0x0001ac    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+          LCD_move_cursor   0x00012e    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+           SPI_MasterInit   0x00032a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
+       SPI_MasterTransmit   0x000336    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
+                    START   0x000140    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+               VolumeDisp   0x000272    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+               VolumeRead   0x000260    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+                VolumeSet   0x000250    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+             Volume_Setup   0x000248    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+            Wait_Transmit   0x00033a    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
+                 adc_loop   0x0002d2    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                adc_loop1   0x0002de    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                adc_loop2   0x0002ea    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                    delay   0x000306    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+                 div_loop   0x00022c    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                 division   0x000224    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+            frequency_mix   0x000172    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+ frequency_multiplication   0x000342    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
+                   lcdlp1   0x00011a    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                   lcdlp2   0x0000f8    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+             measure_loop   0x000158    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+      multiplication16x16   0x0001ee    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+       multiplication8x16   0x0001cc    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                    small   0x000236    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                LCD_cnt_h   0x000011       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                LCD_cnt_l   0x000010       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+               LCD_cnt_ms   0x000012       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+              LCD_counter   0x000014       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+           LCD_cursor_pos   0x000015       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+              LCD_hex_tmp   0x000016       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                  LCD_tmp   0x000013       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                      bit   0x00000f       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                     div8   0x00000c       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                    divi8   0x00000d       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                       k16   0x000000       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                        k8   0x000002       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                     mul16   0x000003       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-                 mul1_tmp   0x00000c       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-                 mul2_tmp   0x00000e       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-               output_tmp   0x000011       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
+                 mul1_tmp   0x000016       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                 mul2_tmp   0x000018       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+               output_tmp   0x00001f       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
                 prod16x16   0x000008       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                  prod8x16   0x000005       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                     quot   0x00000e       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                  voldisp   0x00001c       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+                   voltmp   0x00001e       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+                   volume   0x00001b       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
 
 
 
                               Symbols - Sorted by Address
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
-                    START   0x000012    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
-             measure_loop   0x000028    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
-            frequency_mix   0x000042    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
-       multiplication8x16   0x000072    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-      multiplication16x16   0x000094    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-                DAC_Setup   0x0000ca    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-                    delay   0x0000e0    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-                DAC_write   0x0000e6    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-            DAC_end_write   0x0000f4    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
-                ADC_Setup   0x000104    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-              ADC_read_A0   0x00011a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-                 adc_loop   0x000120    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-              ADC_read_A5   0x000126    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-                adc_loop1   0x00012c    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
-           SPI_MasterInit   0x000132    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
-       SPI_MasterTransmit   0x00013e    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
-            Wait_Transmit   0x000142    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
- frequency_multiplication   0x00014a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
+                LCD_Setup   0x000012    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+            LCD_Write_Hex   0x000068    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+              LCD_Hex_Nib   0x000072    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+        LCD_Write_Message   0x000086    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+         LCD_Loop_message   0x000088    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+          LCD_Send_Byte_I   0x000094    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+          LCD_Send_Byte_D   0x0000b0    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+               LCD_Enable   0x0000d2    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+             LCD_delay_ms   0x0000f6    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                   lcdlp2   0x0000f8    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+           LCD_delay_x4us   0x000104    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                LCD_delay   0x000118    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                   lcdlp1   0x00011a    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                LCD_clear   0x000122    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+          LCD_move_cursor   0x00012e    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                    START   0x000140    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+             measure_loop   0x000158    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+            frequency_mix   0x000172    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+                 LCD_loop   0x0001ac    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\main.asm
+       multiplication8x16   0x0001cc    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+      multiplication16x16   0x0001ee    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                 division   0x000224    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                 div_loop   0x00022c    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                    small   0x000236    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+             Volume_Setup   0x000248    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+                VolumeSet   0x000250    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+               VolumeRead   0x000260    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+               VolumeDisp   0x000272    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+                ADC_Setup   0x0002b2    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+              ADC_read_A0   0x0002cc    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                 adc_loop   0x0002d2    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+              ADC_read_A5   0x0002d8    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                adc_loop1   0x0002de    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+              ADC_read_A1   0x0002e4    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                adc_loop2   0x0002ea    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\ANALOG_DIGITAL.asm
+                DAC_Setup   0x0002f0    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+                    delay   0x000306    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+                DAC_write   0x00030c    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+            DAC_end_write   0x00031a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\digital_analog_12bit.asm
+           SPI_MasterInit   0x00032a    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
+       SPI_MasterTransmit   0x000336    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
+            Wait_Transmit   0x00033a    program     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\spi.asm
+ frequency_multiplication   0x000342    program     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
                       k16   0x000000       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                        k8   0x000002       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                     mul16   0x000003       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                  prod8x16   0x000005       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
                 prod16x16   0x000008       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-                 mul1_tmp   0x00000c       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-                 mul2_tmp   0x00000e       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
-               output_tmp   0x000011       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
+                     div8   0x00000c       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                    divi8   0x00000d       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                     quot   0x00000e       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                      bit   0x00000f       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                LCD_cnt_l   0x000010       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                LCD_cnt_h   0x000011       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+               LCD_cnt_ms   0x000012       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                  LCD_tmp   0x000013       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+              LCD_counter   0x000014       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+           LCD_cursor_pos   0x000015       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+              LCD_hex_tmp   0x000016       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\LCD.asm
+                 mul1_tmp   0x000016       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                 mul2_tmp   0x000018       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\multiplication.asm
+                   volume   0x00001b       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+                  voldisp   0x00001c       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+                   voltmp   0x00001e       data     static H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\VolumeControl.asm
+               output_tmp   0x00001f       data     extern H:\3rdYear\3rdYearLab\MicroprocessorLabProject\Voice-changer-project\frequency_mixer.asm
 
 

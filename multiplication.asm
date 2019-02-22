@@ -1,7 +1,7 @@
 #include p18f87k22.inc
 
-    global  k16, k8, mul16, prod8x16, prod16x16
-    global  multiplication16x16, multiplication8x16
+    global  k16, k8, mul16, prod8x16, prod16x16, div8, divi8, quot
+    global  multiplication16x16, multiplication8x16, division
 
 acs0    udata_acs   ; named variables in access ram
 k16	res 2	    ; reserve 2 bytes for k16
@@ -9,6 +9,10 @@ k8	res 1	    ; reserve 1 byte for k8
 mul16	res 2	    ; reserve 2 bytes for mul16
 prod8x16    res	3   ; reserve 3 bytes for prod8x16
 prod16x16   res	4   ; reserve 4 bytes for prod16x16
+div8	res 1	    ; reserve 1 byte for div8
+divi8	res 1	    ; reserve 1 byte for divi8
+quot	res 1	    ; reserve 1 byte for quot
+bit	res 1	    ; reserve 1 byte for bit
 
 acs_ovr	access_ovr
 mul1_tmp res 2   ; reserve 2 byte for variable mul1_tmp
@@ -48,6 +52,28 @@ multiplication16x16
     movff   prod8x16, prod16x16
     movlw   0x00
     addwfc  prod16x16
+    return
+    
+division
+    movlw   0x0
+    movwf   quot
+    bcf	    STATUS, C
+    bcf	    bit, 0
+div_loop
+    movlw   0x80
+    cpfsgt  div8
+    bra	    small
+    movlw   0x80
+    movwf   div8
+small
+    movf    divi8, W
+    subwf   div8, 1
+    btfsc   STATUS, N
+    bsf	    bit, 0
+    btfss   bit, 0
+    incf    quot
+    btfss   bit, 0
+    bra	    div_loop
     return
  
 

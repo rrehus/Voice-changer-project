@@ -1,4 +1,4 @@
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  1
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -16,8 +16,8 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00009 
                       02986         LIST
                       00002 
-  0000                00003     global  k16, k8, mul16, prod8x16, prod16x16
-  0000                00004     global  multiplication16x16, multiplication8x16
+  0000                00003     global  k16, k8, mul16, prod8x16, prod16x16, div8, divi8, quot
+  0000                00004     global  multiplication16x16, multiplication8x16, division
                       00005 
                       00006 acs0    udata_acs   ; named variables in access ram
 000000                00007 k16     res 2       ; reserve 2 bytes for k16
@@ -25,58 +25,84 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 000003                00009 mul16   res 2       ; reserve 2 bytes for mul16
 000005                00010 prod8x16    res 3   ; reserve 3 bytes for prod8x16
 000008                00011 prod16x16   res 4   ; reserve 4 bytes for prod16x16
-                      00012 
-                      00013 acs_ovr access_ovr
-000000                00014 mul1_tmp res 2   ; reserve 2 byte for variable mul1_tmp
-000002                00015 mul2_tmp res 3   ; reserve 3 byte for variable mul2_tmp
+00000C                00012 div8    res 1       ; reserve 1 byte for div8
+00000D                00013 divi8   res 1       ; reserve 1 byte for divi8
+00000E                00014 quot    res 1       ; reserve 1 byte for quot
+00000F                00015 bit     res 1       ; reserve 1 byte for bit
                       00016 
-                      00017 Multiplication code
-                      00018  
-000000                00019 multiplication8x16
-000000 02??           00020     mulwf   k16+1
-000002 CFF4 F???      00021     movff   PRODH, mul1_tmp
-000006 CFF3 F???      00022     movff   PRODL, mul1_tmp+1
-00000A 02??           00023     mulwf   k16
-00000C C??? F???      00024     movff   mul1_tmp+1, prod8x16+2
-000010 50??           00025     movf    mul1_tmp, W
-000012 22F3           00026     addwfc  PRODL, 1
-000014 CFF3 F???      00027     movff   PRODL, prod8x16+1
-000018 0E00           00028     movlw   0x00
-00001A 22F4           00029     addwfc  PRODH, 1
-00001C CFF4 F???      00030     movff   PRODH, prod8x16
-000020 0012           00031     return
-                      00032     
-000022                00033 multiplication16x16
-000022 50??           00034     movf    mul16+1, W
-000024 EC?? F???      00035     call    multiplication8x16
-000028 C??? F???      00036     movff   prod8x16, mul2_tmp
-00002C C??? F???      00037     movff   prod8x16+1, mul2_tmp+1
-000030 C??? F???      00038     movff   prod8x16+2, mul2_tmp+2
-000034 50??           00039     movf    mul16, W
-000036 EC?? F???      00040     call    multiplication8x16
-00003A C??? F???      00041     movff   mul2_tmp+2, prod16x16+3
-00003E C??? F???      00042     movff   mul2_tmp+1, prod16x16+2
-000042 50??           00043     movf    prod8x16+2, W
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  2
+                      00017 acs_ovr access_ovr
+000000                00018 mul1_tmp res 2   ; reserve 2 byte for variable mul1_tmp
+000002                00019 mul2_tmp res 3   ; reserve 3 byte for variable mul2_tmp
+                      00020 
+                      00021 Multiplication code
+                      00022  
+000000                00023 multiplication8x16
+000000 02??           00024     mulwf   k16+1
+000002 CFF4 F???      00025     movff   PRODH, mul1_tmp
+000006 CFF3 F???      00026     movff   PRODL, mul1_tmp+1
+00000A 02??           00027     mulwf   k16
+00000C C??? F???      00028     movff   mul1_tmp+1, prod8x16+2
+000010 50??           00029     movf    mul1_tmp, W
+000012 22F3           00030     addwfc  PRODL, 1
+000014 CFF3 F???      00031     movff   PRODL, prod8x16+1
+000018 0E00           00032     movlw   0x00
+00001A 22F4           00033     addwfc  PRODH, 1
+00001C CFF4 F???      00034     movff   PRODH, prod8x16
+000020 0012           00035     return
+                      00036     
+000022                00037 multiplication16x16
+000022 50??           00038     movf    mul16+1, W
+000024 EC?? F???      00039     call    multiplication8x16
+000028 C??? F???      00040     movff   prod8x16, mul2_tmp
+00002C C??? F???      00041     movff   prod8x16+1, mul2_tmp+1
+000030 C??? F???      00042     movff   prod8x16+2, mul2_tmp+2
+000034 50??           00043     movf    mul16, W
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000044 2200           00044     addwfc  prod16x16+2, 1
-000046 C??? F???      00045     movff   mul2_tmp, prod16x16+1
-00004A 50??           00046     movf    prod8x16+1, W
-00004C 2200           00047     addwfc  prod16x16+1, 1
-00004E C??? F???      00048     movff   prod8x16, prod16x16
-000052 0E00           00049     movlw   0x00
-000054 22??           00050     addwfc  prod16x16
-000056 0012           00051     return
-                      00052  
-                      00053 
-                      00054 
-                      00055 
-                      00056     END
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  3
+000036 EC?? F???      00044     call    multiplication8x16
+00003A C??? F???      00045     movff   mul2_tmp+2, prod16x16+3
+00003E C??? F???      00046     movff   mul2_tmp+1, prod16x16+2
+000042 50??           00047     movf    prod8x16+2, W
+000044 2200           00048     addwfc  prod16x16+2, 1
+000046 C??? F???      00049     movff   mul2_tmp, prod16x16+1
+00004A 50??           00050     movf    prod8x16+1, W
+00004C 2200           00051     addwfc  prod16x16+1, 1
+00004E C??? F???      00052     movff   prod8x16, prod16x16
+000052 0E00           00053     movlw   0x00
+000054 22??           00054     addwfc  prod16x16
+000056 0012           00055     return
+                      00056     
+000058                00057 division
+000058 0E00           00058     movlw   0x0
+00005A 6E??           00059     movwf   quot
+00005C 90D8           00060     bcf     STATUS, C
+00005E 90??           00061     bcf     bit, 0
+000060                00062 div_loop
+000060 0E80           00063     movlw   0x80
+000062 64??           00064     cpfsgt  div8
+000064 D???           00065     bra     small
+000066 0E80           00066     movlw   0x80
+000068 6E??           00067     movwf   div8
+00006A                00068 small
+00006A 50??           00069     movf    divi8, W
+00006C 5E00           00070     subwf   div8, 1
+00006E B8D8           00071     btfsc   STATUS, N
+000070 80??           00072     bsf     bit, 0
+000072 A0??           00073     btfss   bit, 0
+000074 2A??           00074     incf    quot
+000076 A0??           00075     btfss   bit, 0
+000078 D???           00076     bra     div_loop
+00007A 0012           00077     return
+                      00078  
+                      00079 
+                      00080 
+                      00081 
+                      00082     END
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  3
 
 
 SYMBOL TABLE
@@ -135,7 +161,7 @@ ADMSK5                            00000005
 ADON                              00000000
 ADRES                             00000FC3
 ADRESH                            00000FC4
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  4
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  4
 
 
 SYMBOL TABLE
@@ -194,7 +220,7 @@ ANSEL16                           00000000
 ANSEL17                           00000001
 ANSEL18                           00000002
 ANSEL19                           00000003
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  5
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  5
 
 
 SYMBOL TABLE
@@ -253,7 +279,7 @@ C1TSEL0                           00000000
 C1TSEL1                           00000001
 C1TSEL2                           00000002
 C2INA                             00000004
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  6
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  6
 
 
 SYMBOL TABLE
@@ -312,7 +338,7 @@ CCP1IP                            00000001
 CCP1M0                            00000000
 CCP1M1                            00000001
 CCP1M2                            00000002
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  7
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  7
 
 
 SYMBOL TABLE
@@ -371,7 +397,7 @@ CCP5M0                            00000000
 CCP5M1                            00000001
 CCP5M2                            00000002
 CCP5M3                            00000003
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  8
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  8
 
 
 SYMBOL TABLE
@@ -430,7 +456,7 @@ CCP9IP                            00000006
 CCP9M0                            00000000
 CCP9M1                            00000001
 CCP9M2                            00000002
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE  9
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE  9
 
 
 SYMBOL TABLE
@@ -489,7 +515,7 @@ CHSN1                             00000001
 CHSN2                             00000002
 CK1                               00000006
 CK2                               00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 10
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 10
 
 
 SYMBOL TABLE
@@ -548,7 +574,7 @@ CTMUIE                            00000003
 CTMUIF                            00000003
 CTMUIP                            00000003
 CTMUMD                            00000006
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 11
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 11
 
 
 SYMBOL TABLE
@@ -607,7 +633,7 @@ ECCP1AS1                          00000005
 ECCP1AS2                          00000006
 ECCP1ASE                          00000007
 ECCP1CON                          00000FBB
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 12
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 12
 
 
 SYMBOL TABLE
@@ -666,7 +692,7 @@ FSR2H                             00000FDA
 FSR2L                             00000FD9
 GCEN                              00000007
 GIE                               00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 13
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 13
 
 
 SYMBOL TABLE
@@ -725,7 +751,7 @@ INT3F                             00000002
 INT3IE                            00000005
 INT3IF                            00000002
 INT3IP                            00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 14
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 14
 
 
 SYMBOL TABLE
@@ -784,7 +810,7 @@ LATB7                             00000007
 LATC                              00000F8B
 LATC0                             00000000
 LATC1                             00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 15
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 15
 
 
 SYMBOL TABLE
@@ -843,7 +869,7 @@ LATJ1                             00000001
 LATJ2                             00000002
 LATJ3                             00000003
 LATJ4                             00000004
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 16
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 16
 
 
 SYMBOL TABLE
@@ -902,7 +928,7 @@ OE                                00000001
 OERR                              00000001
 OERR1                             00000001
 OERR2                             00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 17
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 17
 
 
 SYMBOL TABLE
@@ -961,7 +987,7 @@ P3M1                              00000007
 P3RSEN                            00000007
 PA3                               00000000
 PADCFG1                           00000F53
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 18
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 18
 
 
 SYMBOL TABLE
@@ -1020,7 +1046,7 @@ POSTDEC2                          00000FDD
 POSTINC0                          00000FEE
 POSTINC1                          00000FE6
 POSTINC2                          00000FDE
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 19
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 19
 
 
 SYMBOL TABLE
@@ -1079,7 +1105,7 @@ RA4                               00000004
 RA5                               00000005
 RA6                               00000006
 RA7                               00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 20
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 20
 
 
 SYMBOL TABLE
@@ -1138,7 +1164,7 @@ RD6                               00000006
 RD7                               00000007
 RDPU                              00000007
 RE0                               00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 21
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 21
 
 
 SYMBOL TABLE
@@ -1197,7 +1223,7 @@ ROSSLP                            00000005
 RSEN                              00000001
 RTCC                              00000004
 RTCCAL                            00000F5E
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 22
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 22
 
 
 SYMBOL TABLE
@@ -1256,7 +1282,7 @@ SOSCI                             00000001
 SOSCO                             00000000
 SOSCRUN                           00000006
 SP0                               00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 23
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 23
 
 
 SYMBOL TABLE
@@ -1315,7 +1341,7 @@ SSPM2                             00000002
 SSPM3                             00000003
 SSPOV                             00000006
 SSPSTAT                           00000FC7
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 24
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 24
 
 
 SYMBOL TABLE
@@ -1374,7 +1400,7 @@ T1GSPM                            00000004
 T1GSS0                            00000000
 T1GSS1                            00000001
 T1GTM                             00000005
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 25
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 25
 
 
 SYMBOL TABLE
@@ -1433,7 +1459,7 @@ T6OUTPS3                          00000006
 T7CKI                             00000004
 T7CKPS0                           00000004
 T7CKPS1                           00000005
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 26
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 26
 
 
 SYMBOL TABLE
@@ -1492,7 +1518,7 @@ TMR1GIP                           00000002
 TMR1H                             00000FCF
 TMR1IE                            00000000
 TMR1IF                            00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 27
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 27
 
 
 SYMBOL TABLE
@@ -1551,7 +1577,7 @@ TMR6ON                            00000002
 TMR7                              00000F3E
 TMR7CS0                           00000006
 TMR7CS1                           00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 28
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 28
 
 
 SYMBOL TABLE
@@ -1610,7 +1636,7 @@ TRISC6                            00000006
 TRISC7                            00000007
 TRISD                             00000F95
 TRISD0                            00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 29
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 29
 
 
 SYMBOL TABLE
@@ -1669,7 +1695,7 @@ TRMT1                             00000001
 TRMT2                             00000001
 TUN0                              00000000
 TUN1                              00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 30
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 30
 
 
 SYMBOL TABLE
@@ -1728,7 +1754,7 @@ W                                 00000000
 WAIT0                             00000004
 WAIT1                             00000005
 WCOL                              00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 31
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 31
 
 
 SYMBOL TABLE
@@ -1787,7 +1813,7 @@ _CP1_ON_5L                        000000FD
 _CP2_OFF_5L                       000000FF
 _CP2_ON_5L                        000000FB
 _CP3_OFF_5L                       000000FF
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 32
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 32
 
 
 SYMBOL TABLE
@@ -1846,7 +1872,7 @@ _FOSC_INTIO1_1H                   000000F9
 _FOSC_INTIO2_1H                   000000F8
 _FOSC_LP_1H                       000000F0
 _FOSC_RCIO_1H                     000000F7
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 33
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 33
 
 
 SYMBOL TABLE
@@ -1905,7 +1931,7 @@ _WDTPS_32_2H                      00000097
 _WDTPS_4096_2H                    000000B3
 _WDTPS_4_2H                       0000008B
 _WDTPS_512_2H                     000000A7
-MPASM 5.81                MULTIPLICATION.ASM   2-18-2019  14:54:49         PAGE 34
+MPASM 5.81                MULTIPLICATION.ASM   2-21-2019  16:54:03         PAGE 34
 
 
 SYMBOL TABLE
@@ -1943,6 +1969,11 @@ _XINST_ON_1L                      000000FF
 __18F87K22                        00000001
 __DEBUG                           
 __MPLAB_DEBUGGER_ICD3             1
+bit                               0000000F
+div8                              0000000C
+div_loop                          00000060
+divi8                             0000000D
+division                          00000058
 k16                               00000000
 k8                                00000002
 mul16                             00000003
@@ -1952,6 +1983,8 @@ multiplication16x16               00000022
 multiplication8x16                00000000
 prod16x16                         00000008
 prod8x16                          00000005
+quot                              0000000E
+small                             0000006A
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed
