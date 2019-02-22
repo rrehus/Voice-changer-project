@@ -19,7 +19,7 @@ START
 	call	DAC_Setup
 	call    UART_Setup
 	call    random_init
-	goto    frequency_mix
+	goto    noise_loop
 	
 	
 

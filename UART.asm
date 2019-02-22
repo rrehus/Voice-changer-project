@@ -12,7 +12,7 @@ UART_Setup
     bcf	    BAUDCON1, BRG16 ; 8-bit generator only
     movlw   .103	    ; gives 9600 Baud rate (actually 9615)
     movwf   SPBRG1
-    bsf	    TRISC, TX1	    ; TX1 pin as output
+    bcf	    TRISC, TX1	    ; TX1 pin as output
     return
     
 UART_Transmit_Byte	    ; Transmits byte stored in W

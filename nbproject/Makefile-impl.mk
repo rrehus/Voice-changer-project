@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Project.X
+PROJECTNAME=Voice-changer-project
 
 # Active Configuration
 DEFAULTCONF=default
