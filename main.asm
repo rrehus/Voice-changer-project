@@ -6,7 +6,7 @@
     extern  frequency_multiplication, output_tmp
     extern  a, c, m, s
     extern  random_numbers
-
+    extern  UART_Setup, UART_Transmit_Byte
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
 
@@ -17,6 +17,7 @@ MAIN_PROG CODE                      ; let linker place main program
 START
 	call	ADC_Setup
 	call	DAC_Setup
+	call    UART_Setup
 	goto    frequency_mix
 	
 
@@ -47,11 +48,10 @@ noise_loop
 	call random_numbers ;call random number generator
 	movf ADRESH, W ;move upper byte of digital data into W register
 	addwf s, 0 ;add the random number to ADRESH
-	call DAC_write ;output the digital data combined with noise 
+	call UART_Transmit_Byte ;transmit the byte via UART
 	movf ADRESL, W ;move lower byte of digital data into W register
 	addwf s+1, 0 ;combine the digital data with noise
-	call DAC_write ;output the digital data combined with the noise
-	call DAC_end_write
+	call UART_Transmit_Byte ;transmit the other byte via UART
 	goto noise_loop ; start again
 	
 	END
