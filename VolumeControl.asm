@@ -15,15 +15,16 @@ VolumeControl code
 Volume_Setup
     movlw   0x0
     movwf   TRISC	; make port F output (where voltage to be output)
-    movwf   TRISG	; make port G output (for WR pin)
+    movwf   TRISF	; make port G output (for WR pin)
     movwf   LATC
+    movwf   LATF
     
 VolumeSet
-    bsf	    PORTG, 0
+    bsf	    PORTF, 0
     nop
     movff   volume, PORTC
     nop
-    bcf	    PORTG, 0
+    bcf	    PORTF, 0
     nop
     return
     
