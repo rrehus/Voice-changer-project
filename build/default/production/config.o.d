@@ -1,3 +1,3 @@
 build/default/production/config.o:  \
-	C:/Users/ROBASUS/MPLABXProjects/Project.X/config.asm  \
+	C:/Users/rr2016/MPLABXProjects/Voice-changer-project/config.asm  \
 

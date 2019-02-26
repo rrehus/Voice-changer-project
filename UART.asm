@@ -1,10 +1,10 @@
 #include p18f87k22.inc
 
-    global  UART_Setup, UART_Transmit_Byte
+    global  UART_Setup_Transmit, UART_Transmit_Byte
 
 UART    code
     
-UART_Setup
+UART_Setup_Transmit
     bsf	    RCSTA1, SPEN    ; enable
     bcf	    TXSTA1, SYNC    ; synchronous
     bcf	    TXSTA1, BRGH    ; slow speed
@@ -14,6 +14,9 @@ UART_Setup
     movwf   SPBRG1
     bcf	    TRISC, TX1	    ; TX1 pin as output
     return
+UART_Setup_Receive
+    bsf	    RCSTA1, SPEN    ; enable
+    
     
 UART_Transmit_Byte	    ; Transmits byte stored in W
     btfss   PIR1,TX1IF	    ; TX1IF is set when TXREG1 is empty

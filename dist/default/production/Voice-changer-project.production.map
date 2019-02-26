@@ -1,5 +1,5 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Tue Feb 26 12:35:34 2019
+Linker Map File - Created Tue Feb 26 11:26:01 2019
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
@@ -15,19 +15,19 @@ Linker Map File - Created Tue Feb 26 12:35:34 2019
                      UART       code   0x000188    program   0x00001a
                       SPI       code   0x0001a2    program   0x000018
          Frequency_shift_       code   0x0001ba    program   0x000018
-.config_300000_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300000    program   0x000001
-.config_300001_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300001    program   0x000001
-.config_300002_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300002    program   0x000001
-.config_300003_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300003    program   0x000001
-.config_300004_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300004    program   0x000001
-.config_300005_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300005    program   0x000001
-.config_300006_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300006    program   0x000001
-.config_300008_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300008    program   0x000001
-.config_300009_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x300009    program   0x000001
-.config_30000A_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x30000a    program   0x000001
-.config_30000B_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x30000b    program   0x000001
-.config_30000C_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x30000c    program   0x000001
-.config_30000D_BUILD/DEFAULT/DEBUG/CONFIG.O    romdata   0x30000d    program   0x000001
+.config_300000_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300000    program   0x000001
+.config_300001_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300001    program   0x000001
+.config_300002_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300002    program   0x000001
+.config_300003_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300003    program   0x000001
+.config_300004_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300004    program   0x000001
+.config_300005_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300005    program   0x000001
+.config_300006_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300006    program   0x000001
+.config_300008_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300008    program   0x000001
+.config_300009_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x300009    program   0x000001
+.config_30000A_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x30000a    program   0x000001
+.config_30000B_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x30000b    program   0x000001
+.config_30000C_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x30000c    program   0x000001
+.config_30000D_BUILD/DEFAULT/PRODUCTION/CONFIG.    romdata   0x30000d    program   0x000001
                      acs0      udata   0x000000       data   0x00000c
                   acs_ovr      udata   0x00000c       data   0x000005
                       acs      udata   0x000011       data   0x000004

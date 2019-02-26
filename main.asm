@@ -6,7 +6,7 @@
     extern  frequency_multiplication, output_tmp
     extern  a, c, s
     extern  random_numbers, random_init
-    extern  UART_Setup, UART_Transmit_Byte
+    extern  UART_Setup_Transmit, UART_Transmit_Byte
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
 
@@ -17,7 +17,7 @@ MAIN_PROG CODE                      ; let linker place main program
 START
 	call	ADC_Setup
 	call	DAC_Setup
-	call    UART_Setup
+	call    UART_Setup_Transmit
 	call    random_init
 	goto    noise_loop
 	

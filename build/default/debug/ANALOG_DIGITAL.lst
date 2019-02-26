@@ -1,4 +1,4 @@
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  1
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -52,7 +52,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 00002A D???           00035     bra     adc_loop1
 00002C 0012           00036     return
                       00037     END
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  2
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  2
 
 
 SYMBOL TABLE
@@ -111,7 +111,7 @@ ADMSK2                            00000002
 ADMSK3                            00000003
 ADMSK4                            00000004
 ADMSK5                            00000005
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  3
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  3
 
 
 SYMBOL TABLE
@@ -170,7 +170,7 @@ ANSEL13                           00000005
 ANSEL14                           00000006
 ANSEL15                           00000007
 ANSEL16                           00000000
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  4
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  4
 
 
 SYMBOL TABLE
@@ -229,7 +229,7 @@ C1INB                             00000005
 C1INC                             00000006
 C1OUT                             00000002
 C1TSEL0                           00000000
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  5
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  5
 
 
 SYMBOL TABLE
@@ -288,7 +288,7 @@ CCP1CON                           00000FBB
 CCP1IE                            00000001
 CCP1IF                            00000001
 CCP1IP                            00000001
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  6
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  6
 
 
 SYMBOL TABLE
@@ -347,7 +347,7 @@ CCP5IE                            00000002
 CCP5IF                            00000002
 CCP5IP                            00000002
 CCP5M0                            00000000
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  7
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  7
 
 
 SYMBOL TABLE
@@ -406,7 +406,7 @@ CCP9CON                           00000F43
 CCP9IE                            00000006
 CCP9IF                            00000006
 CCP9IP                            00000006
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  8
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  8
 
 
 SYMBOL TABLE
@@ -465,7 +465,7 @@ CHS3                              00000005
 CHS4                              00000006
 CHSN0                             00000000
 CHSN1                             00000001
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE  9
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE  9
 
 
 SYMBOL TABLE
@@ -524,7 +524,7 @@ CTMUEN                            00000007
 CTMUI                             00000003
 CTMUICON                          00000F55
 CTMUIE                            00000003
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 10
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 10
 
 
 SYMBOL TABLE
@@ -583,7 +583,7 @@ EBDIS                             00000007
 ECCP1AS                           00000FBF
 ECCP1AS0                          00000004
 ECCP1AS1                          00000005
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 11
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 11
 
 
 SYMBOL TABLE
@@ -642,7 +642,7 @@ FSR1H                             00000FE2
 FSR1L                             00000FE1
 FSR2                              00000002
 FSR2H                             00000FDA
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 12
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 12
 
 
 SYMBOL TABLE
@@ -701,7 +701,7 @@ INT2P                             00000007
 INT3                              00000003
 INT3E                             00000005
 INT3F                             00000002
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 13
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 13
 
 
 SYMBOL TABLE
@@ -760,7 +760,7 @@ LATB4                             00000004
 LATB5                             00000005
 LATB6                             00000006
 LATB7                             00000007
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 14
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 14
 
 
 SYMBOL TABLE
@@ -819,7 +819,7 @@ LATH7                             00000007
 LATJ                              00000F91
 LATJ0                             00000000
 LATJ1                             00000001
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 15
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 15
 
 
 SYMBOL TABLE
@@ -878,7 +878,7 @@ ODCON1                            00000F29
 ODCON2                            00000F28
 ODCON3                            00000F27
 OE                                00000001
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 16
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 16
 
 
 SYMBOL TABLE
@@ -937,7 +937,7 @@ P3DC5                             00000005
 P3DC6                             00000006
 P3M0                              00000006
 P3M1                              00000007
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 17
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 17
 
 
 SYMBOL TABLE
@@ -996,7 +996,7 @@ PORTJ                             00000F88
 POSTDEC0                          00000FED
 POSTDEC1                          00000FE5
 POSTDEC2                          00000FDD
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 18
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 18
 
 
 SYMBOL TABLE
@@ -1055,7 +1055,7 @@ RA1                               00000001
 RA2                               00000002
 RA3                               00000003
 RA4                               00000004
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 19
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 19
 
 
 SYMBOL TABLE
@@ -1114,7 +1114,7 @@ RD3                               00000003
 RD4                               00000004
 RD5                               00000005
 RD6                               00000006
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 20
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 20
 
 
 SYMBOL TABLE
@@ -1173,7 +1173,7 @@ RODIV3                            00000003
 ROON                              00000007
 ROSEL                             00000004
 ROSSLP                            00000005
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 21
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 21
 
 
 SYMBOL TABLE
@@ -1232,7 +1232,7 @@ SMP                               00000007
 SOSCEN                            00000003
 SOSCGO                            00000003
 SOSCI                             00000001
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 22
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 22
 
 
 SYMBOL TABLE
@@ -1291,7 +1291,7 @@ SSPIP                             00000003
 SSPM0                             00000000
 SSPM1                             00000001
 SSPM2                             00000002
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 23
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 23
 
 
 SYMBOL TABLE
@@ -1350,7 +1350,7 @@ T1GGO                             00000003
 T1GGO_NOT_T1DONE                  00000003
 T1GPOL                            00000006
 T1GSPM                            00000004
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 24
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 24
 
 
 SYMBOL TABLE
@@ -1409,7 +1409,7 @@ T6OUTPS0                          00000003
 T6OUTPS1                          00000004
 T6OUTPS2                          00000005
 T6OUTPS3                          00000006
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 25
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 25
 
 
 SYMBOL TABLE
@@ -1468,7 +1468,7 @@ TMR1GE                            00000007
 TMR1GIE                           00000002
 TMR1GIF                           00000002
 TMR1GIP                           00000002
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 26
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 26
 
 
 SYMBOL TABLE
@@ -1527,7 +1527,7 @@ TMR6IF                            00000002
 TMR6IP                            00000002
 TMR6MD                            00000004
 TMR6ON                            00000002
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 27
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 27
 
 
 SYMBOL TABLE
@@ -1586,7 +1586,7 @@ TRISC3                            00000003
 TRISC4                            00000004
 TRISC5                            00000005
 TRISC6                            00000006
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 28
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 28
 
 
 SYMBOL TABLE
@@ -1645,7 +1645,7 @@ TRISJ6                            00000006
 TRISJ7                            00000007
 TRMT                              00000001
 TRMT1                             00000001
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 29
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 29
 
 
 SYMBOL TABLE
@@ -1704,7 +1704,7 @@ VNCFG                             00000003
 VREF_MINUS                        00000002
 VREF_PLUS                         00000003
 W                                 00000000
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 30
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 30
 
 
 SYMBOL TABLE
@@ -1763,7 +1763,7 @@ _CP0_OFF_5L                       000000FF
 _CP0_ON_5L                        000000FE
 _CP1_OFF_5L                       000000FF
 _CP1_ON_5L                        000000FD
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 31
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 31
 
 
 SYMBOL TABLE
@@ -1822,7 +1822,7 @@ _FOSC_EC3_1H                      000000F5
 _FOSC_HS1_1H                      000000F3
 _FOSC_HS2_1H                      000000F2
 _FOSC_INTIO1_1H                   000000F9
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 32
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 32
 
 
 SYMBOL TABLE
@@ -1881,7 +1881,7 @@ _WDTPS_262144_2H                  000000CB
 _WDTPS_2_2H                       00000087
 _WDTPS_32768_2H                   000000BF
 _WDTPS_32_2H                      00000097
-MPASM 5.81                ANALOG_DIGITAL.ASM   2-22-2019  11:33:11         PAGE 33
+MPASM 5.81                ANALOG_DIGITAL.ASM   2-26-2019  12:35:31         PAGE 33
 
 
 SYMBOL TABLE

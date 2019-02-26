@@ -1,3 +1,3 @@
 build/default/production/digital_analog_12bit.o:  \
-	C:/Users/ROBASUS/MPLABXProjects/Project.X/digital_analog_12bit.asm  \
+	C:/Users/rr2016/MPLABXProjects/Voice-changer-project/digital_analog_12bit.asm  \
 
