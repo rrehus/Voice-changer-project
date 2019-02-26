@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm VolumeControl.asm frequency_mixer.asm multiplication.asm LCD.asm
+SOURCEFILES_QUOTED_IF_SPACED=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm LCD.asm VolumeControl.asm division.asm
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/LCD.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ANALOG_DIGITAL.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/digital_analog_12bit.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/spi.o.d ${OBJECTDIR}/VolumeControl.o.d ${OBJECTDIR}/frequency_mixer.o.d ${OBJECTDIR}/multiplication.o.d ${OBJECTDIR}/LCD.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/division.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ANALOG_DIGITAL.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/digital_analog_12bit.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/spi.o.d ${OBJECTDIR}/frequency_mixer.o.d ${OBJECTDIR}/multiplication.o.d ${OBJECTDIR}/LCD.o.d ${OBJECTDIR}/VolumeControl.o.d ${OBJECTDIR}/division.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/LCD.o
+OBJECTFILES=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/division.o
 
 # Source Files
-SOURCEFILES=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm VolumeControl.asm frequency_mixer.asm multiplication.asm LCD.asm
+SOURCEFILES=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm LCD.asm VolumeControl.asm division.asm
 
 
 CFLAGS=
@@ -134,14 +134,6 @@ ${OBJECTDIR}/spi.o: spi.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${DEP_GEN} -d "${OBJECTDIR}/spi.o"
 	@${FIXDEPS} "${OBJECTDIR}/spi.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
-${OBJECTDIR}/VolumeControl.o: VolumeControl.asm  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/VolumeControl.o.d 
-	@${RM} ${OBJECTDIR}/VolumeControl.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/VolumeControl.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/VolumeControl.lst\" -e\"${OBJECTDIR}/VolumeControl.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/VolumeControl.o\" \"VolumeControl.asm\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/VolumeControl.o"
-	@${FIXDEPS} "${OBJECTDIR}/VolumeControl.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
-	
 ${OBJECTDIR}/frequency_mixer.o: frequency_mixer.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/frequency_mixer.o.d 
@@ -165,6 +157,22 @@ ${OBJECTDIR}/LCD.o: LCD.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/LCD.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/LCD.lst\" -e\"${OBJECTDIR}/LCD.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/LCD.o\" \"LCD.asm\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/LCD.o"
 	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/VolumeControl.o: VolumeControl.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/VolumeControl.o.d 
+	@${RM} ${OBJECTDIR}/VolumeControl.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/VolumeControl.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/VolumeControl.lst\" -e\"${OBJECTDIR}/VolumeControl.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/VolumeControl.o\" \"VolumeControl.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/VolumeControl.o"
+	@${FIXDEPS} "${OBJECTDIR}/VolumeControl.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/division.o: division.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/division.o.d 
+	@${RM} ${OBJECTDIR}/division.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/division.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/division.lst\" -e\"${OBJECTDIR}/division.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/division.o\" \"division.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/division.o"
+	@${FIXDEPS} "${OBJECTDIR}/division.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 else
 ${OBJECTDIR}/ANALOG_DIGITAL.o: ANALOG_DIGITAL.asm  nbproject/Makefile-${CND_CONF}.mk
@@ -207,14 +215,6 @@ ${OBJECTDIR}/spi.o: spi.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${DEP_GEN} -d "${OBJECTDIR}/spi.o"
 	@${FIXDEPS} "${OBJECTDIR}/spi.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
-${OBJECTDIR}/VolumeControl.o: VolumeControl.asm  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/VolumeControl.o.d 
-	@${RM} ${OBJECTDIR}/VolumeControl.o 
-	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/VolumeControl.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/VolumeControl.lst\" -e\"${OBJECTDIR}/VolumeControl.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/VolumeControl.o\" \"VolumeControl.asm\" 
-	@${DEP_GEN} -d "${OBJECTDIR}/VolumeControl.o"
-	@${FIXDEPS} "${OBJECTDIR}/VolumeControl.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
-	
 ${OBJECTDIR}/frequency_mixer.o: frequency_mixer.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/frequency_mixer.o.d 
@@ -238,6 +238,22 @@ ${OBJECTDIR}/LCD.o: LCD.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/LCD.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/LCD.lst\" -e\"${OBJECTDIR}/LCD.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/LCD.o\" \"LCD.asm\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/LCD.o"
 	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/VolumeControl.o: VolumeControl.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/VolumeControl.o.d 
+	@${RM} ${OBJECTDIR}/VolumeControl.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/VolumeControl.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/VolumeControl.lst\" -e\"${OBJECTDIR}/VolumeControl.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/VolumeControl.o\" \"VolumeControl.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/VolumeControl.o"
+	@${FIXDEPS} "${OBJECTDIR}/VolumeControl.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/division.o: division.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/division.o.d 
+	@${RM} ${OBJECTDIR}/division.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/division.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/division.lst\" -e\"${OBJECTDIR}/division.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/division.o\" \"division.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/division.o"
+	@${FIXDEPS} "${OBJECTDIR}/division.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 

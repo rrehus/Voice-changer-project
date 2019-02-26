@@ -2,11 +2,11 @@
     
     extern  DAC_write, DAC_Setup, DAC_end_write
     extern  ADC_Setup, ADC_read_A0, ADC_read_A5
-    extern  k16, k8, mul16, prod8x16, prod16x16, div8, divi8, quot
+    extern  k16, k8, mul16, prod8x16, prod16x16
     extern  frequency_multiplication, output_tmp
     extern  Volume_Setup, VolumeSet, VolumeRead, VolumeDisp, voldisp
-    extern  division
     extern  LCD_Setup, LCD_Write_Hex
+    extern  division16x16, dividh, dividl, divish, divisl, quoth, quotl
 
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
@@ -20,8 +20,6 @@ START
 	call	DAC_Setup
 	call	LCD_Setup
 	call	Volume_Setup
-	movlw	0xFF
-	movwf	TRISE
 	goto    LCD_loop
 	
 
@@ -48,10 +46,7 @@ frequency_mix
         call	DAC_end_write
 	goto	frequency_mix
 	
-	movff	PORTE, div8
-	rrncf	div8, 1
-	bcf	div8, 7
-	movff	div8, PORTC
+	
 LCD_loop
 	call	VolumeRead
 	call	VolumeSet
@@ -62,5 +57,17 @@ LCD_loop
 	call	LCD_Write_Hex
 	call	LCD_Setup
 	goto	LCD_loop
+	
+division_loop
+	movlw	0x13
+	movwf	dividh
+	movlw	0x88
+	movwf	dividl
+	clrf	divish
+	movlw	0x7F
+	movwf	divisl
+	call	division16x16
+	goto	division_loop
+	
     
 	END
