@@ -6,7 +6,8 @@
     extern  frequency_multiplication, output_tmp
     extern  a, c, s
     extern  random_numbers, random_init
-    extern  UART_Setup_Transmit, UART_Transmit_Byte
+    extern  UART_Setup_Transmit, UART_Transmit_Byte, UART_Receive_Byte, UART_Setup_Receive
+    extern  noise
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
 
@@ -17,7 +18,6 @@ MAIN_PROG CODE                      ; let linker place main program
 START
 	call	ADC_Setup
 	call	DAC_Setup
-	call    UART_Setup_Transmit
 	call    random_init
 	goto    noise_loop
 	
@@ -46,6 +46,7 @@ frequency_mix
         call	DAC_end_write
 	goto	frequency_mix
 noise_loop
+	call UART_Setup_Transmit
 	call ADC_read_A0   ;convert analog to digital
 	call random_numbers ;call random number generator
 	movf ADRESH, W ;move upper byte of digital data into W register
@@ -55,5 +56,15 @@ noise_loop
 	addwf s+1, 0 ;combine the digital data with noise
 	call UART_Transmit_Byte ;transmit the other byte via UART
 	goto noise_loop ; start again
-	
+gaussian_noise_loop
+	call  UART_Setup_Receive ;set up UART so that it can receive bytes
+	call  UART_Receive_Byte ;receive the noise byte from python via UART
+	call  ADC_read_A0   ;convert analog to digital
+	movf  ADRESH, W ;move upper byte of digital data into W register
+	call  DAC_write  ;output the upper byte (digital to analog)
+	movf  ADRESL, W ;move the lower byte of the signal to W
+	addwf noise, 0  ;add the noise to the lower bytes
+	call  DAC_write ;output the lower byte combined with noise
+	call  DAC_end_write
+	goto  gaussian_noise_loop ;start again
 	END
