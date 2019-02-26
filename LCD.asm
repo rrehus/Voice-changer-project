@@ -1,6 +1,6 @@
 #include p18f87k22.inc
 
-    global  LCD_Setup, LCD_Write_Message, LCD_move_cursor, LCD_clear, LCD_Send_Byte_D, LCD_Write_Hex, LCD_delay_ms
+    global  LCD_Setup, LCD_Write_Message, LCD_move_cursor, LCD_clear, LCD_Send_Byte_D, LCD_Write_Hex, LCD_delay_ms, LCD_Hex_Nib, LCD_hex_tmp
 
 acs0    udata_acs   ; named variables in access ram
 LCD_cnt_l   res 1   ; reserve 1 byte for variable LCD_cnt_l

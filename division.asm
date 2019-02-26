@@ -43,7 +43,6 @@ division2
     movff   dividh_save, dividh	; undo subtraction
     movff   dividl_save, dividl	; undo subtraction
 division3
-    ;btg	    STATUS, C		; invert carry bit
     rlcf    quotl, 1		; rotate quotl left through carry
     rlcf    quoth, 1		; rotate quoth left through carry
     decfsz  count, 1		; decrement count until 0

@@ -4,14 +4,12 @@
     extern  ADC_Setup, ADC_read_A0, ADC_read_A5
     extern  k16, k8, mul16, prod8x16, prod16x16
     extern  frequency_multiplication, output_tmp
-    extern  Volume_Setup, VolumeSet, VolumeRead, VolumeDisp, voldisp
-    extern  LCD_Setup, LCD_Write_Hex
+    extern  Volume_Setup, VolumeDo
+    extern  LCD_Setup
     extern  division16x16, dividh, dividl, divish, divisl, quoth, quotl
 
 RES_VECT  CODE    0x0000            ; processor reset vector
     GOTO    START                   ; go to beginning of program
-
-; TODO ADD INTERRUPTS HERE IF USED
 
 MAIN_PROG CODE                      ; let linker place main program
 
@@ -48,14 +46,7 @@ frequency_mix
 	
 	
 LCD_loop
-	call	VolumeRead
-	call	VolumeSet
-	call	VolumeDisp
-	movf	voldisp, W
-	call	LCD_Write_Hex
-	movf	voldisp+1, W
-	call	LCD_Write_Hex
-	call	LCD_Setup
+	call	VolumeDo
 	goto	LCD_loop
 	
 division_loop
