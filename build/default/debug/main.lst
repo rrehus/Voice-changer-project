@@ -1,4 +1,4 @@
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  1
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -15,76 +15,84 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00008 ;==========================================================================
                       00009 
                       02986         LIST
-                      00002 
-  0000                00003     global  k16, k8, mul16, prod8x16, prod16x16
-  0000                00004     global  multiplication16x16, multiplication8x16
-                      00005 
-                      00006 acs0        udata_acs               ; named variables in access ram
-000000                00007 k16         res 2                   ; reserve 2 bytes for k16
-000002                00008 k8          res 1                   ; reserve 1 byte for k8
-000003                00009 mul16       res 2                   ; reserve 2 bytes for mul16
-000005                00010 prod8x16    res 3                   ; reserve 3 bytes for prod8x16
-000008                00011 prod16x16   res 4                   ; reserve 4 bytes for prod16x16
-00000C                00012 bit         res 1                   ; reserve 1 byte for bit
+                      00002     
+  0000                00003     extern  DAC_write, DAC_Setup, DAC_end_write
+  0000                00004     extern  ADC_Setup, ADC_read_A0, ADC_read_A5
+  0000                00005     extern  k16, k8, mul16, prod8x16, prod16x16
+  0000                00006     extern  frequency_multiplication, output_tmp
+  0000                00007     extern  a, c, s
+  0000                00008     extern  random_numbers, random_init
+  0000                00009     extern  UART_Setup_Transmit, UART_Transmit_Byte, UART_Receive_Byte, UART_Setup_Receive
+  0000                00010     extern  noise
+                      00011 RES_VECT  CODE    0x0000            ; processor reset vector
+000000 EF?? F???      00012     GOTO    START                   ; go to beginning of program
                       00013 
-                      00014 acs_ovr access_ovr
-000000                00015 mul1_tmp    res 2                   ; reserve 2 byte for variable mul1_tmp
-000002                00016 mul2_tmp    res 3                   ; reserve 3 byte for variable mul2_tmp
+                      00014 ; TODO ADD INTERRUPTS HERE IF USED
+                      00015 
+                      00016 MAIN_PROG CODE                      ; let linker place main program
                       00017 
-                      00018 Multiplication code
-                      00019  
-000000                00020 multiplication8x16
-000000 02??           00021     mulwf   k16+1                   ; multiply lower byte with 8-bit number
-000002 CFF4 F???      00022     movff   PRODH, mul1_tmp         ; move upper byte of lower byte multiplication to temporary storage
-000006 CFF3 F???      00023     movff   PRODL, mul1_tmp+1       ; move lower byte of lower byte multiplication to temporary storage
-00000A 02??           00024     mulwf   k16                     ; multiply upper byte with 8-bit number
-00000C C??? F???      00025     movff   mul1_tmp+1, prod8x16+2  ; move lower byte of lower byte multiplication to lowest result byte
-000010 50??           00026     movf    mul1_tmp, W             ; move upper byte of lower byte multiplication to W for adding
-000012 22F3           00027     addwfc  PRODL, 1                ; add upper byte of lower byte multiplication to lower byte of upper
-                             byte multiplication with carry
-000014 CFF3 F???      00028     movff   PRODL, prod8x16+1       ; move previous result to middle byte of result
-000018 0E00           00029     movlw   0x00                    ; move 0x0 to W for adding
-00001A 22F4           00030     addwfc  PRODH, 1                ; add upper byte of upper byte multiplication to 0x0 with carry
-00001C CFF4 F???      00031     movff   PRODH, prod8x16         ; move previous result to upper byte of result
-000020 0012           00032     return
-                      00033     
-000022                00034 multiplication16x16
-000022 50??           00035     movf    mul16+1, W              ; move lower byte of factor to W for multiplication
-000024 EC?? F???      00036     call    multiplication8x16      ; multiply lower byte of factor to other factor in k16 and k16+1
-000028 C??? F???      00037     movff   prod8x16, mul2_tmp      ; move highest byte of multiplication to temporary storage
-00002C C??? F???      00038     movff   prod8x16+1, mul2_tmp+1  ; move middle byte of multiplication to temporary storage
-000030 C??? F???      00039     movff   prod8x16+2, mul2_tmp+2  ; move lowest byte of multiplication to temporary storage
-000034 50??           00040     movf    mul16, W                ; move high byte of factor to W for multiplication
-000036 EC?? F???      00041     call    multiplication8x16      ; multiply high byte of factor to other factor in k16 and k16+1
-00003A C??? F???      00042     movff   mul2_tmp+2, prod16x16+3 ; move lowest byte of 1st multiplication to lowest byte of result
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  2
+000000                00018 START
+000000 EC?? F???      00019         call    ADC_Setup
+000004 EC?? F???      00020         call    DAC_Setup
+000008 EC?? F???      00021         call    random_init
+00000C EC?? F???      00022         call    UART_Setup_Receive ;set up UART so that it can receive bytes
+000010 EF?? F???      00023         goto    gaussian_noise_loop
+                      00024         
+                      00025         
+                      00026 
+000014                00027 measure_loop
+000014 EC?? F???      00028         call    ADC_read_A0   ;analog to digital conversion
+000018 50C4           00029         movf    ADRESH, W
+00001A 0F30           00030         addlw   b'00110000' ;convert the second 8bits (with configuration bits) to analog
+00001C EC?? F???      00031         call    DAC_write  ;convert the first 8 bits of the digital data to analog
+000020 50C3           00032         movf    ADRESL, W
+000022 EC?? F???      00033         call    DAC_write
+000026 EC?? F???      00034         call    DAC_end_write
+00002A EF?? F???      00035         goto    measure_loop    ; loop forever       
+00002E                00036 frequency_mix
+00002E EC?? F???      00037         call    ADC_read_A0 ;convert analog to digital
+000032 CFC3 F???      00038         movff   ADRESL,k16+1 ;move the lower bits of the digital data to k_16+1
+000036 CFC4 F???      00039         movff   ADRESH, k16 ;move the higher bits of the digital data to k_16
+00003A EC?? F???      00040         call    ADC_read_A5 ;convert the other analog signal to digital
+00003E CFC3 F???      00041         movff   ADRESL, mul16+1 ;move the lower bits of the other digital data to mul_16+1
+000042 CFC4 F???      00042         movff   ADRESH, mul16 ;move the higher bits of the other digital data to mul_16
+000046 EC?? F???      00043         call    frequency_multiplication
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00003E C??? F???      00043     movff   mul2_tmp+1, prod16x16+2 ; move middle byte of 1st multiplication to middle low byte of resul
-                            t for adding
-000042 50??           00044     movf    prod8x16+2, W           ; move lowest byte of 2nd multiplication to W for adding
-000044 2200           00045     addwfc  prod16x16+2, 1          ; add middle byte of 1st multiplication to lowest byte of 2nd multip
-                            lication with carry and save in middle low byte of result
-000046 C??? F???      00046     movff   mul2_tmp, prod16x16+1   ; move high byte of 1st multiplication to middle high byte of result
-                             for adding
-00004A 50??           00047     movf    prod8x16+1, W           ; move middle byte of 2nd multiplication to W for adding
-00004C 2200           00048     addwfc  prod16x16+1, 1          ; add high byte of 1st multiplication to middle byte in 2nd multipli
-                            cation with carry and save in middle high byte of result
-00004E C??? F???      00049     movff   prod8x16, prod16x16     ; move high byte of 2nd multiplication to highest byte of result for
-                             adding
-000052 0E00           00050     movlw   0x00                    ; move 0x0 to W for adding
-000054 22??           00051     addwfc  prod16x16               ; add 0x0 to high byte of 2nd multiplication with carry and save as 
-                            highest byte of result
-000056 0012           00052     return
-                      00053  
-                      00054 
-                      00055 
-                      00056 
-                      00057     END
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  3
+00004A EC?? F???      00044         call    DAC_write ;digital to analog conversion
+00004E 50??           00045         movf    output_tmp, W 
+000050 EC?? F???      00046         call    DAC_write
+000054 EC?? F???      00047         call    DAC_end_write
+000058 EF?? F???      00048         goto    frequency_mix
+00005C                00049 noise_loop
+00005C EC?? F???      00050         call UART_Setup_Transmit
+000060 EC?? F???      00051         call ADC_read_A0   ;convert analog to digital
+000064 EC?? F???      00052         call random_numbers ;call random number generator
+000068 50C4           00053         movf ADRESH, W ;move upper byte of digital data into W register
+00006A 2400           00054         addwf s, 0 ;add the random number to ADRESH
+00006C EC?? F???      00055         call UART_Transmit_Byte ;transmit the byte via UART
+000070 50C3           00056         movf ADRESL, W ;move lower byte of digital data into W register
+000072 2400           00057         addwf s+1, 0 ;combine the digital data with noise
+000074 EC?? F???      00058         call UART_Transmit_Byte ;transmit the other byte via UART
+000078 EF?? F???      00059         goto noise_loop ; start again
+00007C                00060 gaussian_noise_loop
+00007C EC?? F???      00061         call  UART_Receive_Byte ;receive the noise byte from python via UART
+000080 EC?? F???      00062         call  ADC_read_A0   ;convert analog to digital
+000084 50??           00063         movf  noise, W      ; move noise to W
+000086 26C3           00064         addwf ADRESL, 1     ; add noise to lower byte of signal
+000088 50C4           00065         movf  ADRESH, W ;move upper byte of digital data into W register
+00008A 0F30           00066         addlw b'00110000' ;convert the second 8bits (with configuration bits) to analog
+00008C EC?? F???      00067         call  DAC_write  ;output the upper byte (digital to analog)
+000090 50C3           00068         movf  ADRESL, W ;move the lower byte of the signal to W
+000092 EC?? F???      00069         call  DAC_write ;output the lower byte combined with noise
+000096 EC?? F???      00070         call  DAC_end_write
+00009A EF?? F???      00071         goto  gaussian_noise_loop ;start again
+                      00072         END
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  3
 
 
 SYMBOL TABLE
@@ -127,6 +135,9 @@ ADCON2                            00000FC0
 ADCS0                             00000000
 ADCS1                             00000001
 ADCS2                             00000002
+ADC_Setup                         00000000
+ADC_read_A0                       00000000
+ADC_read_A5                       00000000
 ADDEN                             00000003
 ADDEN1                            00000003
 ADDEN2                            00000003
@@ -140,15 +151,15 @@ ADMSK2                            00000002
 ADMSK3                            00000003
 ADMSK4                            00000004
 ADMSK5                            00000005
-ADON                              00000000
-ADRES                             00000FC3
-ADRESH                            00000FC4
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  4
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  4
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+ADON                              00000000
+ADRES                             00000FC3
+ADRESH                            00000FC4
 ADRESL                            00000FC3
 ALE                               00000000
 ALRMCFG                           00000F5B
@@ -199,15 +210,15 @@ ANSEL13                           00000005
 ANSEL14                           00000006
 ANSEL15                           00000007
 ANSEL16                           00000000
-ANSEL17                           00000001
-ANSEL18                           00000002
-ANSEL19                           00000003
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  5
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+ANSEL17                           00000001
+ANSEL18                           00000002
+ANSEL19                           00000003
 ANSEL2                            00000002
 ANSEL20                           00000004
 ANSEL21                           00000005
@@ -258,15 +269,15 @@ C1INB                             00000005
 C1INC                             00000006
 C1OUT                             00000002
 C1TSEL0                           00000000
-C1TSEL1                           00000001
-C1TSEL2                           00000002
-C2INA                             00000004
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  6
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+C1TSEL1                           00000001
+C1TSEL2                           00000002
+C2INA                             00000004
 C2INB                             00000003
 C2INC                             00000004
 C2IND                             00000005
@@ -317,15 +328,15 @@ CCP1CON                           00000FBB
 CCP1IE                            00000001
 CCP1IF                            00000001
 CCP1IP                            00000001
-CCP1M0                            00000000
-CCP1M1                            00000001
-CCP1M2                            00000002
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  7
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  7
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
 CCP1M3                            00000003
 CCP1MD                            00000005
 CCP1OD                            00000005
@@ -376,15 +387,15 @@ CCP5IE                            00000002
 CCP5IF                            00000002
 CCP5IP                            00000002
 CCP5M0                            00000000
-CCP5M1                            00000001
-CCP5M2                            00000002
-CCP5M3                            00000003
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  8
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  8
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CCP5M1                            00000001
+CCP5M2                            00000002
+CCP5M3                            00000003
 CCP5MD                            00000002
 CCP5OD                            00000002
 CCP5X                             00000005
@@ -435,15 +446,15 @@ CCP9CON                           00000F43
 CCP9IE                            00000006
 CCP9IF                            00000006
 CCP9IP                            00000006
-CCP9M0                            00000000
-CCP9M1                            00000001
-CCP9M2                            00000002
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE  9
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CCP9M0                            00000000
+CCP9M1                            00000001
+CCP9M2                            00000002
 CCP9M3                            00000003
 CCP9MD                            00000006
 CCP9OD                            00000006
@@ -494,15 +505,15 @@ CHS3                              00000005
 CHS4                              00000006
 CHSN0                             00000000
 CHSN1                             00000001
-CHSN2                             00000002
-CK1                               00000006
-CK2                               00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 10
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CHSN2                             00000002
+CK1                               00000006
+CK2                               00000001
 CKE                               00000006
 CKP                               00000004
 CLKI                              00000007
@@ -553,15 +564,15 @@ CTMUEN                            00000007
 CTMUI                             00000003
 CTMUICON                          00000F55
 CTMUIE                            00000003
-CTMUIF                            00000003
-CTMUIP                            00000003
-CTMUMD                            00000006
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 11
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 11
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CTMUIF                            00000003
+CTMUIP                            00000003
+CTMUMD                            00000006
 CTMUSIDL                          00000005
 CTPLS                             00000000
 CTTRIG                            00000000
@@ -576,6 +587,9 @@ CVREN                             00000007
 CVROE                             00000006
 CVRSS                             00000005
 D                                 00000005
+DAC_Setup                         00000000
+DAC_end_write                     00000000
+DAC_write                         00000000
 DATA_ADDRESS                      00000005
 DC                                00000001
 DC10B0                            00000004
@@ -609,18 +623,18 @@ DT2                               00000002
 D_A                               00000005
 D_NOT_A                           00000005
 EBDIS                             00000007
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 ECCP1AS                           00000FBF
 ECCP1AS0                          00000004
 ECCP1AS1                          00000005
 ECCP1AS2                          00000006
 ECCP1ASE                          00000007
 ECCP1CON                          00000FBB
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 12
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 ECCP1DEL                          00000FBE
 ECCP2AS                           00000F52
 ECCP2AS0                          00000004
@@ -668,18 +682,18 @@ FSR0H                             00000FEA
 FSR0L                             00000FE9
 FSR1                              00000001
 FSR1H                             00000FE2
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 FSR1L                             00000FE1
 FSR2                              00000002
 FSR2H                             00000FDA
 FSR2L                             00000FD9
 GCEN                              00000007
 GIE                               00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 13
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 GIEH                              00000007
 GIEL                              00000006
 GIE_GIEH                          00000007
@@ -727,18 +741,18 @@ INT2IE                            00000004
 INT2IF                            00000001
 INT2IP                            00000007
 INT2P                             00000007
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 INT3                              00000003
 INT3E                             00000005
 INT3F                             00000002
 INT3IE                            00000005
 INT3IF                            00000002
 INT3IP                            00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 14
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 INT3P                             00000001
 INTCON                            00000FF2
 INTCON2                           00000FF1
@@ -786,18 +800,18 @@ LATB1                             00000001
 LATB2                             00000002
 LATB3                             00000003
 LATB4                             00000004
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 LATB5                             00000005
 LATB6                             00000006
 LATB7                             00000007
 LATC                              00000F8B
 LATC0                             00000000
 LATC1                             00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 15
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 LATC2                             00000002
 LATC3                             00000003
 LATC4                             00000004
@@ -845,18 +859,18 @@ LATH4                             00000004
 LATH5                             00000005
 LATH6                             00000006
 LATH7                             00000007
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 LATJ                              00000F91
 LATJ0                             00000000
 LATJ1                             00000001
 LATJ2                             00000002
 LATJ3                             00000003
 LATJ4                             00000004
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 16
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 LATJ5                             00000005
 LATJ6                             00000006
 LATJ7                             00000007
@@ -904,18 +918,18 @@ NOT_WR                            00000001
 NOT_WRITE                         00000002
 OBF                               00000006
 ODCON1                            00000F29
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 ODCON2                            00000F28
 ODCON3                            00000F27
 OE                                00000001
 OERR                              00000001
 OERR1                             00000001
 OERR2                             00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 17
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 OSC1                              00000007
 OSC2                              00000006
 OSCCON                            00000FD3
@@ -963,18 +977,18 @@ P3DC2                             00000002
 P3DC3                             00000003
 P3DC4                             00000004
 P3DC5                             00000005
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 P3DC6                             00000006
 P3M0                              00000006
 P3M1                              00000007
 P3RSEN                            00000007
 PA3                               00000000
 PADCFG1                           00000F53
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 18
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 PB1                               00000007
 PB3                               00000005
 PC                                00000FF9
@@ -1022,18 +1036,18 @@ PORTF                             00000F85
 PORTG                             00000F86
 PORTH                             00000F87
 PORTJ                             00000F88
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 19
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 POSTDEC0                          00000FED
 POSTDEC1                          00000FE5
 POSTDEC2                          00000FDD
 POSTINC0                          00000FEE
 POSTINC1                          00000FE6
 POSTINC2                          00000FDE
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 19
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 PR10                              00000F34
 PR12                              00000F31
 PR2                               00000FCB
@@ -1081,18 +1095,18 @@ PWM2CON                           00000F51
 R                                 00000002
 RA0                               00000000
 RA1                               00000001
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 20
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 RA2                               00000002
 RA3                               00000003
 RA4                               00000004
 RA5                               00000005
 RA6                               00000006
 RA7                               00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 20
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 RB0                               00000000
 RB1                               00000001
 RB2                               00000002
@@ -1140,18 +1154,18 @@ RD1                               00000001
 RD16                              00000001
 RD2                               00000002
 RD3                               00000003
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 21
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 RD4                               00000004
 RD5                               00000005
 RD6                               00000006
 RD7                               00000007
 RDPU                              00000007
 RE0                               00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 21
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 RE1                               00000001
 RE2                               00000002
 RE3                               00000003
@@ -1199,18 +1213,18 @@ RODIV0                            00000000
 RODIV1                            00000001
 RODIV2                            00000002
 RODIV3                            00000003
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 22
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 ROON                              00000007
 ROSEL                             00000004
 ROSSLP                            00000005
 RSEN                              00000001
 RTCC                              00000004
 RTCCAL                            00000F5E
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 22
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 RTCCFG                            00000F5F
 RTCCIE                            00000000
 RTCCIF                            00000000
@@ -1258,18 +1272,18 @@ SENDB                             00000003
 SENDB1                            00000003
 SENDB2                            00000003
 SMP                               00000007
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 23
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 SOSCEN                            00000003
 SOSCGO                            00000003
 SOSCI                             00000001
 SOSCO                             00000000
 SOSCRUN                           00000006
 SP0                               00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 23
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 SP1                               00000001
 SP2                               00000002
 SP3                               00000003
@@ -1317,18 +1331,19 @@ SSPEN                             00000005
 SSPIE                             00000003
 SSPIF                             00000003
 SSPIP                             00000003
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 24
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 SSPM0                             00000000
 SSPM1                             00000001
 SSPM2                             00000002
 SSPM3                             00000003
 SSPOV                             00000006
 SSPSTAT                           00000FC7
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 24
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
+START                             00000000
 STATUS                            00000FD8
 STKFUL                            00000007
 STKOVF                            00000007
@@ -1375,6 +1390,12 @@ T1CKPS1                           00000005
 T1CON                             00000FCD
 T1G                               00000005
 T1GCON                            00000FAA
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 25
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 T1GGO                             00000003
 T1GGO_NOT_T1DONE                  00000003
 T1GPOL                            00000006
@@ -1382,12 +1403,6 @@ T1GSPM                            00000004
 T1GSS0                            00000000
 T1GSS1                            00000001
 T1GTM                             00000005
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 25
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 T1GVAL                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
@@ -1434,6 +1449,12 @@ T5GVAL                            00000002
 T6CKPS0                           00000000
 T6CKPS1                           00000001
 T6CON                             00000F39
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 26
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 T6OUTPS0                          00000003
 T6OUTPS1                          00000004
 T6OUTPS2                          00000005
@@ -1441,12 +1462,6 @@ T6OUTPS3                          00000006
 T7CKI                             00000004
 T7CKPS0                           00000004
 T7CKPS1                           00000005
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 26
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 T7CON                             00000F3D
 T7G                               00000001
 T7GCON                            00000F3C
@@ -1493,6 +1508,12 @@ TMR12MD                           00000000
 TMR12ON                           00000002
 TMR1CS0                           00000006
 TMR1CS1                           00000007
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 27
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TMR1GE                            00000007
 TMR1GIE                           00000002
 TMR1GIF                           00000002
@@ -1500,12 +1521,6 @@ TMR1GIP                           00000002
 TMR1H                             00000FCF
 TMR1IE                            00000000
 TMR1IF                            00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 27
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TMR1IP                            00000000
 TMR1L                             00000FCE
 TMR1MD                            00000001
@@ -1552,6 +1567,12 @@ TMR5MD                            00000003
 TMR5ON                            00000000
 TMR6                              00000F3B
 TMR6IE                            00000002
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 28
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TMR6IF                            00000002
 TMR6IP                            00000002
 TMR6MD                            00000004
@@ -1559,12 +1580,6 @@ TMR6ON                            00000002
 TMR7                              00000F3E
 TMR7CS0                           00000006
 TMR7CS1                           00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 28
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TMR7GE                            00000007
 TMR7GIE                           00000007
 TMR7GIF                           00000007
@@ -1611,6 +1626,12 @@ TRISC                             00000F94
 TRISC0                            00000000
 TRISC1                            00000001
 TRISC2                            00000002
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 29
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TRISC3                            00000003
 TRISC4                            00000004
 TRISC5                            00000005
@@ -1618,12 +1639,6 @@ TRISC6                            00000006
 TRISC7                            00000007
 TRISD                             00000F95
 TRISD0                            00000000
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 29
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TRISD1                            00000001
 TRISD2                            00000002
 TRISD3                            00000003
@@ -1670,6 +1685,12 @@ TRISJ2                            00000002
 TRISJ3                            00000003
 TRISJ4                            00000004
 TRISJ5                            00000005
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 30
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 TRISJ6                            00000006
 TRISJ7                            00000007
 TRMT                              00000001
@@ -1677,12 +1698,6 @@ TRMT1                             00000001
 TRMT2                             00000001
 TUN0                              00000000
 TUN1                              00000001
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 30
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 TUN2                              00000002
 TUN3                              00000003
 TUN4                              00000004
@@ -1721,10 +1736,20 @@ U2OD                              00000007
 UA                                00000001
 UART1MD                           00000003
 UART2MD                           00000004
+UART_Receive_Byte                 00000000
+UART_Setup_Receive                00000000
+UART_Setup_Transmit               00000000
+UART_Transmit_Byte                00000000
 UB                                00000007
 ULPEN                             00000002
 ULPLVL                            00000005
 ULPSINK                           00000001
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 31
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 ULPWU                             00000000
 VCFG0                             00000004
 VCFG1                             00000005
@@ -1736,12 +1761,6 @@ W                                 00000000
 WAIT0                             00000004
 WAIT1                             00000005
 WCOL                              00000007
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 31
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 WDTCON                            00000FD1
 WM0                               00000000
 WM1                               00000001
@@ -1784,6 +1803,12 @@ _CONFIG3L                         00300004
 _CONFIG4L                         00300006
 _CONFIG5H                         00300009
 _CONFIG5L                         00300008
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 32
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _CONFIG6H                         0030000B
 _CONFIG6L                         0030000A
 _CONFIG7H                         0030000D
@@ -1795,12 +1820,6 @@ _CP1_ON_5L                        000000FD
 _CP2_OFF_5L                       000000FF
 _CP2_ON_5L                        000000FB
 _CP3_OFF_5L                       000000FF
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 32
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _CP3_ON_5L                        000000F7
 _CP4_OFF_5L                       000000FF
 _CP4_ON_5L                        000000EF
@@ -1843,6 +1862,12 @@ _ECCPMX_PORTH_3H                  000000FD
 _FCMEN_OFF_1H                     000000BF
 _FCMEN_ON_1H                      000000FF
 _FOSC_EC1IO_1H                    000000FC
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 33
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _FOSC_EC1_1H                      000000FD
 _FOSC_EC2IO_1H                    000000FA
 _FOSC_EC2_1H                      000000FB
@@ -1854,12 +1879,6 @@ _FOSC_INTIO1_1H                   000000F9
 _FOSC_INTIO2_1H                   000000F8
 _FOSC_LP_1H                       000000F0
 _FOSC_RCIO_1H                     000000F7
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 33
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _FOSC_RC_1H                       000000F6
 _FOSC_XT_1H                       000000F1
 _IDLOC0                           00200000
@@ -1902,6 +1921,12 @@ _WDTPS_1048576_2H                 000000FF
 _WDTPS_128_2H                     0000009F
 _WDTPS_131072_2H                  000000C7
 _WDTPS_16384_2H                   000000BB
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 34
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _WDTPS_16_2H                      00000093
 _WDTPS_1_2H                       00000083
 _WDTPS_2048_2H                    000000AF
@@ -1913,12 +1938,6 @@ _WDTPS_32_2H                      00000097
 _WDTPS_4096_2H                    000000B3
 _WDTPS_4_2H                       0000008B
 _WDTPS_512_2H                     000000A7
-MPASM 5.81                MULTIPLICATION.ASM   2-27-2019  12:33:15         PAGE 34
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _WDTPS_524288_2H                  000000CF
 _WDTPS_64_2H                      0000009B
 _WDTPS_65536_2H                   000000C3
@@ -1949,16 +1968,31 @@ _WRTD_ON_6H                       0000007F
 _XINST_OFF_1L                     000000BF
 _XINST_ON_1L                      000000FF
 __18F87K22                        00000001
-bit                               0000000C
+__DEBUG                           
+__MPLAB_DEBUGGER_ICD3             1
+a                                 00000000
+c                                 00000000
+frequency_mix                     0000002E
+frequency_multiplication          00000000
+gaussian_noise_loop               0000007C
 k16                               00000000
-k8                                00000002
-mul16                             00000003
-mul1_tmp                          00000000
-mul2_tmp                          00000002
-multiplication16x16               00000022
-multiplication8x16                00000000
-prod16x16                         00000008
-prod8x16                          00000005
+k8                                00000000
+measure_loop                      00000014
+mul16                             00000000
+noise                             00000000
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:44:56         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+noise_loop                        0000005C
+output_tmp                        00000000
+prod16x16                         00000000
+prod8x16                          00000000
+random_init                       00000000
+random_numbers                    00000000
+s                                 00000000
 
 Errors   :     0
 Warnings :     0 reported,     0 suppressed

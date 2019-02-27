@@ -1730,6 +1730,10 @@ U2OD                              00000007
 UA                                00000001
 UART1MD                           00000003
 UART2MD                           00000004
+UART_Receive_Byte                 00000000
+UART_Setup_Receive                00000000
+UART_Setup_Transmit               00000000
+UART_Transmit_Byte                00000000
 UB                                00000007
 ULPEN                             00000002
 ULPLVL                            00000005
@@ -1968,6 +1972,7 @@ division_loop                     00000064
 divisl                            00000000
 frequency_mix                     0000002E
 frequency_multiplication          00000000
+gaussian_noise_loop               0000007C
 k16                               00000000
 k8                                00000000
 measure_loop                      00000014
@@ -1979,6 +1984,12 @@ SYMBOL TABLE
   LABEL                             VALUE 
 
 output_tmp                        00000000
+MPASM 5.81                          MAIN.ASM   2-27-2019  12:39:44         PAGE 35
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 prod16x16                         00000000
 prod8x16                          00000000
 quoth                             00000000

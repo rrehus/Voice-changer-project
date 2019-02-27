@@ -31,6 +31,7 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
+    <Elem>//icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
