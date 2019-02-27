@@ -49,28 +49,6 @@ division3
     bra	    division2		; loop until count = 0
     return
     
-;division
-;    movlw   0x0
-;    movwf   quot
-;    bcf	    STATUS, C
-;    bcf	    bit, 0
-;div_loop
-;    movlw   0x80
-;    cpfsgt  div8
-;    bra	    small
-;    movlw   0x80
-;    movwf   div8
-;small
-;    movf    divi8, W
-;    subwf   div8, 1
-;    btfsc   STATUS, N
-;    bsf	    bit, 0
-;    btfss   bit, 0
-;    incf    quot
-;    btfss   bit, 0
-;    bra	    div_loop
-;    return
-    
     END
 
 
