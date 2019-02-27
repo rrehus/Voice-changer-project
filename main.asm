@@ -20,7 +20,7 @@ START
 	call	DAC_Setup
 	call    random_init
 	call	UART_Setup_Receive ;set up UART so that it can receive bytes
-	goto    measure_loop
+	goto    gaussian_noise_loop
 	
 	
 
