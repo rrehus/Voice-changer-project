@@ -1,3 +1,3 @@
 build/default/debug/multiplication.o:  \
-	C:/Users/rr2016/MPLABXProjects/Voice-changer-project/multiplication.asm  \
+	H:/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/multiplication.asm  \
 

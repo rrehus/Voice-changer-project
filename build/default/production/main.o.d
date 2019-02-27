@@ -1,3 +1,3 @@
 build/default/production/main.o:  \
-	C:/Users/rr2016/MPLABXProjects/Voice-changer-project/main.asm  \
+	H:/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/main.asm  \
 

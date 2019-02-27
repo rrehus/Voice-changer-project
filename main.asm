@@ -19,7 +19,8 @@ START
 	call	ADC_Setup
 	call	DAC_Setup
 	call    random_init
-	goto    noise_loop
+	call	UART_Setup_Receive ;set up UART so that it can receive bytes
+	goto    measure_loop
 	
 	
 
@@ -57,13 +58,14 @@ noise_loop
 	call UART_Transmit_Byte ;transmit the other byte via UART
 	goto noise_loop ; start again
 gaussian_noise_loop
-	call  UART_Setup_Receive ;set up UART so that it can receive bytes
 	call  UART_Receive_Byte ;receive the noise byte from python via UART
 	call  ADC_read_A0   ;convert analog to digital
+	movf  noise, W	    ; move noise to W
+	addwf ADRESL, 1	    ; add noise to lower byte of signal
 	movf  ADRESH, W ;move upper byte of digital data into W register
+	addlw b'00110000' ;convert the second 8bits (with configuration bits) to analog
 	call  DAC_write  ;output the upper byte (digital to analog)
 	movf  ADRESL, W ;move the lower byte of the signal to W
-	addwf noise, 0  ;add the noise to the lower bytes
 	call  DAC_write ;output the lower byte combined with noise
 	call  DAC_end_write
 	goto  gaussian_noise_loop ;start again
