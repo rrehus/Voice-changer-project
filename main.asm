@@ -22,10 +22,6 @@ START
 	call	DAC_Setup
 	call    random_init
 	call	UART_Setup_Receive ;set up UART so that it can receive bytes
-	goto    gaussian_noise_loop
-	
-	call	ADC_Setup	    ; run ADC Setup
-	call	DAC_Setup	    ; run DAC Setup
 	call	LCD_Setup	    ; run LCD Setup
 	call	Volume_Setup	    ; run Volume Setup
 	goto    LCD_loop
@@ -69,9 +65,7 @@ division_loop
 	movwf	divisl
 	call	division16x16
 	goto	division_loop
-	
-    
-	END
+
 noise_loop
 	call UART_Setup_Transmit
 	call ADC_read_A0   ;convert analog to digital

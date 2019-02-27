@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm VolumeControl.asm division.asm LCD.asm
+SOURCEFILES_QUOTED_IF_SPACED=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm VolumeControl.asm division.asm LCD.asm //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/pseudo_number_generator.asm //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/UART.asm
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/division.o ${OBJECTDIR}/LCD.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/ANALOG_DIGITAL.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/digital_analog_12bit.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/spi.o.d ${OBJECTDIR}/frequency_mixer.o.d ${OBJECTDIR}/multiplication.o.d ${OBJECTDIR}/VolumeControl.o.d ${OBJECTDIR}/division.o.d ${OBJECTDIR}/LCD.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/division.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o ${OBJECTDIR}/_ext/1947541370/UART.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/ANALOG_DIGITAL.o.d ${OBJECTDIR}/config.o.d ${OBJECTDIR}/digital_analog_12bit.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/spi.o.d ${OBJECTDIR}/frequency_mixer.o.d ${OBJECTDIR}/multiplication.o.d ${OBJECTDIR}/VolumeControl.o.d ${OBJECTDIR}/division.o.d ${OBJECTDIR}/LCD.o.d ${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o.d ${OBJECTDIR}/_ext/1947541370/UART.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/division.o ${OBJECTDIR}/LCD.o
+OBJECTFILES=${OBJECTDIR}/ANALOG_DIGITAL.o ${OBJECTDIR}/config.o ${OBJECTDIR}/digital_analog_12bit.o ${OBJECTDIR}/main.o ${OBJECTDIR}/spi.o ${OBJECTDIR}/frequency_mixer.o ${OBJECTDIR}/multiplication.o ${OBJECTDIR}/VolumeControl.o ${OBJECTDIR}/division.o ${OBJECTDIR}/LCD.o ${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o ${OBJECTDIR}/_ext/1947541370/UART.o
 
 # Source Files
-SOURCEFILES=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm VolumeControl.asm division.asm LCD.asm
+SOURCEFILES=ANALOG_DIGITAL.asm config.asm digital_analog_12bit.asm main.asm spi.asm frequency_mixer.asm multiplication.asm VolumeControl.asm division.asm LCD.asm //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/pseudo_number_generator.asm //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/UART.asm
 
 
 CFLAGS=
@@ -174,6 +174,22 @@ ${OBJECTDIR}/LCD.o: LCD.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${DEP_GEN} -d "${OBJECTDIR}/LCD.o"
 	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
+${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o: //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/pseudo_number_generator.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1947541370" 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.lst\" -e\"${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o\" \"//icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/pseudo_number_generator.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o"
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/_ext/1947541370/UART.o: //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/UART.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1947541370" 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/UART.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/UART.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/_ext/1947541370/UART.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -d__DEBUG -d__MPLAB_DEBUGGER_ICD3=1 -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/_ext/1947541370/UART.lst\" -e\"${OBJECTDIR}/_ext/1947541370/UART.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/_ext/1947541370/UART.o\" \"//icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/UART.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/_ext/1947541370/UART.o"
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1947541370/UART.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
 else
 ${OBJECTDIR}/ANALOG_DIGITAL.o: ANALOG_DIGITAL.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -254,6 +270,22 @@ ${OBJECTDIR}/LCD.o: LCD.asm  nbproject/Makefile-${CND_CONF}.mk
 	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/LCD.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/LCD.lst\" -e\"${OBJECTDIR}/LCD.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/LCD.o\" \"LCD.asm\" 
 	@${DEP_GEN} -d "${OBJECTDIR}/LCD.o"
 	@${FIXDEPS} "${OBJECTDIR}/LCD.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o: //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/pseudo_number_generator.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1947541370" 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.lst\" -e\"${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o\" \"//icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/pseudo_number_generator.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o"
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1947541370/pseudo_number_generator.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
+	
+${OBJECTDIR}/_ext/1947541370/UART.o: //icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/UART.asm  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}/_ext/1947541370" 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/UART.o.d 
+	@${RM} ${OBJECTDIR}/_ext/1947541370/UART.o 
+	@${FIXDEPS} dummy.d -e "${OBJECTDIR}/_ext/1947541370/UART.err" $(SILENT) -c ${MP_AS} $(MP_EXTRA_AS_PRE) -q -p$(MP_PROCESSOR_OPTION)  -l\"${OBJECTDIR}/_ext/1947541370/UART.lst\" -e\"${OBJECTDIR}/_ext/1947541370/UART.err\" $(ASM_OPTIONS)    -o\"${OBJECTDIR}/_ext/1947541370/UART.o\" \"//icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/UART.asm\" 
+	@${DEP_GEN} -d "${OBJECTDIR}/_ext/1947541370/UART.o"
+	@${FIXDEPS} "${OBJECTDIR}/_ext/1947541370/UART.o.d" $(SILENT) -rsi ${MP_AS_DIR} -c18 
 	
 endif
 

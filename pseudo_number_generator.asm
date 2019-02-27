@@ -1,6 +1,6 @@
 #include p18f87k22.inc
      extern multiplication16x16, multiplication8x16, k16, mul16, prod16x16
-     global a, c,s, random_numbers, random_init
+     global a, c, s, random_numbers, random_init
 acs udata_acs
 a res 2 ;reserve two bytes of data for multiplier
 c res 2 ;reserve two bytes of data for increment
