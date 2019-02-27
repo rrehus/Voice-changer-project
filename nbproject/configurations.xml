@@ -19,7 +19,6 @@
       <itemPath>spi.asm</itemPath>
       <itemPath>frequency_mixer.asm</itemPath>
       <itemPath>multiplication.asm</itemPath>
-      <itemPath>LCD.asm</itemPath>
       <itemPath>VolumeControl.asm</itemPath>
       <itemPath>division.asm</itemPath>
     </logicalFolder>
