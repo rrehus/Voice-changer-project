@@ -1,4 +1,4 @@
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  1
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -38,58 +38,58 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 000004 EC?? F???      00022         call    DAC_Setup
 000008 EC?? F???      00023         call    random_init
 00000C EC?? F???      00024         call    UART_Setup_Receive ;set up UART so that it can receive bytes
-000010 EC?? F???      00025         call    LCD_Setup           ; run LCD Setup
-000014 EC?? F???      00026         call    Volume_Setup        ; run Volume Setup
-000018 EF?? F???      00027         goto    LCD_loop
-                      00028         
-                      00029 
-00001C                00030 measure_loop
-00001C EC?? F???      00031         call    ADC_read_A0         ;analog to digital conversion
-000020 50C4           00032         movf    ADRESH, W
-000022 0F30           00033         addlw   b'00110000'         ;convert the second 8bits (with configuration bits) to analog
-000024 EC?? F???      00034         call    DAC_write           ;convert the first 8 bits of the digital data to analog
-000028 50C3           00035         movf    ADRESL, W
-00002A EC?? F???      00036         call    DAC_write
-00002E EC?? F???      00037         call    DAC_end_write
-000032 EF?? F???      00038         goto    measure_loop        ; loop forever       
-000036                00039 frequency_mix
-000036 EC?? F???      00040         call    ADC_read_A0         ;convert analog to digital
-00003A CFC3 F???      00041         movff   ADRESL,k16+1        ;move the lower bits of the digital data to k_16+1
-00003E CFC4 F???      00042         movff   ADRESH, k16         ;move the higher bits of the digital data to k_16
-000042 EC?? F???      00043         call    ADC_read_A5         ;convert the other analog signal to digital
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  2
+000010 EC?? F???      00025         call    UART_Setup_Transmit
+000014 EC?? F???      00026         call    LCD_Setup           ; run LCD Setup
+000018 EC?? F???      00027         call    Volume_Setup        ; run Volume Setup
+00001C EF?? F???      00028         goto    noise_loop
+                      00029         
+                      00030 
+000020                00031 measure_loop
+000020 EC?? F???      00032         call    ADC_read_A0         ;analog to digital conversion
+000024 50C4           00033         movf    ADRESH, W
+000026 0F30           00034         addlw   b'00110000'         ;convert the second 8bits (with configuration bits) to analog
+000028 EC?? F???      00035         call    DAC_write           ;convert the first 8 bits of the digital data to analog
+00002C 50C3           00036         movf    ADRESL, W
+00002E EC?? F???      00037         call    DAC_write
+000032 EC?? F???      00038         call    DAC_end_write
+000036 EF?? F???      00039         goto    measure_loop        ; loop forever       
+00003A                00040 frequency_mix
+00003A EC?? F???      00041         call    ADC_read_A0         ;convert analog to digital
+00003E CFC3 F???      00042         movff   ADRESL,k16+1        ;move the lower bits of the digital data to k_16+1
+000042 CFC4 F???      00043         movff   ADRESH, k16         ;move the higher bits of the digital data to k_16
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000046 CFC3 F???      00044         movff   ADRESL, mul16+1     ;move the lower bits of the other digital data to mul_16+1
-00004A CFC4 F???      00045         movff   ADRESH, mul16       ;move the higher bits of the other digital data to mul_16
-00004E EC?? F???      00046         call    frequency_multiplication    ; mix signals
-000052 EC?? F???      00047         call    DAC_write           ;digital to analog conversion
-000056 50??           00048         movf    output_tmp, W 
-000058 EC?? F???      00049         call    DAC_write
-00005C EC?? F???      00050         call    DAC_end_write
-000060 EF?? F???      00051         goto    frequency_mix
-                      00052         
+000046 EC?? F???      00044         call    ADC_read_A5         ;convert the other analog signal to digital
+00004A CFC3 F???      00045         movff   ADRESL, mul16+1     ;move the lower bits of the other digital data to mul_16+1
+00004E CFC4 F???      00046         movff   ADRESH, mul16       ;move the higher bits of the other digital data to mul_16
+000052 EC?? F???      00047         call    frequency_multiplication    ; mix signals
+000056 EC?? F???      00048         call    DAC_write           ;digital to analog conversion
+00005A 50??           00049         movf    output_tmp, W 
+00005C EC?? F???      00050         call    DAC_write
+000060 EC?? F???      00051         call    DAC_end_write
+000064 EF?? F???      00052         goto    frequency_mix
                       00053         
-000064                00054 LCD_loop
-000064 EC?? F???      00055         call    VolumeDo
-000068 EF?? F???      00056         goto    LCD_loop
-                      00057         
-00006C                00058 division_loop
-00006C 0E13           00059         movlw   0x13
-00006E 6E??           00060         movwf   dividh
-000070 0E88           00061         movlw   0x88
-000072 6E??           00062         movwf   dividl
-000074 6A??           00063         clrf    divish
-000076 0E7F           00064         movlw   0x7F
-000078 6E??           00065         movwf   divisl
-00007A EC?? F???      00066         call    division16x16
-00007E EF?? F???      00067         goto    division_loop
-                      00068 
-000082                00069 noise_loop
-000082 EC?? F???      00070         call UART_Setup_Transmit
+                      00054         
+000068                00055 LCD_loop
+000068 EC?? F???      00056         call    VolumeDo
+00006C EF?? F???      00057         goto    LCD_loop
+                      00058         
+000070                00059 division_loop
+000070 0E13           00060         movlw   0x13
+000072 6E??           00061         movwf   dividh
+000074 0E88           00062         movlw   0x88
+000076 6E??           00063         movwf   dividl
+000078 6A??           00064         clrf    divish
+00007A 0E7F           00065         movlw   0x7F
+00007C 6E??           00066         movwf   divisl
+00007E EC?? F???      00067         call    division16x16
+000082 EF?? F???      00068         goto    division_loop
+                      00069 
+000086                00070 noise_loop
 000086 EC?? F???      00071         call ADC_read_A0   ;convert analog to digital
 00008A EC?? F???      00072         call random_numbers ;call random number generator
 00008E 50C4           00073         movf ADRESH, W ;move upper byte of digital data into W register
@@ -111,8 +111,10 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0000B8 EC?? F???      00089         call  DAC_write ;output the lower byte combined with noise
 0000BC EC?? F???      00090         call  DAC_end_write
 0000C0 EF?? F???      00091         goto  gaussian_noise_loop ;start again
-                      00092         END
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  3
+                      00092         
+                      00093         
+                      00094         END
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  3
 
 
 SYMBOL TABLE
@@ -171,7 +173,7 @@ ADMSK2                            00000002
 ADMSK3                            00000003
 ADMSK4                            00000004
 ADMSK5                            00000005
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  4
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  4
 
 
 SYMBOL TABLE
@@ -230,7 +232,7 @@ ANSEL13                           00000005
 ANSEL14                           00000006
 ANSEL15                           00000007
 ANSEL16                           00000000
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  5
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  5
 
 
 SYMBOL TABLE
@@ -289,7 +291,7 @@ C1INB                             00000005
 C1INC                             00000006
 C1OUT                             00000002
 C1TSEL0                           00000000
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  6
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  6
 
 
 SYMBOL TABLE
@@ -348,7 +350,7 @@ CCP1CON                           00000FBB
 CCP1IE                            00000001
 CCP1IF                            00000001
 CCP1IP                            00000001
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  7
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  7
 
 
 SYMBOL TABLE
@@ -407,7 +409,7 @@ CCP5IE                            00000002
 CCP5IF                            00000002
 CCP5IP                            00000002
 CCP5M0                            00000000
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  8
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  8
 
 
 SYMBOL TABLE
@@ -466,7 +468,7 @@ CCP9CON                           00000F43
 CCP9IE                            00000006
 CCP9IF                            00000006
 CCP9IP                            00000006
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE  9
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE  9
 
 
 SYMBOL TABLE
@@ -525,7 +527,7 @@ CHS3                              00000005
 CHS4                              00000006
 CHSN0                             00000000
 CHSN1                             00000001
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 10
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 10
 
 
 SYMBOL TABLE
@@ -584,7 +586,7 @@ CTMUEN                            00000007
 CTMUI                             00000003
 CTMUICON                          00000F55
 CTMUIE                            00000003
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 11
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 11
 
 
 SYMBOL TABLE
@@ -643,7 +645,7 @@ DT2                               00000002
 D_A                               00000005
 D_NOT_A                           00000005
 EBDIS                             00000007
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 12
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 12
 
 
 SYMBOL TABLE
@@ -702,7 +704,7 @@ FSR0H                             00000FEA
 FSR0L                             00000FE9
 FSR1                              00000001
 FSR1H                             00000FE2
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 13
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 13
 
 
 SYMBOL TABLE
@@ -761,7 +763,7 @@ INT2IE                            00000004
 INT2IF                            00000001
 INT2IP                            00000007
 INT2P                             00000007
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 14
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 14
 
 
 SYMBOL TABLE
@@ -820,7 +822,7 @@ LATB1                             00000001
 LATB2                             00000002
 LATB3                             00000003
 LATB4                             00000004
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 15
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 15
 
 
 SYMBOL TABLE
@@ -879,7 +881,7 @@ LATH4                             00000004
 LATH5                             00000005
 LATH6                             00000006
 LATH7                             00000007
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 16
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 16
 
 
 SYMBOL TABLE
@@ -896,7 +898,7 @@ LATJ6                             00000006
 LATJ7                             00000007
 LB                                00000006
 LCD_Setup                         00000000
-LCD_loop                          00000064
+LCD_loop                          00000068
 LVDIE                             00000002
 LVDIF                             00000002
 LVDIP                             00000002
@@ -938,7 +940,7 @@ NOT_TX8                           00000006
 NOT_W                             00000002
 NOT_WR                            00000001
 NOT_WRITE                         00000002
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 17
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 17
 
 
 SYMBOL TABLE
@@ -997,7 +999,7 @@ P3DC0                             00000000
 P3DC1                             00000001
 P3DC2                             00000002
 P3DC3                             00000003
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 18
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 18
 
 
 SYMBOL TABLE
@@ -1056,7 +1058,7 @@ PORTD                             00000F83
 PORTE                             00000F84
 PORTF                             00000F85
 PORTG                             00000F86
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 19
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 19
 
 
 SYMBOL TABLE
@@ -1115,7 +1117,7 @@ PSTR3CON                          00000F1A
 PWM1CON                           00000FBE
 PWM2CON                           00000F51
 R                                 00000002
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 20
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 20
 
 
 SYMBOL TABLE
@@ -1174,7 +1176,7 @@ RD                                00000000
 RD0                               00000000
 RD1                               00000001
 RD16                              00000001
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 21
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 21
 
 
 SYMBOL TABLE
@@ -1233,7 +1235,7 @@ RJ7                               00000007
 RJPU                              00000005
 RODIV0                            00000000
 RODIV1                            00000001
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 22
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 22
 
 
 SYMBOL TABLE
@@ -1292,7 +1294,7 @@ SDO2                              00000004
 SEN                               00000000
 SENDB                             00000003
 SENDB1                            00000003
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 23
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 23
 
 
 SYMBOL TABLE
@@ -1351,7 +1353,7 @@ SSPCON1                           00000FC6
 SSPCON2                           00000FC5
 SSPEN                             00000005
 SSPIE                             00000003
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 24
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 24
 
 
 SYMBOL TABLE
@@ -1410,7 +1412,7 @@ T1CKI                             00000005
 T1CKPS0                           00000004
 T1CKPS1                           00000005
 T1CON                             00000FCD
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 25
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 25
 
 
 SYMBOL TABLE
@@ -1469,7 +1471,7 @@ T5GSS1                            00000001
 T5GTM                             00000005
 T5GVAL                            00000002
 T6CKPS0                           00000000
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 26
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 26
 
 
 SYMBOL TABLE
@@ -1528,7 +1530,7 @@ TMR12IF                           00000006
 TMR12IP                           00000006
 TMR12MD                           00000000
 TMR12ON                           00000002
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 27
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 27
 
 
 SYMBOL TABLE
@@ -1587,7 +1589,7 @@ TMR5IP                            00000001
 TMR5L                             00000F7C
 TMR5MD                            00000003
 TMR5ON                            00000000
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 28
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 28
 
 
 SYMBOL TABLE
@@ -1646,7 +1648,7 @@ TRISB6                            00000006
 TRISB7                            00000007
 TRISC                             00000F94
 TRISC0                            00000000
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 29
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 29
 
 
 SYMBOL TABLE
@@ -1705,7 +1707,7 @@ TRISJ0                            00000000
 TRISJ1                            00000001
 TRISJ2                            00000002
 TRISJ3                            00000003
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 30
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 30
 
 
 SYMBOL TABLE
@@ -1764,7 +1766,7 @@ UART_Setup_Transmit               00000000
 UART_Transmit_Byte                00000000
 UB                                00000007
 ULPEN                             00000002
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 31
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 31
 
 
 SYMBOL TABLE
@@ -1823,7 +1825,7 @@ _CONFIG1L                         00300000
 _CONFIG2H                         00300003
 _CONFIG2L                         00300002
 _CONFIG3H                         00300005
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 32
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 32
 
 
 SYMBOL TABLE
@@ -1882,7 +1884,7 @@ _EBRT7_ON_7L                      0000007F
 _EBRTB_OFF_7H                     000000FF
 _EBRTB_ON_7H                      000000BF
 _ECCPMX_PORTE_3H                  000000FF
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 33
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 33
 
 
 SYMBOL TABLE
@@ -1941,7 +1943,7 @@ _WDTEN_OFF_2H                     000000FC
 _WDTEN_ON_2H                      000000FE
 _WDTEN_SWDTDIS_2H                 000000FF
 _WDTPS_1024_2H                    000000AB
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 34
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 34
 
 
 SYMBOL TABLE
@@ -1998,23 +2000,23 @@ dividh                            00000000
 dividl                            00000000
 divish                            00000000
 division16x16                     00000000
-division_loop                     0000006C
+division_loop                     00000070
 divisl                            00000000
-MPASM 5.81                          MAIN.ASM   2-27-2019  14:16:59         PAGE 35
+MPASM 5.81                          MAIN.ASM   2-27-2019  15:44:12         PAGE 35
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-frequency_mix                     00000036
+frequency_mix                     0000003A
 frequency_multiplication          00000000
 gaussian_noise_loop               000000A2
 k16                               00000000
 k8                                00000000
-measure_loop                      0000001C
+measure_loop                      00000020
 mul16                             00000000
 noise                             00000000
-noise_loop                        00000082
+noise_loop                        00000086
 output_tmp                        00000000
 prod16x16                         00000000
 prod8x16                          00000000

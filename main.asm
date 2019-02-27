@@ -22,9 +22,13 @@ START
 	call	DAC_Setup
 	call    random_init
 	call	UART_Setup_Receive ;set up UART so that it can receive bytes
+	call	UART_Setup_Transmit
 	call	LCD_Setup	    ; run LCD Setup
 	call	Volume_Setup	    ; run Volume Setup
-	goto    LCD_loop
+	
+main_loop
+	
+	goto    main_loop
 	
 
 measure_loop
@@ -48,7 +52,7 @@ frequency_mix
         movf	output_tmp, W 
         call	DAC_write
         call	DAC_end_write
-	goto	frequency_mix
+	return
 	
 	
 LCD_loop
@@ -67,7 +71,6 @@ division_loop
 	goto	division_loop
 
 noise_loop
-	call UART_Setup_Transmit
 	call ADC_read_A0   ;convert analog to digital
 	call random_numbers ;call random number generator
 	movf ADRESH, W ;move upper byte of digital data into W register
@@ -89,4 +92,6 @@ gaussian_noise_loop
 	call  DAC_write ;output the lower byte combined with noise
 	call  DAC_end_write
 	goto  gaussian_noise_loop ;start again
+	
+	
 	END
