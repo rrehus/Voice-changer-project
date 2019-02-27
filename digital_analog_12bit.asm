@@ -29,17 +29,17 @@ delay
 	return
 
 DAC_write 
-    bcf PORTD, 0    ; set CS to low
-    bsf	PORTD, 1    ; set LDAC to high
+    bcf PORTD, 0		; set CS to low
+    bsf	PORTD, 1		; set LDAC to high
     call delay
     call SPI_MasterTransmit
     return
 DAC_end_write
-    bsf PORTD, 0 ;set CS to 1
+    bsf PORTD, 0		; set CS to 1
     call delay
-    bcf  PORTD, 1 ; set LDAC to 0
+    bcf  PORTD, 1		; set LDAC to 0
     call delay
-    bsf  PORTD, 1 ; set LDAC to 1
+    bsf  PORTD, 1		; set LDAC to 1
     return
 
     END

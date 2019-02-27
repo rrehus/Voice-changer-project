@@ -18,53 +18,55 @@ RES_VECT  CODE    0x0000            ; processor reset vector
 MAIN_PROG CODE                      ; let linker place main program
 
 START
-	call	ADC_Setup	    ;run the analog to digital conversion setup
-	call	DAC_Setup           ;run the digital to analog conversion setup
-	call    random_init         ;run the setup for generation of random numbers
-	call	UART_Setup          ;run the setup for the UART data transmission and receiving
+	call	ADC_Setup	    ; run the analog to digital conversion setup
+	call	DAC_Setup           ; run the digital to analog conversion setup
+	call    random_init         ; run the setup for generation of random numbers
+	call	UART_Setup          ; run the setup for the UART data transmission and receiving
 	call	LCD_Setup	    ; run LCD Setup
 	call	Volume_Setup	    ; run Volume Setup
 	
 main_loop
-	call    VolumeDo            ;reads and sets volume
-	call    frequency_mix       ;changes the frequency of the signal
-	call    noise_loop          ;combines the signal with the noise
-	call    output_loop         ;output the modified signal via DAC and UART
+	call    VolumeDo            ; reads and sets volume
+	call    frequency_mix       ; changes the frequency of the signal
+	call    noise_loop          ; combines the signal with the noise
+	call    output_loop         ; output the modified signal via DAC and UART
 	goto    main_loop
 
 noise_loop
-	call random_numbers ;call random number generator
-	movf mixed_h, W ;move upper byte of digital data into W register
-	addwf s, 1 ;add the random number to ADRESH
-	movwf s  ;move higher byte into s
-	movf mixed_l, W ;move lower byte of digital data into W register
-	addwf s+1, 1 ;combine the digital data with noise
+	call random_numbers	    ; call random number generator
+	movf mixed_h, W		    ; move upper byte of digital data into W register
+	addwf s, 1		    ; add the random number to ADRESH
+	movf mixed_l, W		    ; move lower byte of digital data into W register
+	addwf s+1, 1		    ; combine the digital data with noise
 	return
+	
 gaussian_noise_loop
-	call  UART_Receive_Byte ;receive the noise byte from python via UART
-	movf  noise, W	    ; move noise to W
-	addwf mixed_l, 0    ; add noise to lower byte of signal
-	movwf s+1           ;move lower byte into s+1
-	movff  mixed_h, s ;move upper byte of digital data into W register
+	call  UART_Receive_Byte	    ; receive the noise byte from python via UART
+	movf  noise, W		    ; move noise to W
+	addwf mixed_l, 0	    ; add noise to lower byte of signal
+	movwf s+1		    ; move lower byte into s+1
+	movff  mixed_h, s	    ; move upper byte of digital data into W register
 	return
+	
 output_loop
 	movf   s, W
-	call   UART_Transmit_Byte ;transmit the byte via UART 
+	call   UART_Transmit_Byte   ; transmit the byte via UART 
 	movf   s+1, W
-	call   UART_Transmit_Byte ;transmit the other byte via UART
-	movf   s, W ;output the higher byte with the configuration bits added
+	call   UART_Transmit_Byte   ; transmit the other byte via UART
+	movf   s, W		    ; output the higher byte with the configuration bits added
 	addlw  b'00110000'
 	call   DAC_write
-	movf   s+1, W ;output the lower byte
+	movf   s+1, W		    ; output the lower byte
 	call   DAC_write
 	call   DAC_end_write
 	return
-
+	
+	;#######################################################
 measure_loop ; used for testing purposes
-	call	ADC_read_A0	    ;analog to digital conversion
+	call	ADC_read_A0	    ; analog to digital conversion
 	movf	ADRESH, W
-	addlw   b'00110000'	    ;convert the second 8bits (with configuration bits) to analog
-	call    DAC_write	    ;convert the first 8 bits of the digital data to analog
+	addlw   b'00110000'	    ; convert the second 8bits (with configuration bits) to analog
+	call    DAC_write	    ; convert the first 8 bits of the digital data to analog
 	movf	ADRESL, W
 	call    DAC_write
 	call	DAC_end_write

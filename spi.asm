@@ -2,7 +2,7 @@
     
 	global  SPI_MasterInit, SPI_MasterTransmit
 SPI code
-SPI_MasterInit ; Set Clock edge to negative
+SPI_MasterInit		    ; Set Clock edge to negative
 	bcf SSP2STAT, CKE
 	; MSSP enable; CKP=1; SPI master, clock=Fosc/64 (1MHz)
 	movlw (1<<SSPEN)|(1<<CKP)|(0x02)
