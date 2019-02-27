@@ -1,4 +1,4 @@
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  1
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 000016 0E??           00040     movlw       upper(Table)    ; address of data in PM
 000018 6EF8           00041     movwf       TBLPTRU         ; load upper bits to TBLPTRU
 00001A 0E??           00042     movlw       high(Table)     ; address of data in PM
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  2
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 000086 14F4           00093     andwf       PRODH, 0
 000088 6E??           00094     movwf       k16
 00008A CFF3 F???      00095     movff       PRODL, k16+1
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  3
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -156,63 +156,65 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
 0000D8 EC?? F???      00127     call        LCD_Hex_Nib
 0000DC D???           00128     bra         cond2
 0000DE                00129 next
-0000DE 0EF0           00130     movlw       0xF0
-0000E0 C??? F???      00131     movff       voltmp+1, voltmp1
+0000DE C??? F???      00130     movff       voldisp+1, voltmp1
+0000E2 0EF0           00131     movlw       0xF0
 0000E4 1600           00132     andwf       voltmp1, 1
 0000E6 0E00           00133     movlw       0x0
 0000E8 62??           00134     cpfseq      voltmp1
 0000EA D???           00135     bra         cond2
-0000EC 0E0F           00136     movlw       0x0F
-0000EE C??? F???      00137     movff       voltmp+1, voltmp1
+0000EC C??? F???      00136     movff       voldisp+1, voltmp1
+0000F0 0E0F           00137     movlw       0x0F
 0000F2 1600           00138     andwf       voltmp1, 1
 0000F4 0E00           00139     movlw       0x0
 0000F6 62??           00140     cpfseq      voltmp1
 0000F8 D???           00141     bra         cond3
 0000FA 0E20           00142     movlw       0x20
 0000FC EC?? F???      00143     call        LCD_Send_Byte_D
-000100 D???           00144     bra         next1
-000102                00145 cond3
-000102 0E20           00146     movlw       0x20
-000104 EC?? F???      00147     call        LCD_Send_Byte_D
-000108 50??           00148     movf        voldisp+1, W
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  4
+000100 0E30           00144     movlw       0x30
+000102 EC?? F???      00145     call        LCD_Send_Byte_D
+000106 D???           00146     bra         next1
+000108                00147 cond3
+000108 0E20           00148     movlw       0x20
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-00010A 0B0F           00149     andlw       0x0F
-00010C EC?? F???      00150     call        LCD_Hex_Nib
-000110 D???           00151     bra         next1
-000112                00152 cond2
-000112 50??           00153     movf        voldisp+1, W
-000114 EC?? F???      00154     call        LCD_Write_Hex
-000118                00155 next1
-000118 0E25           00156     movlw       0x25
-00011A EC?? F???      00157     call        LCD_Send_Byte_D
-00011E EC?? F???      00158     call        LCD_Setup
-000122 0012           00159     return
-                      00160     
-000124                00161 delay
-000124 0E08           00162     movlw       0x8
-000126 6E??           00163     movwf       delay_count
-000128                00164 delay_loop_nop
-000128 0000           00165     nop
-00012A 0000           00166     nop
-00012C 0000           00167     nop
-00012E 0000           00168     nop
-000130 0000           00169     nop
-000132 0000           00170     nop
-000134 0000           00171     nop
-000136 0000           00172     nop
-000138 0000           00173     nop
-00013A 0000           00174     nop
-00013C 2E??           00175     decfsz      delay_count
-00013E D???           00176     bra         delay_loop_nop
-000140 0012           00177     return
-                      00178     
-                      00179     END
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  5
+00010A EC?? F???      00149     call        LCD_Send_Byte_D
+00010E 50??           00150     movf        voldisp+1, W
+000110 0B0F           00151     andlw       0x0F
+000112 EC?? F???      00152     call        LCD_Hex_Nib
+000116 D???           00153     bra         next1
+000118                00154 cond2
+000118 50??           00155     movf        voldisp+1, W
+00011A EC?? F???      00156     call        LCD_Write_Hex
+00011E                00157 next1
+00011E 0E25           00158     movlw       0x25
+000120 EC?? F???      00159     call        LCD_Send_Byte_D
+000124 EC?? F???      00160     call        LCD_Setup
+000128 0012           00161     return
+                      00162     
+00012A                00163 delay
+00012A 0E08           00164     movlw       0x8
+00012C 6E??           00165     movwf       delay_count
+00012E                00166 delay_loop_nop
+00012E 0000           00167     nop
+000130 0000           00168     nop
+000132 0000           00169     nop
+000134 0000           00170     nop
+000136 0000           00171     nop
+000138 0000           00172     nop
+00013A 0000           00173     nop
+00013C 0000           00174     nop
+00013E 0000           00175     nop
+000140 0000           00176     nop
+000142 2E??           00177     decfsz      delay_count
+000144 D???           00178     bra         delay_loop_nop
+000146 0012           00179     return
+                      00180     
+                      00181     END
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  5
 
 
 SYMBOL TABLE
@@ -271,7 +273,7 @@ ADMSK4                            00000004
 ADMSK5                            00000005
 ADON                              00000000
 ADRES                             00000FC3
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  6
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  6
 
 
 SYMBOL TABLE
@@ -330,7 +332,7 @@ ANSEL15                           00000007
 ANSEL16                           00000000
 ANSEL17                           00000001
 ANSEL18                           00000002
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  7
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  7
 
 
 SYMBOL TABLE
@@ -389,7 +391,7 @@ C1INC                             00000006
 C1OUT                             00000002
 C1TSEL0                           00000000
 C1TSEL1                           00000001
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  8
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  8
 
 
 SYMBOL TABLE
@@ -448,7 +450,7 @@ CCP1IE                            00000001
 CCP1IF                            00000001
 CCP1IP                            00000001
 CCP1M0                            00000000
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE  9
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE  9
 
 
 SYMBOL TABLE
@@ -507,7 +509,7 @@ CCP5IF                            00000002
 CCP5IP                            00000002
 CCP5M0                            00000000
 CCP5M1                            00000001
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 10
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 10
 
 
 SYMBOL TABLE
@@ -566,7 +568,7 @@ CCP9IE                            00000006
 CCP9IF                            00000006
 CCP9IP                            00000006
 CCP9M0                            00000000
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 11
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 11
 
 
 SYMBOL TABLE
@@ -625,7 +627,7 @@ CHS4                              00000006
 CHSN0                             00000000
 CHSN1                             00000001
 CHSN2                             00000002
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 12
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 12
 
 
 SYMBOL TABLE
@@ -684,7 +686,7 @@ CTMUI                             00000003
 CTMUICON                          00000F55
 CTMUIE                            00000003
 CTMUIF                            00000003
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 13
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 13
 
 
 SYMBOL TABLE
@@ -743,7 +745,7 @@ ECCP1AS                           00000FBF
 ECCP1AS0                          00000004
 ECCP1AS1                          00000005
 ECCP1AS2                          00000006
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 14
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 14
 
 
 SYMBOL TABLE
@@ -802,7 +804,7 @@ FSR1L                             00000FE1
 FSR2                              00000002
 FSR2H                             00000FDA
 FSR2L                             00000FD9
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 15
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 15
 
 
 SYMBOL TABLE
@@ -861,7 +863,7 @@ INT3                              00000003
 INT3E                             00000005
 INT3F                             00000002
 INT3IE                            00000005
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 16
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 16
 
 
 SYMBOL TABLE
@@ -920,7 +922,7 @@ LATB5                             00000005
 LATB6                             00000006
 LATB7                             00000007
 LATC                              00000F8B
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 17
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 17
 
 
 SYMBOL TABLE
@@ -979,7 +981,7 @@ LATJ                              00000F91
 LATJ0                             00000000
 LATJ1                             00000001
 LATJ2                             00000002
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 18
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 18
 
 
 SYMBOL TABLE
@@ -1038,7 +1040,7 @@ NOT_TX8                           00000006
 NOT_W                             00000002
 NOT_WR                            00000001
 NOT_WRITE                         00000002
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 19
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 19
 
 
 SYMBOL TABLE
@@ -1097,7 +1099,7 @@ P3DC0                             00000000
 P3DC1                             00000001
 P3DC2                             00000002
 P3DC3                             00000003
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 20
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 20
 
 
 SYMBOL TABLE
@@ -1156,7 +1158,7 @@ PORTD                             00000F83
 PORTE                             00000F84
 PORTF                             00000F85
 PORTG                             00000F86
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 21
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 21
 
 
 SYMBOL TABLE
@@ -1215,7 +1217,7 @@ PSTR3CON                          00000F1A
 PWM1CON                           00000FBE
 PWM2CON                           00000F51
 R                                 00000002
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 22
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 22
 
 
 SYMBOL TABLE
@@ -1274,7 +1276,7 @@ RD                                00000000
 RD0                               00000000
 RD1                               00000001
 RD16                              00000001
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 23
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 23
 
 
 SYMBOL TABLE
@@ -1333,7 +1335,7 @@ RJ7                               00000007
 RJPU                              00000005
 RODIV0                            00000000
 RODIV1                            00000001
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 24
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 24
 
 
 SYMBOL TABLE
@@ -1392,7 +1394,7 @@ SDO2                              00000004
 SEN                               00000000
 SENDB                             00000003
 SENDB1                            00000003
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 25
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 25
 
 
 SYMBOL TABLE
@@ -1451,7 +1453,7 @@ SSPCON1                           00000FC6
 SSPCON2                           00000FC5
 SSPEN                             00000005
 SSPIE                             00000003
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 26
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 26
 
 
 SYMBOL TABLE
@@ -1510,7 +1512,7 @@ T1CKPS0                           00000004
 T1CKPS1                           00000005
 T1CON                             00000FCD
 T1G                               00000005
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 27
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 27
 
 
 SYMBOL TABLE
@@ -1569,7 +1571,7 @@ T5GTM                             00000005
 T5GVAL                            00000002
 T6CKPS0                           00000000
 T6CKPS1                           00000001
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 28
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 28
 
 
 SYMBOL TABLE
@@ -1628,7 +1630,7 @@ TMR12IP                           00000006
 TMR12MD                           00000000
 TMR12ON                           00000002
 TMR1CS0                           00000006
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 29
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 29
 
 
 SYMBOL TABLE
@@ -1687,7 +1689,7 @@ TMR5L                             00000F7C
 TMR5MD                            00000003
 TMR5ON                            00000000
 TMR6                              00000F3B
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 30
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 30
 
 
 SYMBOL TABLE
@@ -1746,7 +1748,7 @@ TRISB7                            00000007
 TRISC                             00000F94
 TRISC0                            00000000
 TRISC1                            00000001
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 31
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 31
 
 
 SYMBOL TABLE
@@ -1805,7 +1807,7 @@ TRISJ1                            00000001
 TRISJ2                            00000002
 TRISJ3                            00000003
 TRISJ4                            00000004
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 32
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 32
 
 
 SYMBOL TABLE
@@ -1864,7 +1866,7 @@ ULPEN                             00000002
 ULPLVL                            00000005
 ULPSINK                           00000001
 ULPWU                             00000000
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 33
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 33
 
 
 SYMBOL TABLE
@@ -1923,7 +1925,7 @@ _CONFIG1L                         00300000
 _CONFIG2H                         00300003
 _CONFIG2L                         00300002
 _CONFIG3H                         00300005
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 34
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 34
 
 
 SYMBOL TABLE
@@ -1982,7 +1984,7 @@ _EBRT7_ON_7L                      0000007F
 _EBRTB_OFF_7H                     000000FF
 _EBRTB_ON_7H                      000000BF
 _ECCPMX_PORTE_3H                  000000FF
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 35
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 35
 
 
 SYMBOL TABLE
@@ -2041,7 +2043,7 @@ _WDTEN_OFF_2H                     000000FC
 _WDTEN_ON_2H                      000000FE
 _WDTEN_SWDTDIS_2H                 000000FF
 _WDTPS_1024_2H                    000000AB
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 36
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 36
 
 
 SYMBOL TABLE
@@ -2093,14 +2095,14 @@ _XINST_OFF_1L                     000000BF
 _XINST_ON_1L                      000000FF
 __18F87K22                        00000001
 cond1                             000000D6
-cond2                             00000112
-cond3                             00000102
+cond2                             00000118
+cond3                             00000108
 counter                           00000004
-delay                             00000124
+delay                             0000012A
 delay_count                       00000000
-delay_loop_nop                    00000128
+delay_loop_nop                    0000012E
 dividh                            00000000
-MPASM 5.81                 VOLUMECONTROL.ASM   2-26-2019  16:58:04         PAGE 37
+MPASM 5.81                 VOLUMECONTROL.ASM   2-27-2019  12:33:15         PAGE 37
 
 
 SYMBOL TABLE
@@ -2116,7 +2118,7 @@ mul16                             00000000
 multiplication16x16               00000000
 multiplication8x16                00000000
 next                              000000DE
-next1                             00000118
+next1                             0000011E
 prod16x16                         00000000
 prod8x16                          00000000
 quoth                             00000000
