@@ -1,4 +1,4 @@
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  1
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -8,36 +8,48 @@ LOC  OBJECT CODE     LINE SOURCE TEXT
                       00001         LIST
                       00002 
                       00003 ;==========================================================================
-                      00004 ; Build date : Jul 23 2018
+                      00004 ; Build date : Sep 19 2018
                       00005 ;  MPASM PIC18F87K22 processor include
                       00006 ; 
                       00007 ;  (c) Copyright 1999-2018 Microchip Technology, All rights reserved
                       00008 ;==========================================================================
                       00009 
                       02986         LIST
-  0000                00002     global      frequency_multiplication, output_tmp
-  0000                00003     extern      multiplication16x16, prod16x16
+  0000                00002     global      mixed_l, mixed_h , frequency_mix
+  0000                00003     extern      multiplication16x16, prod16x16, k16, k8, mul16, ADC_read_A0, ADC_read_A5
                       00004 
                       00005 acs1    udata_acs
 000000                00006 output_tmp res 1   ; reserve 1 byte for variable output_tmp
-                      00007 
-                      00008 Frequency_shift_ CODE
-                      00009  
-000000                00010 frequency_multiplication
-000000 EC?? F???      00011     call multiplication16x16 ;multiply the two signals together
-000004 3800           00012     swapf prod16x16+2, 0  ;swap the nibbles of the lower product
-000006 0B0F           00013     andlw b'00001111' ;only the last 4 digits are significant
-000008 6E??           00014     movwf output_tmp
-00000A 3800           00015     swapf prod16x16+1, 0 ;swap the bits of the higher product
-00000C 0BF0           00016     andlw b'11110000' ;only the first 4 digits are significant
-00000E 2600           00017     addwf output_tmp, 1 
-000010 3800           00018     swapf prod16x16+1, 0 ;swap the bits of the product
-000012 0B0F           00019     andlw b'00001111' ;only the last 4 digits are significant
-000014 0F30           00020     addlw b'00110000' ;add the configuration bits
-000016 0012           00021     return
+000001                00007 mixed_h      res 1
+000002                00008 mixed_l      res 1
+                      00009 Frequency_shift_ CODE
+                      00010  
+000000                00011 frequency_multiplication
+000000 EC?? F???      00012     call multiplication16x16 ;multiply the two signals together
+000004 3800           00013     swapf prod16x16+2, 0  ;swap the nibbles of the lower product
+000006 0B0F           00014     andlw b'00001111' ;only the last 4 digits are significant
+000008 6E??           00015     movwf output_tmp
+00000A 3800           00016     swapf prod16x16+1, 0 ;swap the bits of the higher product
+00000C 0BF0           00017     andlw b'11110000' ;only the first 4 digits are significant
+00000E 2600           00018     addwf output_tmp, 1 
+000010 3800           00019     swapf prod16x16+1, 0 ;swap the bits of the product
+000012 0B0F           00020     andlw b'00001111' ;only the last 4 digits are significant
+000014 0012           00021     return
                       00022     
-                      00023     END
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  2
+000016                00023 frequency_mix
+000016 EC?? F???      00024         call    ADC_read_A0         ;convert analog to digital
+00001A CFC3 F???      00025         movff   ADRESL,k16+1        ;move the lower bits of the digital data to k_16+1
+00001E CFC4 F???      00026         movff   ADRESH, k16         ;move the higher bits of the digital data to k_16
+000022 EC?? F???      00027         call    ADC_read_A5         ;convert the other analog signal to digital
+000026 CFC3 F???      00028         movff   ADRESL, mul16+1     ;move the lower bits of the other digital data to mul_16+1
+00002A CFC4 F???      00029         movff   ADRESH, mul16       ;move the higher bits of the other digital data to mul_16
+00002E EC?? F???      00030         call    frequency_multiplication    ; mix signals
+000032 6E??           00031         movwf   mixed_h             ;move the high mixed byte
+000034 C??? F???      00032         movff   output_tmp, mixed_l ;move low mixed byte
+000038 0012           00033         return
+                      00034     
+                      00035     END
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  2
 
 
 SYMBOL TABLE
@@ -80,6 +92,8 @@ ADCON2                            00000FC0
 ADCS0                             00000000
 ADCS1                             00000001
 ADCS2                             00000002
+ADC_read_A0                       00000000
+ADC_read_A5                       00000000
 ADDEN                             00000003
 ADDEN1                            00000003
 ADDEN2                            00000003
@@ -94,14 +108,14 @@ ADMSK3                            00000003
 ADMSK4                            00000004
 ADMSK5                            00000005
 ADON                              00000000
-ADRES                             00000FC3
-ADRESH                            00000FC4
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  3
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  3
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+ADRES                             00000FC3
+ADRESH                            00000FC4
 ADRESL                            00000FC3
 ALE                               00000000
 ALRMCFG                           00000F5B
@@ -153,14 +167,14 @@ ANSEL14                           00000006
 ANSEL15                           00000007
 ANSEL16                           00000000
 ANSEL17                           00000001
-ANSEL18                           00000002
-ANSEL19                           00000003
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  4
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  4
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+ANSEL18                           00000002
+ANSEL19                           00000003
 ANSEL2                            00000002
 ANSEL20                           00000004
 ANSEL21                           00000005
@@ -212,14 +226,14 @@ C1INC                             00000006
 C1OUT                             00000002
 C1TSEL0                           00000000
 C1TSEL1                           00000001
-C1TSEL2                           00000002
-C2INA                             00000004
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  5
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+C1TSEL2                           00000002
+C2INA                             00000004
 C2INB                             00000003
 C2INC                             00000004
 C2IND                             00000005
@@ -271,14 +285,14 @@ CCP1IE                            00000001
 CCP1IF                            00000001
 CCP1IP                            00000001
 CCP1M0                            00000000
-CCP1M1                            00000001
-CCP1M2                            00000002
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  6
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CCP1M1                            00000001
+CCP1M2                            00000002
 CCP1M3                            00000003
 CCP1MD                            00000005
 CCP1OD                            00000005
@@ -330,14 +344,14 @@ CCP5IF                            00000002
 CCP5IP                            00000002
 CCP5M0                            00000000
 CCP5M1                            00000001
-CCP5M2                            00000002
-CCP5M3                            00000003
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  7
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  7
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CCP5M2                            00000002
+CCP5M3                            00000003
 CCP5MD                            00000002
 CCP5OD                            00000002
 CCP5X                             00000005
@@ -389,14 +403,14 @@ CCP9IE                            00000006
 CCP9IF                            00000006
 CCP9IP                            00000006
 CCP9M0                            00000000
-CCP9M1                            00000001
-CCP9M2                            00000002
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  8
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  8
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CCP9M1                            00000001
+CCP9M2                            00000002
 CCP9M3                            00000003
 CCP9MD                            00000006
 CCP9OD                            00000006
@@ -448,14 +462,14 @@ CHS4                              00000006
 CHSN0                             00000000
 CHSN1                             00000001
 CHSN2                             00000002
-CK1                               00000006
-CK2                               00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE  9
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE  9
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CK1                               00000006
+CK2                               00000001
 CKE                               00000006
 CKP                               00000004
 CLKI                              00000007
@@ -507,14 +521,14 @@ CTMUI                             00000003
 CTMUICON                          00000F55
 CTMUIE                            00000003
 CTMUIF                            00000003
-CTMUIP                            00000003
-CTMUMD                            00000006
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 10
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 10
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+CTMUIP                            00000003
+CTMUMD                            00000006
 CTMUSIDL                          00000005
 CTPLS                             00000000
 CTTRIG                            00000000
@@ -566,14 +580,14 @@ ECCP1AS                           00000FBF
 ECCP1AS0                          00000004
 ECCP1AS1                          00000005
 ECCP1AS2                          00000006
-ECCP1ASE                          00000007
-ECCP1CON                          00000FBB
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 11
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 11
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+ECCP1ASE                          00000007
+ECCP1CON                          00000FBB
 ECCP1DEL                          00000FBE
 ECCP2AS                           00000F52
 ECCP2AS0                          00000004
@@ -625,14 +639,14 @@ FSR1L                             00000FE1
 FSR2                              00000002
 FSR2H                             00000FDA
 FSR2L                             00000FD9
-GCEN                              00000007
-GIE                               00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 12
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 12
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+GCEN                              00000007
+GIE                               00000007
 GIEH                              00000007
 GIEL                              00000006
 GIE_GIEH                          00000007
@@ -684,14 +698,14 @@ INT3                              00000003
 INT3E                             00000005
 INT3F                             00000002
 INT3IE                            00000005
-INT3IF                            00000002
-INT3IP                            00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 13
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 13
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+INT3IF                            00000002
+INT3IP                            00000001
 INT3P                             00000001
 INTCON                            00000FF2
 INTCON2                           00000FF1
@@ -743,14 +757,14 @@ LATB5                             00000005
 LATB6                             00000006
 LATB7                             00000007
 LATC                              00000F8B
-LATC0                             00000000
-LATC1                             00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 14
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 14
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+LATC0                             00000000
+LATC1                             00000001
 LATC2                             00000002
 LATC3                             00000003
 LATC4                             00000004
@@ -802,14 +816,14 @@ LATJ                              00000F91
 LATJ0                             00000000
 LATJ1                             00000001
 LATJ2                             00000002
-LATJ3                             00000003
-LATJ4                             00000004
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 15
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 15
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+LATJ3                             00000003
+LATJ4                             00000004
 LATJ5                             00000005
 LATJ6                             00000006
 LATJ7                             00000007
@@ -861,14 +875,14 @@ ODCON2                            00000F28
 ODCON3                            00000F27
 OE                                00000001
 OERR                              00000001
-OERR1                             00000001
-OERR2                             00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 16
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 16
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+OERR1                             00000001
+OERR2                             00000001
 OSC1                              00000007
 OSC2                              00000006
 OSCCON                            00000FD3
@@ -920,14 +934,14 @@ P3DC6                             00000006
 P3M0                              00000006
 P3M1                              00000007
 P3RSEN                            00000007
-PA3                               00000000
-PADCFG1                           00000F53
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 17
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 17
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+PA3                               00000000
+PADCFG1                           00000F53
 PB1                               00000007
 PB3                               00000005
 PC                                00000FF9
@@ -979,14 +993,14 @@ POSTDEC0                          00000FED
 POSTDEC1                          00000FE5
 POSTDEC2                          00000FDD
 POSTINC0                          00000FEE
-POSTINC1                          00000FE6
-POSTINC2                          00000FDE
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 18
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 18
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+POSTINC1                          00000FE6
+POSTINC2                          00000FDE
 PR10                              00000F34
 PR12                              00000F31
 PR2                               00000FCB
@@ -1038,14 +1052,14 @@ RA2                               00000002
 RA3                               00000003
 RA4                               00000004
 RA5                               00000005
-RA6                               00000006
-RA7                               00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 19
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 19
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RA6                               00000006
+RA7                               00000007
 RB0                               00000000
 RB1                               00000001
 RB2                               00000002
@@ -1097,14 +1111,14 @@ RD4                               00000004
 RD5                               00000005
 RD6                               00000006
 RD7                               00000007
-RDPU                              00000007
-RE0                               00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 20
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 20
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RDPU                              00000007
+RE0                               00000000
 RE1                               00000001
 RE2                               00000002
 RE3                               00000003
@@ -1156,14 +1170,14 @@ ROON                              00000007
 ROSEL                             00000004
 ROSSLP                            00000005
 RSEN                              00000001
-RTCC                              00000004
-RTCCAL                            00000F5E
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 21
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 21
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RTCC                              00000004
+RTCCAL                            00000F5E
 RTCCFG                            00000F5F
 RTCCIE                            00000000
 RTCCIF                            00000000
@@ -1215,14 +1229,14 @@ SOSCEN                            00000003
 SOSCGO                            00000003
 SOSCI                             00000001
 SOSCO                             00000000
-SOSCRUN                           00000006
-SP0                               00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 22
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 22
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SOSCRUN                           00000006
+SP0                               00000000
 SP1                               00000001
 SP2                               00000002
 SP3                               00000003
@@ -1274,14 +1288,14 @@ SSPM0                             00000000
 SSPM1                             00000001
 SSPM2                             00000002
 SSPM3                             00000003
-SSPOV                             00000006
-SSPSTAT                           00000FC7
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 23
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 23
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+SSPOV                             00000006
+SSPSTAT                           00000FC7
 STATUS                            00000FD8
 STKFUL                            00000007
 STKOVF                            00000007
@@ -1333,14 +1347,14 @@ T1GGO_NOT_T1DONE                  00000003
 T1GPOL                            00000006
 T1GSPM                            00000004
 T1GSS0                            00000000
-T1GSS1                            00000001
-T1GTM                             00000005
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 24
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 24
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+T1GSS1                            00000001
+T1GTM                             00000005
 T1GVAL                            00000002
 T2CKPS0                           00000000
 T2CKPS1                           00000001
@@ -1392,14 +1406,14 @@ T6OUTPS1                          00000004
 T6OUTPS2                          00000005
 T6OUTPS3                          00000006
 T7CKI                             00000004
-T7CKPS0                           00000004
-T7CKPS1                           00000005
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 25
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 25
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+T7CKPS0                           00000004
+T7CKPS1                           00000005
 T7CON                             00000F3D
 T7G                               00000001
 T7GCON                            00000F3C
@@ -1451,14 +1465,14 @@ TMR1GIE                           00000002
 TMR1GIF                           00000002
 TMR1GIP                           00000002
 TMR1H                             00000FCF
-TMR1IE                            00000000
-TMR1IF                            00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 26
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 26
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TMR1IE                            00000000
+TMR1IF                            00000000
 TMR1IP                            00000000
 TMR1L                             00000FCE
 TMR1MD                            00000001
@@ -1510,14 +1524,14 @@ TMR6IP                            00000002
 TMR6MD                            00000004
 TMR6ON                            00000002
 TMR7                              00000F3E
-TMR7CS0                           00000006
-TMR7CS1                           00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 27
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 27
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TMR7CS0                           00000006
+TMR7CS1                           00000007
 TMR7GE                            00000007
 TMR7GIE                           00000007
 TMR7GIF                           00000007
@@ -1569,14 +1583,14 @@ TRISC4                            00000004
 TRISC5                            00000005
 TRISC6                            00000006
 TRISC7                            00000007
-TRISD                             00000F95
-TRISD0                            00000000
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 28
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 28
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TRISD                             00000F95
+TRISD0                            00000000
 TRISD1                            00000001
 TRISD2                            00000002
 TRISD3                            00000003
@@ -1628,14 +1642,14 @@ TRISJ7                            00000007
 TRMT                              00000001
 TRMT1                             00000001
 TRMT2                             00000001
-TUN0                              00000000
-TUN1                              00000001
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 29
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 29
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+TUN0                              00000000
+TUN1                              00000001
 TUN2                              00000002
 TUN3                              00000003
 TUN4                              00000004
@@ -1687,14 +1701,14 @@ VREF_MINUS                        00000002
 VREF_PLUS                         00000003
 W                                 00000000
 WAIT0                             00000004
-WAIT1                             00000005
-WCOL                              00000007
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 30
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 30
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+WAIT1                             00000005
+WCOL                              00000007
 WDTCON                            00000FD1
 WM0                               00000000
 WM1                               00000001
@@ -1746,14 +1760,14 @@ _CP0_ON_5L                        000000FE
 _CP1_OFF_5L                       000000FF
 _CP1_ON_5L                        000000FD
 _CP2_OFF_5L                       000000FF
-_CP2_ON_5L                        000000FB
-_CP3_OFF_5L                       000000FF
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 31
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 31
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_CP2_ON_5L                        000000FB
+_CP3_OFF_5L                       000000FF
 _CP3_ON_5L                        000000F7
 _CP4_OFF_5L                       000000FF
 _CP4_ON_5L                        000000EF
@@ -1805,14 +1819,14 @@ _FOSC_HS1_1H                      000000F3
 _FOSC_HS2_1H                      000000F2
 _FOSC_INTIO1_1H                   000000F9
 _FOSC_INTIO2_1H                   000000F8
-_FOSC_LP_1H                       000000F0
-_FOSC_RCIO_1H                     000000F7
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 32
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 32
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_FOSC_LP_1H                       000000F0
+_FOSC_RCIO_1H                     000000F7
 _FOSC_RC_1H                       000000F6
 _FOSC_XT_1H                       000000F1
 _IDLOC0                           00200000
@@ -1864,14 +1878,14 @@ _WDTPS_2_2H                       00000087
 _WDTPS_32768_2H                   000000BF
 _WDTPS_32_2H                      00000097
 _WDTPS_4096_2H                    000000B3
-_WDTPS_4_2H                       0000008B
-_WDTPS_512_2H                     000000A7
-MPASM 5.81               FREQUENCY_MIXER.ASM   2-27-2019  15:44:12         PAGE 33
+MPASM 5.82               FREQUENCY_MIXER.ASM   2-27-2019  16:54:15         PAGE 33
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_WDTPS_4_2H                       0000008B
+_WDTPS_512_2H                     000000A7
 _WDTPS_524288_2H                  000000CF
 _WDTPS_64_2H                      0000009B
 _WDTPS_65536_2H                   000000C3
@@ -1902,7 +1916,13 @@ _WRTD_ON_6H                       0000007F
 _XINST_OFF_1L                     000000BF
 _XINST_ON_1L                      000000FF
 __18F87K22                        00000001
+frequency_mix                     00000016
 frequency_multiplication          00000000
+k16                               00000000
+k8                                00000000
+mixed_h                           00000001
+mixed_l                           00000002
+mul16                             00000000
 multiplication16x16               00000000
 output_tmp                        00000000
 prod16x16                         00000000

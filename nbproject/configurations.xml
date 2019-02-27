@@ -19,9 +19,11 @@
       <itemPath>spi.asm</itemPath>
       <itemPath>frequency_mixer.asm</itemPath>
       <itemPath>multiplication.asm</itemPath>
+      <itemPath>LCD.asm</itemPath>
       <itemPath>VolumeControl.asm</itemPath>
       <itemPath>division.asm</itemPath>
-      <itemPath>LCD.asm</itemPath>
+      <itemPath>UART.asm</itemPath>
+      <itemPath>pseudo_number_generator.asm</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -31,7 +33,6 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>.</Elem>
-    <Elem>//icnas1.cc.ic.ac.uk/acn116/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -43,11 +44,11 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>ICD3PlatformTool</platformTool>
         <languageToolchain>MPASMWIN</languageToolchain>
-        <languageToolchainVersion>5.81</languageToolchainVersion>
+        <languageToolchainVersion>5.82</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.0.40"/>
+        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.0.41"/>
       </packs>
       <compileType>
         <linkerTool>
@@ -80,7 +81,7 @@
         <property key="ToolFirmwareFilePath"
                   value="Press to browse for a specific firmware version"/>
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="debugoptions.useswbreakpoints" value="true"/>
+        <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>

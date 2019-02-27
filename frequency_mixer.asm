@@ -1,6 +1,6 @@
 #include p18f87k22.inc
     global	mixed_l, mixed_h , frequency_mix
-    extern	multiplication16x16, prod16x16
+    extern	multiplication16x16, prod16x16, k16, k8, mul16, ADC_read_A0, ADC_read_A5
 
 acs1	udata_acs
 output_tmp res 1   ; reserve 1 byte for variable output_tmp

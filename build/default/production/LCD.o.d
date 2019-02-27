@@ -1,3 +1,3 @@
 build/default/production/LCD.o:  \
-	H:/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/LCD.asm  \
+	C:/Users/ROBASUS/MPLABXProjects/Voice-changer-project/LCD.asm  \
 
