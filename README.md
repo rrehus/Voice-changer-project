@@ -6,6 +6,8 @@ An assembly program for PIC18 that takes two analogue inputs mixes (multiplicati
 Python files have been included for saving signal transmitted through UART to a file as well as sending noise via UART
 
 NOTE: to change from internally generated pseudorandom numbers to externally generated random numbers, please change line 31 in main.asm from 
+
     call    noise_loop
 to
+
     call    gaussian_noise_loop
