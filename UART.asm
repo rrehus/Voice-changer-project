@@ -38,6 +38,8 @@ UART_Transmit_Byte	    ; Transmits byte stored in W
     return
     
 UART_Receive_Byte
+    btfss PIR1, RC1IF   ; tests if the noise has been received, if yes then skips to move the byte to noise variable
+    bra   UART_Receive_Byte 
     movff RCREG1, noise ;move the received byte into noise variable
     return
     end
