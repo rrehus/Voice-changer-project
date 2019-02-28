@@ -27,38 +27,46 @@ START
 	
 main_loop
 	call    VolumeDo            ; reads and sets volume
+	;call	ADC_read_A0
+	;movff	ADRESH, mixed_h
+	;movff	ADRESL,	mixed_l
 	call    frequency_mix       ; changes the frequency of the signal
+	;movff	mixed_h, s
+	;movff	mixed_l, s+1
 	call    noise_loop          ; combines the signal with the noise
 	call    output_loop         ; output the modified signal via DAC and UART
 	goto    main_loop
 
 noise_loop
 	call random_numbers	    ; call random number generator
-	movf mixed_h, W		    ; move upper byte of digital data into W register
-	addwf s, 1		    ; add the random number to ADRESH
+	movff mixed_h, s	    ; move upper byte of digital data into upper byte of s
 	movf mixed_l, W		    ; move lower byte of digital data into W register
 	addwf s+1, 1		    ; combine the digital data with noise
 	return
 	
 gaussian_noise_loop
-	call  UART_Receive_Byte	    ; receive the noise byte from python via UART
-	movf  noise, W		    ; move noise to W
-	addwf mixed_l, 0	    ; add noise to lower byte of signal
-	movwf s+1		    ; move lower byte into s+1
-	movff  mixed_h, s	    ; move upper byte of digital data into W register
+	call	UART_Receive_Byte   ; receive the noise byte from python via UART
+	movf	noise, W	    ; move noise to W
+	addwf	mixed_l, 0	    ; add noise to lower byte of signal
+	movwf	s+1		    ; move lower byte into s+1
+	movff	mixed_h, s	    ; move upper byte of digital data into W register
 	return
 	
 output_loop
+	call	UART_Transmit	    ; Tranmit signal to UART
+	movf	s, W		    ; output the higher byte with the configuration bits added
+	addlw	b'00110000'
+	call	DAC_write
+	movf	s+1, W		    ; output the lower byte
+	call	DAC_write
+	call	DAC_end_write
+	return
+	
+UART_Transmit
 	movf   s, W
 	call   UART_Transmit_Byte   ; transmit the byte via UART 
 	movf   s+1, W
 	call   UART_Transmit_Byte   ; transmit the other byte via UART
-	movf   s, W		    ; output the higher byte with the configuration bits added
-	addlw  b'00110000'
-	call   DAC_write
-	movf   s+1, W		    ; output the lower byte
-	call   DAC_write
-	call   DAC_end_write
 	return
 	
 	;#######################################################

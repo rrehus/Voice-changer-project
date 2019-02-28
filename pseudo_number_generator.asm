@@ -34,10 +34,6 @@ random_numbers
     movf c+1, W
     addwfc prod16x16+3,1	; add the increment to the product of the multiplication
     movff prod16x16+3, s+1
-    movf c, W
-    addwfc prod16x16+2,0
-    andwf b'00001111'
-    movwf s
     return
 
     END

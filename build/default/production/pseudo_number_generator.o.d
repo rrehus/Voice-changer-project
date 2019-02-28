@@ -1,3 +1,3 @@
 build/default/production/pseudo_number_generator.o:  \
-	C:/Users/ROBASUS/MPLABXProjects/Voice-changer-project/pseudo_number_generator.asm  \
+	H:/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/pseudo_number_generator.asm  \
 

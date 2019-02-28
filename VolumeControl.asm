@@ -53,11 +53,11 @@ table_loop
     
 VolumeSet
     clrf	PORTG		    ; Set WR pin low
-    call	delay		    ; delay
+    nop
     movff	volume, PORTE	    ; write volume to DAC
-    call	delay		    ; delay
+    nop
     setf	PORTG		    ; Set WR pin high
-    call	delay		    ; delay
+    nop
     return
     
 VolumeRead
@@ -158,7 +158,7 @@ next1
 VolumeDo
     call	VolumeRead	    ; read volume on pin RA1
     call	VolumeSet	    ; set volume on DAC
-    call	VolumeDisp	    ; display volume
+    ;call	VolumeDisp	    ; display volume
     return
     
 delay				    ; A delay loop for setting the volume

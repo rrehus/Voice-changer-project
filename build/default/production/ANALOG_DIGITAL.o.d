@@ -1,3 +1,3 @@
 build/default/production/ANALOG_DIGITAL.o:  \
-	C:/Users/ROBASUS/MPLABXProjects/Voice-changer-project/ANALOG_DIGITAL.asm  \
+	H:/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/ANALOG_DIGITAL.asm  \
 

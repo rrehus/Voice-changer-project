@@ -1,3 +1,3 @@
 build/default/production/VolumeControl.o:  \
-	C:/Users/ROBASUS/MPLABXProjects/Voice-changer-project/VolumeControl.asm  \
+	H:/3rdYear/3rdYearLab/MicroprocessorLabProject/Voice-changer-project/VolumeControl.asm  \
 
