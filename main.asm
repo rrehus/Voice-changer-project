@@ -53,7 +53,7 @@ gaussian_noise_loop
 	return
 	
 output_loop
-	call	UART_Transmit	    ; Tranmit signal to UART
+	;call	UART_Transmit	    ; Tranmit signal to UART
 	movf	s, W		    ; output the higher byte with the configuration bits added
 	addlw	b'00110000'
 	call	DAC_write
